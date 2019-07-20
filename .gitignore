@@ -26,6 +26,7 @@
 ### flask
 /venv
 /app/static/*
+!/app/static/.keep
 /app/__pycache__
 
 ### vscode
