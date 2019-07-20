@@ -1,0 +1,32 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+### react
+# dependencies
+/app/templates/node_modules
+/app/templates/.pnp
+/app/templates/.pnp.js
+
+# testing
+/app/templates/coverage
+
+# production
+/app/templates/build
+
+# misc
+/app/templates/.DS_Store
+/app/templates/.env.local
+/app/templates/.env.development.local
+/app/templates/.env.test.local
+/app/templates/.env.production.local
+
+/app/templates/npm-debug.log*
+/app/templates/yarn-debug.log*
+/app/templates/yarn-error.log*
+
+### flask
+/venv
+/app/static/*
+/app/__pycache__
+
+### vscode
+/.vscode
