@@ -10,7 +10,7 @@
 /app/templates/coverage
 
 # production
-# /app/templates/build
+/app/templates/build
 
 # misc
 /app/templates/.DS_Store
