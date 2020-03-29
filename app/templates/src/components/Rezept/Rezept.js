@@ -7,13 +7,29 @@ var recipe = {
   bild_url: "https://img.chefkoch-cdn.de/rezepte/1298601234964040/bilder/721436/crop-600x400/thunfischfilet-in-zimt-sesam-kruste-auf-chili-mango-salat.jpg",
   personen: 4,
   zutaten: [
-    [400, 'g', 'Thunfisch, (Sushiqualität)'],
-    [1, 'EL', 'Zimt'],
-    [2, 'EL', 'Sesam, heller'],
-    [2, 'EL', 'Sesam, schwarzer'],
-    [, , 'Sesam, schwarzer'],
-    [, , 'Fleur de Sel'],
-    [, , 'Pfeffer, schwarzer aus der Mühle'],
+    [
+      '#',
+      [400, 'g', 'Thunfisch, (Sushiqualität)'],
+      [1, 'EL', 'Zimt'],
+      [2, 'EL', 'Sesam, heller'],
+      [2, 'EL', 'Sesam, schwarzer'],
+      [null,null, 'Sesam, schwarzer'],
+      [null,null, 'Fleur de Sel'],
+      [null,null, 'Pfeffer, schwarzer aus der Mühle'],
+    ],
+    [
+      'Für den Salat',
+      [1,null, 'Mango(s)'],
+      [1,null, 'Schalotte(n)'],
+      [1, 'Handvoll', 'Minze'],
+      [1, 'Handvoll', 'Koriandergrün'],
+      [1, 'kleine', 'Paprikaschote(n), rot'],
+      [2,null, 'Chilischote(n), rot'],
+      [null, 'EL', 'Olivenöl'],
+      [null,null, 'Balsamico, weißer'],
+      [null,null, 'Salz'],
+      [1,null, 'Orange(n), unbehandelt'],
+    ]
   ],
   zubereitung: [
     'Die Mango schälen und in kleine Würfel schneiden. Die Schalotte fein hacken. Minze und Koriander ebenfalls fein hacken. Die Paprika fein würfeln. Die Chili entkernen und ebenfalls fein würfeln.',
@@ -23,7 +39,7 @@ var recipe = {
     'Den Thunfisch von allen Seiten anbraten. Er sollte innen rot bleiben! Ich mache dies immer in einer guten beschichteten Pfanne, ohne Fett. Es kann aber auch mit Olivenöl gemacht werden.',
     'Den gebratenen Thunfisch in dünne Scheiben schneiden.',
   ]
-} 
+}
 
 
 function Rezept() {
