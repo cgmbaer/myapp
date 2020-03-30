@@ -1,0 +1,18 @@
+<html>
+
+<head>
+    <title>Microblog</title>
+</head>
+
+<body>
+    <h1>Hello!</h1>
+    <form method="POST">
+        <input name="text">
+        <input type="submit">
+    </form>
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{ error }}
+        {% endif %}
+</body>
+
+</html>

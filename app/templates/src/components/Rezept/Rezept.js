@@ -1,5 +1,6 @@
 import React from 'react';
 import './Rezept.css';
+import edit_bild from './edit.png';
 
 var recipe = {
   id: 1,
@@ -8,27 +9,27 @@ var recipe = {
   personen: 4,
   zutaten: [
     [
-      '#',
+      'Zutaten:',
       [400, 'g', 'Thunfisch, (Sushiqualität)'],
       [1, 'EL', 'Zimt'],
       [2, 'EL', 'Sesam, heller'],
       [2, 'EL', 'Sesam, schwarzer'],
-      [null,null, 'Sesam, schwarzer'],
-      [null,null, 'Fleur de Sel'],
-      [null,null, 'Pfeffer, schwarzer aus der Mühle'],
+      [null, null, 'Sesam, schwarzer'],
+      [null, null, 'Fleur de Sel'],
+      [null, null, 'Pfeffer, schwarzer aus der Mühle'],
     ],
     [
       'Für den Salat',
-      [1,null, 'Mango(s)'],
-      [1,null, 'Schalotte(n)'],
-      [1, 'Handvoll', 'Minze'],
-      [1, 'Handvoll', 'Koriandergrün'],
+      [1, null, 'Mango(s)'],
+      [1, null, 'Schalotte(n)'],
+      [1, 'Hand', 'Minze'],
+      [1, 'Hand', 'Koriandergrün'],
       [1, 'kleine', 'Paprikaschote(n), rot'],
-      [2,null, 'Chilischote(n), rot'],
-      [null, 'EL', 'Olivenöl'],
-      [null,null, 'Balsamico, weißer'],
-      [null,null, 'Salz'],
-      [1,null, 'Orange(n), unbehandelt'],
+      [2, null, 'Chilischote(n), rot'],
+      [1, 'EL', 'Olivenöl'],
+      [null, null, 'Balsamico, weißer'],
+      [null, null, 'Salz'],
+      [1, null, 'Orange(n), unbehandelt'],
     ]
   ],
   zubereitung: [
@@ -41,22 +42,59 @@ var recipe = {
   ]
 }
 
+function Rezept(props) {
 
-function Rezept() {
+  const table_zutaten = () => (
+    recipe.zutaten.map((value, index) => {
+      let table = [];
+      for(let val = 1; val < value.length; val++){
+        table.push(
+          <tr key={val}>
+            <td align='right'><div style={{ minWidth: '20px' }}>{value[val][0]}</div></td>
+            <td><div style={{ marginLeft: '0.5rem', minWidth: '60px' }}>{value[val][1]}</div></td>
+            <td>{value[val][2]}</td>
+          </tr>
+        )
+      }
+      return (
+        <div key={index}>
+          <div className='table__header' key={index}>{value[0]}</div>
+            <table>
+              <tbody>
+                {table}
+              </tbody>
+            </table>
+        </div>
+      )
+    })
+  );
+
+  const table_zubereitung = () => (
+    recipe.zubereitung.map((value,index) => {
+      return (
+      <div key={index} style={{ marginTop: '1rem' }}><b>{`${index + 1}. `}</b>{value}</div>
+      )
+    })
+  )
+
   return (
     <div className="rezept">
-      <div className="rezept__header">
-        <div className="rezept__titel"></div>
-        <div className="rezept__bearbeiten"></div>
+      <div className="rezept__bild">
+        <img src={recipe.bild_url} alt={recipe.titel} width='100%'></img>
       </div>
-      <div className="rezept__bild"></div>
+      <div className="rezept__header">
+        <div className="rezept__titel">{recipe.titel}</div>
+        <div className="rezept__bearbeiten">
+          <img src={edit_bild} alt='edit' height='50px' width='50px'></img>
+        </div>
+      </div>
       <div className="rezept__beschreibung">
         <div className="rezept__einkauf">
           <div className="rezept__personen"></div>
           <div className="rezept__hinzufügen"></div>
         </div>
-        <div className="rezept__zutaten"></div>
-        <div className="rezept__zubereitung"></div>
+        <div className="rezept__zutaten">{table_zutaten()}</div>
+        <div className="rezept__zubereitung">{table_zubereitung()}</div>
       </div>
     </div>
   );
