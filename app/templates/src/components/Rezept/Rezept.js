@@ -22,9 +22,9 @@ var recipe = {
       'Für den Salat',
       [1, null, 'Mango(s)'],
       [1, null, 'Schalotte(n)'],
-      [1, 'Hand', 'Minze'],
-      [1, 'Hand', 'Koriandergrün'],
-      [1, 'kleine', 'Paprikaschote(n), rot'],
+      [1, 'Hd', 'Minze'],
+      [1, 'Hd', 'Koriandergrün'],
+      [1, 'kl', 'Paprikaschote(n), rot'],
       [2, null, 'Chilischote(n), rot'],
       [1, 'EL', 'Olivenöl'],
       [null, null, 'Balsamico, weißer'],
@@ -50,8 +50,8 @@ function Rezept(props) {
       for(let val = 1; val < value.length; val++){
         table.push(
           <tr key={val}>
-            <td align='right'><div style={{ minWidth: '20px' }}>{value[val][0]}</div></td>
-            <td><div style={{ marginLeft: '0.5rem', minWidth: '60px' }}>{value[val][1]}</div></td>
+            <td align='right'><div style={{ width: '20px' }}>{value[val][0]}</div></td>
+            <td><div style={{ marginLeft: '0.5rem', width: '25px' }}>{value[val][1]}</div></td>
             <td>{value[val][2]}</td>
           </tr>
         )
@@ -85,7 +85,7 @@ function Rezept(props) {
       <div className="rezept__header">
         <div className="rezept__titel">{recipe.titel}</div>
         <div className="rezept__bearbeiten">
-          <img src={edit_bild} alt='edit' height='50px' width='50px'></img>
+          <img src={edit_bild} alt='edit' height='30px' width='30px'></img>
         </div>
       </div>
       <div className="rezept__beschreibung">
