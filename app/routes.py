@@ -46,4 +46,5 @@ def serve_logo():
 @app.route('/<path:filename>')
 @login_required
 def serve_static(filename):
+    test = 1
     return send_from_directory(app.static_folder, filename)
