@@ -28,7 +28,7 @@
 /app/static/*
 !/app/static/.keep
 /app/__pycache__
-/app/config.py
+config.py
 __pycache__
 
 ### vscode
