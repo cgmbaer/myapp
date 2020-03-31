@@ -31,5 +31,8 @@
 config.py
 __pycache__
 
+### db
+app.db
+
 ### vscode
 /.vscode
