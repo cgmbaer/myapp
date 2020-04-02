@@ -13,6 +13,7 @@ const toolbar = props => (
                 <ul>
                     <li><NavLink exact to="/">Rezept</NavLink></li>
                     <li><NavLink to="/Einkauf/">Einkauf</NavLink></li>
+                    <li><NavLink to="/RezeptErstellen/">Rezept Erstellen</NavLink></li>
                 </ul>
             </div>
         </nav>

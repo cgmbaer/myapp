@@ -1,0 +1,19 @@
+.list__container {
+    margin: 64px 0.5rem;
+    width: 100% - 1rem;
+}
+
+.drag_icon__container {
+    width: 10%
+}
+
+.list_item__container {
+    display: flex;
+    height: 3rem;
+}
+
+.list_item_text {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+}

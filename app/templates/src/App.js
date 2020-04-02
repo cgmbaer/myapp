@@ -3,6 +3,7 @@ import {BrowserRouter,Route,Switch} from 'react-router-dom';
 import Toolbar from './components/Toolbar/Toolbar';
 import Rezept from './components/Rezept/Rezept';
 import Einkauf from './components/Einkauf/Einkauf';
+import RezeptErstellen from './components/RezeptErstellen/RezeptErstellen';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Rezept}/>
           <Route path="/Einkauf" component={Einkauf}/>
+          <Route path="/RezeptErstellen" component={RezeptErstellen}/>
         </Switch>
     </div>
     </BrowserRouter>
