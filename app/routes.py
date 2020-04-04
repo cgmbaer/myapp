@@ -1,6 +1,6 @@
 import os, sys
 from app import app
-from flask import render_template, request, redirect, send_from_directory, session, url_for
+from flask import render_template, request, redirect, send_from_directory, session, url_for, jsonify
 from functools import wraps
 
 def login_required(f):
@@ -47,3 +47,30 @@ def serve_logo():
 @login_required
 def serve_static(filename):
     return send_from_directory(app.static_folder, filename)
+
+tasks = [
+    {
+        'id': 1,
+        'title': u'Buy groceries',
+        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
+        'done': False
+    },
+    {
+        'id': 2,
+        'title': u'Learn Python',
+        'description': u'Need to find a good Python tutorial on the web', 
+        'done': False
+    }
+]
+
+@app.route('/recipe/api/v1.0/get_recipe', methods=['GET'])
+@login_required
+def get_recipe():
+    return jsonify({'recipe': tasks})
+
+@app.route('/recipe/api/v1.0/add_recipe', methods=['POST'])
+@login_required
+def add_recipe():
+    if not request.json or not 'example' in request.json:
+        return jsonify({'recipe': 'didnt_work'})
+    return jsonify({'recipe': tasks})

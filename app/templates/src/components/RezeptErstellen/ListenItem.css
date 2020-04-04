@@ -1,0 +1,32 @@
+.list_item__container {
+    width: 100%;
+}
+
+.list_item__flat {
+    display: flex;
+    height: 3rem;
+    width: 100%;
+}
+
+.drag_icon__container {
+    width: 5%;
+    display: flex;
+    align-items: center;
+}
+
+.list_item_text {
+    width: 90%;
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    font-size: large;
+}
+
+.list_item__button {
+    width: 5%;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

@@ -1,55 +1,48 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
     sortableContainer,
-    sortableElement,
-    sortableHandle,
+    sortableElement
 } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import './RezeptErstellen.css';
-import dragIcon from './dragIcon.png';
-
-const DragHandle = sortableHandle(() => (
-    <div className='drag_icon__container'>
-        <img src={dragIcon} alt='->' width='100%'></img>
-    </div>
-));
+import ListenItem from './ListenItem';
 
 const SortableItem = sortableElement(({ value }) => (
-    <div className='list_item__container'>
-        <DragHandle />
-        <div className='list_item_text'>
-            <input type="text" id="fname" name="fname"></input>
-        </div>
-    </div>
+    <ListenItem/>
 ));
 
 const SortableContainer = sortableContainer(({ children }) => {
     return <div>{children}</div>;
 });
 
-class RezeptErstellen extends Component {
-    state = {
-        items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
+const RezeptErstellen = (props) => {
+    const [items, setItems] = useState(
+        ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6']
+    );
+
+    const onSortEnd = ({ oldIndex, newIndex }) => {
+        setItems(arrayMove(items, oldIndex, newIndex))
     };
 
-    onSortEnd = ({ oldIndex, newIndex }) => {
-        this.setState(({ items }) => ({
-            items: arrayMove(items, oldIndex, newIndex),
-        }));
-    };
+    const [isOpen, setIsOpen] = useState(true);
 
-    render() {
-        const { items } = this.state;
+    const toggle = () => setIsOpen(!isOpen);
 
-        return (
-            <div className='list__container'>
-                <SortableContainer onSortEnd={this.onSortEnd} useDragHandle>
-                    {items.map((value, index) => (
-                        <SortableItem key={`item-${value}`} index={index} value={value} />
-                    ))}
-                </SortableContainer>
-            </div>
-        );
-    }
+    return (
+        <div className='list__container'>
+            <SortableContainer onSortEnd={onSortEnd} useDragHandle>
+                {items.map((value, index) => (
+                    <SortableItem
+                        key={`item-${value}`}
+                        index={index}
+                        value={value}
+                        isOpen={isOpen}
+                        toggle={toggle}>
+                    </SortableItem>
+                ))}
+            </SortableContainer>
+        </div>
+    );
 }
+
 export default RezeptErstellen;
