@@ -9,7 +9,6 @@ const Toolbar = (props) => {
     return (
         <header className="toolbar">
             <nav className="toolbar__navigation">
-                <div></div>
                 <div className="toolbar__logo">
                     <NavLink exact to="/">
                         <img src={home_zeichen} alt='add' height='100%'></img>
