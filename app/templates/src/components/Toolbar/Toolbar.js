@@ -11,7 +11,7 @@ const Toolbar = (props) => {
             <nav className="toolbar__navigation">
                 <div className="toolbar__logo">
                     <NavLink exact to="/">
-                        <img src={home_zeichen} alt='add' height='100%'></img>
+                        <img src={home_zeichen} alt='add' height='100%' width='100%'></img>
                     </NavLink>
                 </div>
                 <NavLink className='toolbar__item' exact to="/Rezept">Rezept</NavLink>
@@ -19,7 +19,7 @@ const Toolbar = (props) => {
                 <NavLink className='toolbar__item' to="/RezeptErstellen">Neu</NavLink>
                 <div className='toolbar__plus_zeichen'>
                     <NavLink exact to="/RezeptErstellen">
-                        <img src={plus_zeichen} alt='add' height='100%'></img>
+                        <img src={plus_zeichen} alt='add' height='100%' width='100%'></img>
                     </NavLink>
                 </div>
             </nav>
