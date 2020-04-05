@@ -4,16 +4,18 @@ import { Collapse } from 'react-collapse';
 import RezeptName from './subcomponents/RezeptName/RezeptName'
 
 const RezeptErstellen = (props) => {
+    const [recipeId, setRecipeId] = useState(null);
 
-    const rezeptId = 'asdf';
+    const callbackFunction = (childData) => {
+        setRecipeId(childData);
+    }
 
     return (
         <div className='rezept_erstellen__container'>
-            <RezeptName>
-
+            <RezeptName recipeId={recipeId} parentCallback = {callbackFunction}>
             </RezeptName>
-            <Collapse isOpened={rezeptId !== null}>
-                <div>Platzhalter für Zutaten und Text: {rezeptId}</div>
+            <Collapse isOpened={recipeId !== null}>
+                <div>Platzhalter für Zutaten und Text: {recipeId}</div>
             </Collapse>
         </div>
     )

@@ -6,10 +6,14 @@ import accept_bild from '../../../../images/accept.png'
 
 const RezeptName = (props) => {
 
-    const [rezeptId, setRezeptId] = useState(null);
+    const [rezeptId, setRezeptId] = useState(props.recipeId);
     const [textInput, setTextInput] = useState('Bearbeiten und Titel ändern');
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
+
+    const sendData = () => {
+        props.parentCallback(textInput);
+    }
 
     const rezept_erstellen = async () => {
 
@@ -34,10 +38,11 @@ const RezeptName = (props) => {
                     <img src={edit_bild} alt='edit' height='100%'></img>
                 </div>
             </div>
+            {rezeptId}
             <Collapse isOpened={isOpen}>
                 <div className='rezept_name__edit_container'>
                     <input className='rezept_name__input' type='text' onChange={event => setTextInput(event.target.value)}></input>
-                    <div className='rezept_name__accept' onClick={rezept_erstellen}>
+                    <div className='rezept_name__accept' onClick={sendData}>
                         <img src={accept_bild} alt='edit' height='100%'></img>
                     </div>
                 </div>
