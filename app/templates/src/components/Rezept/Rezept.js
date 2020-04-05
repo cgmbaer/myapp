@@ -1,6 +1,6 @@
 import React from 'react';
 import './Rezept.css';
-import edit_bild from './edit.png';
+import edit_bild from '../../images/edit.png';
 
 var recipe = {
   id: 1,

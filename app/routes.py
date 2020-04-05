@@ -73,4 +73,4 @@ def get_recipe():
 def add_recipe():
     if not request.json or not 'example' in request.json:
         return jsonify({'recipe': 'didnt_work'})
-    return request.json
+    return jsonify(request.json)
