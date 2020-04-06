@@ -1,22 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './RezeptErstellen.css'
-import { Collapse } from 'react-collapse';
-import RezeptName from './subcomponents/RezeptName/RezeptName'
+import RezeptTitel from './subcomponents/RezeptTitel/RezeptTitel'
 
 const RezeptErstellen = (props) => {
-    const [recipeId, setRecipeId] = useState(null);
-
-    const callbackFunction = (childData) => {
-        setRecipeId(childData);
-    }
+    const recipeId = 5;
+    const recipeTitle = 'Wiener Schnitzel';
 
     return (
         <div className='rezept_erstellen__container'>
-            <RezeptName recipeId={recipeId} parentCallback = {callbackFunction}>
-            </RezeptName>
-            <Collapse isOpened={recipeId !== null}>
-                <div>Platzhalter für Zutaten und Text: {recipeId}</div>
-            </Collapse>
+            <RezeptTitel recipeId={recipeId} recipeTitle={recipeTitle}></RezeptTitel>
         </div>
     )
 }
