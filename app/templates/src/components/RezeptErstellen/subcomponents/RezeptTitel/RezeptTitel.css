@@ -5,6 +5,7 @@
 
 .rezept_titel_editable {
     border-style: inset;
+    border-color: rgb(78, 78, 78);
     background: transparent;
     font-size: medium;
     padding: 0px;
