@@ -43,7 +43,7 @@ const RezeptTitel = (props) => {
                         </div>
                         :
                         <div className='rezept_titel_fixed' onClick={() => toggle()}>
-                            Hier klicken um Rezepttitel einzugeben ...
+                            Rezepttitel ...
                         </div>
             }
             <Collapse isOpened={isOpen}>
