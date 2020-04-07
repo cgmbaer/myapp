@@ -7,7 +7,7 @@ const RezeptTitel = (props) => {
     const [recipeTitle, setRecipeTitle] = useState(props.recipeTitle);
     const [isOpen, setIsOpen] = useState(false);
     const [textEditable, setTextEditable] = useState(false);
-    
+
     const refRecipeTitle = useRef();
 
     let recipeId = props.recipeId;
@@ -31,11 +31,11 @@ const RezeptTitel = (props) => {
     return (
         <div className='rezept_titel__container'>
             {
-                textEditable ? 
+                textEditable ?
                     recipeTitle ?
-                        <input className='rezept_titel_editable' ref={refRecipeTitle} defaultValue={recipeTitle} />
+                        <input className='rezept_titel_editable' autoFocus={true} ref={refRecipeTitle} defaultValue={recipeTitle} />
                         :
-                        <input className='rezept_titel_editable' ref={refRecipeTitle} placeholder={'Rezepttitel eingeben...'} />
+                        <input className='rezept_titel_editable' autoFocus={true} ref={refRecipeTitle} placeholder={'Rezepttitel eingeben...'} />
                     :
                     recipeTitle ?
                         <div className='rezept_titel_fixed' onClick={() => toggle()}>
@@ -47,8 +47,10 @@ const RezeptTitel = (props) => {
                         </div>
             }
             <Collapse isOpened={isOpen}>
-                <div className='rezept_name__edit_container' onClick={() => setRecipe()}>
-                    Click here to accept
+                <div className='rezept_titel__collapse'>
+                    <div className='rezept_titel__collapse_button' onClick={() => setRecipe()}>
+                       Speichern
+                    </div>
                 </div>
             </Collapse>
             <hr />

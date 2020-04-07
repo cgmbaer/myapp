@@ -1,6 +1,6 @@
 .rezept_erstellen__container {
-    margin: 64px 0.5rem;
-    width: 100% - 1rem;
+    margin-top: 64px;
+    width: 100%;
 }
 
 .ReactCollapse--collapse {
