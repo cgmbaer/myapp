@@ -1,13 +1,5 @@
 from app import db
 
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), index=True, unique=True)
-    recipes = db.relationship('Recipe', backref='category', lazy='dynamic')
-
-    def __repr__(self):
-        return '<Category {}>'.format(self.name)
-
 class Unit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(16), index=True, unique=True)
@@ -31,7 +23,6 @@ class Recipe(db.Model):
     quantity = db.Column(db.Float)
     unit_id = db.Column(db.Integer, db.ForeignKey('unit.id'))
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'))
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
     def __repr__(self):
         return '<Recipe {}>'.format(self.name)

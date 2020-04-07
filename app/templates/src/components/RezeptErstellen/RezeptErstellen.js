@@ -5,26 +5,33 @@ import RezeptBild from './subcomponents/RezeptBild/RezeptBild';
 
 const RezeptErstellen = (props) => {
 
-    const [recipeTitle, setRecipeTitle] = useState('Wiener Schnitzel');
+    const [recipeId, setRecipeId] = useState(props.recipeId || null);
+    const [recipeTitle, setRecipeTitle] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [textEditable, setTextEditable] = useState(false);
 
     const refRecipeTitle = useRef();
-
-    let recipeId = props.recipeId;
 
     const toggle = () => {
         setIsOpen(!isOpen);
         setTextEditable(!textEditable);
     }
 
-    const setRecipe = () => {
+    const setRecipe = async () => {
+        
         setRecipeTitle(refRecipeTitle.current.value);
 
-        console.log('Rezept wurde gespeichert');
-        recipeId = 2;
-        console.log('recipeId: ' + recipeId);
-
+        const response = await fetch('/recipe/api/v1.0/add_recipe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                recipeId: recipeId,
+                recipeTitle: refRecipeTitle.current.value
+             }),
+        })
+    
+        console.log(await response.json())
+    
         setIsOpen(!isOpen);
         setTextEditable(!textEditable);
     }
@@ -46,7 +53,7 @@ const RezeptErstellen = (props) => {
                             :
                             <div className='rezept_titel_fixed' onClick={() => toggle()}>
                                 Rezepttitel ...
-                        </div>
+                            </div>
                 }
                 <Collapse isOpened={isOpen}>
                     <div className='rezept_titel__collapse'>
@@ -56,9 +63,16 @@ const RezeptErstellen = (props) => {
                     </div>
                 </Collapse>
             </div>
-            <hr />
-            <RezeptBild recipeId={recipeId}/>
-            <hr />
+            {
+                recipeId ?
+                    <div>
+                        <hr />
+                        <RezeptBild recipeId={recipeId} />
+                        <hr />
+                    </div>
+                    :
+                    <hr />
+            }
         </div>
     )
 }

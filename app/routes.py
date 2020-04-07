@@ -1,7 +1,13 @@
 import os, sys
 from app import app
+from app.models import Recipe
 from flask import render_template, request, redirect, send_from_directory, session, url_for, jsonify
 from functools import wraps
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return redirect(url_for('index'))
 
 def login_required(f):
     @wraps(f)
@@ -54,12 +60,6 @@ tasks = [
         'title': u'Buy groceries',
         'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
         'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
     }
 ]
 
@@ -69,8 +69,8 @@ def get_recipe():
     return jsonify({'recipe': tasks})
 
 @app.route('/recipe/api/v1.0/add_recipe', methods=['POST'])
-@login_required
 def add_recipe():
-    if not request.json or not 'example' in request.json:
-        return jsonify({'recipe': 'didnt_work'})
-    return jsonify(request.json)
+    if request.json['recipeId'] is None:
+        r = Recipe(name = request.json['recipeTitle'])
+        return jsonify({'recipeId': 5})
+    return jsonify({'recipeId': 2})

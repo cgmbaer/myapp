@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    background: #ffdbf4;
+    background: #62eee2;
     height: 56px;
 }
 
@@ -37,13 +37,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #ffbdeb;
+    background: #51dbd0;
     border-bottom-style: solid;
     border-bottom-width: 0.3rem;
-    border-bottom-color: #ff88db;
+    border-bottom-color: #137a72;
     transition: border-bottom 0.2s ease-in-out;
-}
-
-.acitve {
-    background: #ffbdeb;
 }
