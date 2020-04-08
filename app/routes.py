@@ -55,6 +55,11 @@ def serve_logo():
 def serve_static(filename):
     return send_from_directory(app.static_folder, filename)
 
+@app.route('/images/<path:filename>')
+@login_required
+def serve_images(filename):
+    return send_from_directory(os.path.join(app.template_folder,"recipe_images"), filename)
+
 tasks = [
     {
         'id': 1,

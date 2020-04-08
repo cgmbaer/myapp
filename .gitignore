@@ -12,6 +12,10 @@
 # production
 # /app/templates/build
 
+# images
+/app/templates/recipe_images/*
+!/app/templates/recipe_images/.keep
+
 # misc
 /app/templates/.DS_Store
 /app/templates/.env.local
