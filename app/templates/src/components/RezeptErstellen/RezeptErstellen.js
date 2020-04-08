@@ -29,9 +29,15 @@ const RezeptErstellen = (props) => {
                 recipeTitle: refRecipeTitle.current.value
              }),
         })
-    
-        console.log(await response.json())
-    
+        
+        let data = await response.json();
+
+        if(data.recipeId){
+            setRecipeId(data.recipeId);
+        } else {
+            console.log(data);
+        }
+
         setIsOpen(!isOpen);
         setTextEditable(!textEditable);
     }

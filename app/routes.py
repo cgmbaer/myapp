@@ -1,5 +1,6 @@
 import os, sys
-from app import app
+from app import app, db
+from sqlalchemy.exc import IntegrityError
 from app.models import Recipe
 from flask import render_template, request, redirect, send_from_directory, session, url_for, jsonify
 from functools import wraps
@@ -72,5 +73,11 @@ def get_recipe():
 def add_recipe():
     if request.json['recipeId'] is None:
         r = Recipe(name = request.json['recipeTitle'])
-        return jsonify({'recipeId': 5})
-    return jsonify({'recipeId': 2})
+        db.session.add(r)
+        try:
+            db.session.commit()
+            return jsonify({'recipeId': r.id})
+        except IntegrityError as err:
+            db.session.rollback()
+            return jsonify({'error': 'Das Rezept exisitert bereits.'})
+    return jsonify({'recipeId': request.json['recipeId']})
