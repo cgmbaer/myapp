@@ -62,21 +62,14 @@ def serve_images(filename):
 
 @app.route('/login/image/<path:filename>')
 def serve_login_jpg(filename):
-    return send_from_directory(app.template_folder, 'login.jpg')
+    return send_from_directory(app.template_folder, 'login.png')
 
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    }
-]
 
 @app.route('/recipe/api/v1.0/get_recipe', methods=['GET'])
 @login_required
 def get_recipe():
-    return jsonify({'recipe': tasks})
+    id = request.json['recipeId']
+    return jsonify({'developer': Recipe.query.get(id).serialize()})
 
 @app.route('/recipe/api/v1.0/add_recipe', methods=['POST'])
 @login_required
@@ -95,6 +88,4 @@ def add_recipe():
 @app.route('/recipe/api/v1.0/get_recipes', methods=['GET'])
 @login_required
 def get_recipes():
-    db.session.add(r)
-
-    return jsonify({'recipe': tasks})
+    return jsonify(list(map(lambda x: x.serialize(), Recipe.query.all())))

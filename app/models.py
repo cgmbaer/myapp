@@ -1,29 +1,43 @@
 from app import db
 
+
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
     quantity = db.Column(db.Integer)
-    recipe_ingredients = db.relationship('Recipe_Ingredient', backref='recipe', lazy='dynamic')
+    recipe_ingredients = db.relationship(
+        'Recipe_Ingredient', backref='recipe', lazy='dynamic')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "quantity": self.quantity
+        }
 
     def __repr__(self):
         return '<Recipe {}>'.format(self.name)
 
+
 class Unit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(16), index=True, unique=True)
-    recipe_ingredients = db.relationship('Recipe_Ingredient', backref='unit', lazy='dynamic')
+    recipe_ingredients = db.relationship(
+        'Recipe_Ingredient', backref='unit', lazy='dynamic')
 
     def __repr__(self):
         return '<Unit {}>'.format(self.name)
 
+
 class Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
-    recipe_ingredients = db.relationship('Recipe_Ingredient', backref='ingredient', lazy='dynamic')
+    recipe_ingredients = db.relationship(
+        'Recipe_Ingredient', backref='ingredient', lazy='dynamic')
 
     def __repr__(self):
         return '<Ingredient {}>'.format(self.name)
+
 
 class Recipe_Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -34,6 +48,7 @@ class Recipe_Ingredient(db.Model):
 
     def __repr__(self):
         return '<Recipe_Ingredient {}>'.format(self.id)
+
 
 class Shopping(db.Model):
     id = db.Column(db.Integer, primary_key=True)
