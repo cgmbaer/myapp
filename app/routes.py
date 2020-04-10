@@ -79,6 +79,7 @@ def get_recipe():
     return jsonify({'recipe': tasks})
 
 @app.route('/recipe/api/v1.0/add_recipe', methods=['POST'])
+@login_required
 def add_recipe():
     if request.json['recipeId'] is None:
         r = Recipe(name = request.json['recipeTitle'])
@@ -90,3 +91,10 @@ def add_recipe():
             db.session.rollback()
             return jsonify({'error': 'Das Rezept exisitert bereits.'})
     return jsonify({'recipeId': request.json['recipeId']})
+
+@app.route('/recipe/api/v1.0/get_recipes', methods=['GET'])
+@login_required
+def get_recipes():
+    db.session.add(r)
+
+    return jsonify({'recipe': tasks})
