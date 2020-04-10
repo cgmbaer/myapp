@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './RezeptTitel.css';
 import { Collapse } from 'react-collapse';
+import ErrorViewer from '../ErrorViewer/ErrorViewer'
 
 const RezeptTitel = (props) => {
 
@@ -30,6 +31,7 @@ const RezeptTitel = (props) => {
 
     return (
         <div className='rezept_titel__container'>
+            <ErrorViewer errorViewer={true}></ErrorViewer>
             {
                 textEditable ?
                     recipeTitle ?

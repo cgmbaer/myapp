@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import './RezeptErstellen.css';
 import { Collapse } from 'react-collapse';
 import RezeptBild from './subcomponents/RezeptBild/RezeptBild';
+import ErrorViewer from './subcomponents/ErrorViewer/ErrorViewer';
 
 const RezeptErstellen = (props) => {
 
@@ -9,6 +10,7 @@ const RezeptErstellen = (props) => {
     const [recipeTitle, setRecipeTitle] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [textEditable, setTextEditable] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const refRecipeTitle = useRef();
 
@@ -34,16 +36,17 @@ const RezeptErstellen = (props) => {
 
         if(data.recipeId){
             setRecipeId(data.recipeId);
+            setIsOpen(!isOpen);
+            setTextEditable(!textEditable);
         } else {
-            console.log(data);
+            setErrorMessage(data.error);
+            setTimeout(() => setErrorMessage(null), 3000);
         }
-
-        setIsOpen(!isOpen);
-        setTextEditable(!textEditable);
     }
 
     return (
         <div className='rezept_erstellen__container'>
+            <ErrorViewer errorMessage={errorMessage}></ErrorViewer>
             <div className='rezept_titel__container'>
                 {
                     textEditable ?

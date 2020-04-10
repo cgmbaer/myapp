@@ -1,0 +1,17 @@
+.error_viewer__visible {
+    visibility: visible;
+    position: absolute;
+    top: 56px;
+    left: 0px;
+    width: 100%;
+    background: red;
+    height: 20px;
+    font-size: small;
+    color: white;
+    text-align: center;
+}
+
+.error_viewer__hidden {
+    position: absolute;
+    visibility: hidden
+}
