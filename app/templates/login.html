@@ -2,17 +2,118 @@
 
 <head>
     <title>Microblog</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .login__container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login__image_container {
+            width: 100%;
+            height: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login__elements_container {
+            height: 50%;
+            width: 100%;
+        }
+
+        .login__form {
+            display: inline-block;
+            height: 200px;
+            width: 100%;
+            margin: 0rem;
+            margin-block-end: 0rem;
+        }
+
+        .login__input_text_container {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login__input_submit_container {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login__input_text {
+            width: 50%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            border-style: solid;
+            border-width: 2px;
+            border-color: transparent;
+            border-bottom-color: darkgray;
+            display: flex;
+            align-items: center;
+            font-size: 40px;
+            padding-left: 0.5rem;
+        }
+
+        .login__input_submit {
+            display: flex;
+            align-items: center;
+            width: 50%;
+            height: 100%;
+            justify-content: center;
+            border: none;
+            box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            background: #4CAF50;
+            color: white;
+            font-size: 40px;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 
+
+
 <body>
-    <h1>Hello!</h1>
-    <form method="POST">
-        <input name="text">
-        <input type="submit">
-    </form>
-    {% if error %}
-    <p class="error"><strong>Error:</strong> {{ error }}
-        {% endif %}
+    <div class="login__container">
+        <div class="login__elements_container">
+            <div class="login__image_container">
+                <img src="/login/image/login.jpg" width="375px" alt="login">
+            </div>
+            <form class="login__form" method="POST">
+                <div class="login__input_text_container">
+                    <input class="login__input_text" type="password">
+                </div>
+                <br />
+                <br />
+                <div class="login__input_submit_container">
+                    <input class="login__input_submit" type="submit">
+                </div>
+            </form>
+            {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}
+            {% endif %}
+        </div>
+    </div>
 </body>
 
 </html>
