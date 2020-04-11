@@ -39,6 +39,7 @@ const RezeptBild = (props) => {
                 fd.get('imageType') === 'image-input' ?
                 setRecipeImage(URL.createObjectURL(fd.get('image'))) :
                 setRecipePhoto(URL.createObjectURL(fd.get('image')))
+                
             }
         }
     }
