@@ -5,6 +5,8 @@ class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
     quantity = db.Column(db.Integer)
+    has_image = db.Column(db.Boolean)
+    has_photo = db.Column(db.Boolean)
     recipe_ingredients = db.relationship(
         'Recipe_Ingredient', backref='recipe', lazy='dynamic')
 
@@ -12,7 +14,9 @@ class Recipe(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "quantity": self.quantity
+            "quantity": self.quantity,
+            "has_image": self.has_image,
+            "has_photo": self.has_photo
         }
 
     def __repr__(self):

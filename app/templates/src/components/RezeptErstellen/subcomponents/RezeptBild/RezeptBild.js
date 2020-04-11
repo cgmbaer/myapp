@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RezeptBild.css';
 import image_placeholder from '../../../../images/imagePlaceholder.png'
 import photo_placeholder from '../../../../images/imagePlaceholder.png'
@@ -8,11 +8,12 @@ const RezeptBild = (props) => {
     const [recipeImage, setRecipeImage] = useState(image_placeholder);
     const [recipePhoto, setRecipePhoto] = useState(photo_placeholder);
 
-    const onChangeImage = async e => {
+    const onChange = async e => {
         if (e.target.files.length > 0) {
             let fd = new FormData()
             fd.append('recipeId', props.recipeId)
             fd.append('image', e.target.files[0])
+            fd.append('imageType', e.target.id)
             let data = {}
             
             try {
@@ -24,22 +25,28 @@ const RezeptBild = (props) => {
                     body: fd
                 })
 
-                // data = await response.json();
+                data = await response.json();
+                console.log(data.filename);
+
+                fd.get('imageType') === 'image-input' ?
+                setRecipeImage('/images/' + data.filename + '?' + new Date().getTime()) :
+                setRecipePhoto('/images/' + data.filename + '?' + new Date().getTime())
     
             } catch (error) {
                 data = { 'error': error };
-                console.log(data);
+                console.log(data.error);
+
+                fd.get('imageType') === 'image-input' ?
+                setRecipeImage(URL.createObjectURL(fd.get('image'))) :
+                setRecipePhoto(URL.createObjectURL(fd.get('image')))
             }
-
-            setRecipeImage(URL.createObjectURL(fd.get('image')))
         }
     }
 
-    const onChangePhoto = e => {
-        if (e.target.files.length > 0) {
-            setRecipePhoto(URL.createObjectURL(e.target.files[0]))
-        }
-    }
+    useEffect(() => {
+        if(props.has_image) { setRecipeImage('/images/' + props.recipeId + '.jpg') }
+        if(props.has_photo) { setRecipePhoto('/images/' + props.recipeId + '_' + props.recipeId + '.jpg') }
+    },[setRecipeImage, setRecipePhoto, props.has_image, props.has_photo, props.recipeId])
 
     return (
         <div className='rezept_bild__container'>
@@ -49,7 +56,7 @@ const RezeptBild = (props) => {
                     <label htmlFor='image-input'>
                         <img src={recipeImage} alt='add' width='100%'></img>
                     </label>
-                    <input hidden id='image-input' type='file' onChange={onChangeImage}></input>
+                    <input hidden id='image-input' type='file' onChange={onChange}></input>
                 </div>
             </div>
             <div className='rezept_bild__trenner'></div>
@@ -59,7 +66,7 @@ const RezeptBild = (props) => {
                     <label htmlFor='photo-input'>
                         <img src={recipePhoto} alt='add' width='100%'></img>
                     </label>
-                    <input hidden id='photo-input' type='file' onChange={onChangePhoto}></input>
+                    <input hidden id='photo-input' type='file' onChange={onChange}></input>
                 </div>
             </div>
         </div>

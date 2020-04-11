@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './Kochbuch.css';
 import Rezept from '../Rezept/Rezept'
-import close_bild from '../../images/close.png'
 
 function Kochbuch() {
 
   const [recipes, setRecipes] = useState([]);
-  const [show, setShow] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -15,29 +13,23 @@ function Kochbuch() {
         let data = await response.json();
         setRecipes(data);
       } catch (error) {
-        setRecipes([{ 'id': 1, 'name': 'asdf' }, { 'id': 2, 'name': 'fdsa' }]);
+        setRecipes([
+          { 'id': 1, 'name': 'Kaiserschmarrn', 'quantity': 2, 'has_image': 1, 'has_photo': 0 },
+          { 'id': 2, 'name': 'Pancakes', 'quantity': 2, 'has_image': 1, 'has_photo': 0  },
+          { 'id': 3, 'name': 'Wiener Schnitzel', 'quantity': 4, 'has_image': 1, 'has_photo': 0  },
+          { 'id': 4, 'name': 'French Toast', 'quantity': 4, 'has_image': 1, 'has_photo': 0  },
+          { 'id': 5, 'name': 'Ungarisches Gulasch', 'quantity': 4, 'has_image': 1, 'has_photo': 0  },
+          { 'id': 6, 'name': 'Quiche Lorraine', 'quantity': 4, 'has_image': 1, 'has_photo': 0  },
+          { 'id': 7, 'name': 'Causa Limeña', 'quantity': 4, 'has_image': 1, 'has_photo': 0  },
+        ]);
       }
     }
     fetchData()
   }, []);
 
   return (
-    <div>
-      {show ?
-        <div>
-          <div className='kochbuch__show_false' onClick={() => setShow(!show)}>
-            <div className='kochbuch__show_false_text'>
-              <img src={close_bild} alt='close' height='40px' width='40px'></img>
-            </div>
-          </div>
-          <Rezept></Rezept>
-        </div>
-        :
-        <div></div>
-      }
-      <div className="kochbuch__container">
-          {recipes.map(x => <div key={x.id} onClick={() => setShow(!show)}>{x.name}</div>)}
-        </div>
+    <div className="kochbuch__container">
+      {recipes.map(x => <Rezept key={x.id} recipe={x}></Rezept>)}
     </div>
   );
 }

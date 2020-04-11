@@ -6,8 +6,8 @@ import ErrorViewer from './subcomponents/ErrorViewer/ErrorViewer';
 
 const RezeptErstellen = (props) => {
 
-    const [recipeId, setRecipeId] = useState(props.recipeId || null);
-    const [recipeTitle, setRecipeTitle] = useState(null);
+    const [recipeId, setRecipeId] = useState(props.location.state.id || null);
+    const [recipeTitle, setRecipeTitle] = useState(props.location.state.name || null);
     const [isOpen, setIsOpen] = useState(false);
     const [textEditable, setTextEditable] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -82,7 +82,7 @@ const RezeptErstellen = (props) => {
                 recipeId ?
                     <div>
                         <hr />
-                        <RezeptBild recipeId={recipeId} />
+                        <RezeptBild recipeId={recipeId} has_image={props.location.state.has_image} has_photo={props.location.state.has_photo} />
                         <hr />
                     </div>
                     :

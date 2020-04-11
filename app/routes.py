@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from app.models import Recipe
 from flask import render_template, request, redirect, send_from_directory, session, url_for, jsonify
 from functools import wraps
-
+from PIL import Image
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -89,12 +89,6 @@ def add_recipe():
     if request.json['recipeId'] is None:
         r = Recipe(name=request.json['recipeTitle'])
         db.session.add(r)
-        try:
-            db.session.commit()
-            return jsonify({'recipeId': r.id})
-        except IntegrityError as err:
-            db.session.rollback()
-            return jsonify({'error': 'Das Rezept exisitert bereits.'})
     else:
         r = Recipe.query.get(request.json['recipeId'])
         r.name = request.json['recipeTitle']
@@ -109,3 +103,45 @@ def add_recipe():
 @login_required
 def get_recipes():
     return jsonify(list(map(lambda x: x.serialize(), Recipe.query.all())))
+
+@app.route('/recipe/api/v1.0/add_image', methods=['POST'])
+@login_required
+def add_image():
+    recipeId = request.form['recipeId']
+    im = Image.open(request.files.get('image', ''))
+    im = im.convert('RGB')
+
+    if request.form['imageType'] == 'image-input':
+        r = Recipe.query.get(recipeId)
+        r.has_image = 1
+        db.session.commit()
+
+        filename = str(recipeId) + '.jpg'
+
+        width, height = im.size
+        des_ratio = 4 / 3
+        
+        if width / height <= des_ratio:
+            left = 0
+            right = width
+            top = (height - width / des_ratio) / 2
+            bottom = (height + width / des_ratio) / 2
+        else:
+            left = (width - height * des_ratio) / 2
+            right = (width + height * des_ratio) / 2
+            top = 0
+            bottom = height          
+
+        im = im.crop((left, top, right, bottom))
+
+        basewidth = 400
+        im = im.resize((basewidth,int(basewidth / des_ratio)))
+    else:
+        r = Recipe.query.get(recipeId)
+        r.has_photo = 1
+        db.session.commit()
+
+        filename = str(recipeId) + '_' + str(recipeId) + '.jpg'
+
+    im.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    return jsonify({'filename': filename})

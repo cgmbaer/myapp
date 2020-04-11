@@ -21,7 +21,7 @@ const Toolbar = (props) => {
                     <li><NavLink activeClassName="toolbar__active" to="/Einkauf">
                         <img src={einkauf_zeichen} alt='add' height='50px'></img>
                     </NavLink></li>
-                    <li><NavLink activeClassName="toolbar__active" to="/RezeptErstellen">
+                    <li><NavLink activeClassName="toolbar__active" to={{pathname: "/RezeptErstellen", state: {} }}>
                         <img src={plus_zeichen} alt='add' height='50px'></img>
                     </NavLink></li>
                     </ul>
