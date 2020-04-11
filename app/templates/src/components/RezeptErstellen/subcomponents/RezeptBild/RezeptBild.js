@@ -39,14 +39,14 @@ const RezeptBild = (props) => {
                 fd.get('imageType') === 'image-input' ?
                 setRecipeImage(URL.createObjectURL(fd.get('image'))) :
                 setRecipePhoto(URL.createObjectURL(fd.get('image')))
-                
+
             }
         }
     }
 
     useEffect(() => {
-        if(props.has_image) { setRecipeImage('/images/' + props.recipeId + '.jpg') }
-        if(props.has_photo) { setRecipePhoto('/images/' + props.recipeId + '_' + props.recipeId + '.jpg') }
+        if(props.has_image) { setRecipeImage('/images/' + props.recipeId + '.jpg?' + Math.random()) }
+        if(props.has_photo) { setRecipePhoto('/images/' + props.recipeId + '_' + props.recipeId + '.jpg?' + Math.random()) }
     },[setRecipeImage, setRecipePhoto, props.has_image, props.has_photo, props.recipeId])
 
     return (

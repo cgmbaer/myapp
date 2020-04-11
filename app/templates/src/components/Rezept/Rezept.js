@@ -14,7 +14,7 @@ const Rezept = (props) => {
             setImagePath(test_bild)
         } else {
             try {
-                if(props.recipe.has_image) { setImagePath('/images/' + props.recipe.id + '.jpg') };
+                if(props.recipe.has_image) { setImagePath('/images/' + props.recipe.id + '.jpg?' + Math.random()) };
             }
             catch (err) {
                 console.log('failed')
