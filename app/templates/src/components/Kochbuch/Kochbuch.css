@@ -1,13 +1,12 @@
 .kochbuch__container {
-    margin: 75px 1rem 0rem 1rem;
+    margin: 70px 1rem 0rem 1rem;
     width: calc(100% - 2rem);
 }
 
 .kochbuch__show_false {
     position: absolute;
-    background-color: rgba(128, 128, 128, 0.445);
-    width: 70px;
-    height: 30px;
+    width: 3rem;
+    height: 3rem;
 }
 
 .kochbuch__show_false_text {

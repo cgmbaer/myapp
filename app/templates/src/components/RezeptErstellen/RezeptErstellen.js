@@ -20,21 +20,28 @@ const RezeptErstellen = (props) => {
     }
 
     const setRecipe = async () => {
-        
+
         setRecipeTitle(refRecipeTitle.current.value);
+        let data = {}
 
-        const response = await fetch('/recipe/api/v1.0/add_recipe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                recipeId: recipeId,
-                recipeTitle: refRecipeTitle.current.value
-             }),
-        })
-        
-        let data = await response.json();
+        try {
+            const response = await fetch('/recipe/api/v1.0/add_recipe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    recipeId: recipeId,
+                    recipeTitle: refRecipeTitle.current.value
+                }),
+            })
 
-        if(data.recipeId){
+            data = await response.json();
+
+        } catch (error) {
+            data = { 'recipeId': -1 };
+            console.log(data);
+        }
+
+        if (data.recipeId) {
             setRecipeId(data.recipeId);
             setIsOpen(!isOpen);
             setTextEditable(!textEditable);

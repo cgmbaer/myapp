@@ -1,6 +1,8 @@
 .rezept {
-    margin: 64px 0.5rem;
+    margin: 56px 0rem;
+    padding: 1rem;
     width: 100% - 1rem;
+    border: rgba(65, 65, 65, 0.637) solid 1rem;
 }
 
 .rezept__bild {

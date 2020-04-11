@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Kochbuch.css';
 import Rezept from '../Rezept/Rezept'
+import close_bild from '../../images/close.png'
 
 function Kochbuch() {
 
@@ -21,19 +22,22 @@ function Kochbuch() {
   }, []);
 
   return (
-    <div className="kochbuch__container">
+    <div>
       {show ?
         <div>
           <div className='kochbuch__show_false' onClick={() => setShow(!show)}>
             <div className='kochbuch__show_false_text'>
-              zurück
+              <img src={close_bild} alt='close' height='40px' width='40px'></img>
             </div>
           </div>
           <Rezept></Rezept>
         </div>
         :
-        recipes.map(x => <div key={x.id} onClick={() => setShow(!show)}>{x.name}</div>)
+        <div></div>
       }
+      <div className="kochbuch__container">
+          {recipes.map(x => <div key={x.id} onClick={() => setShow(!show)}>{x.name}</div>)}
+        </div>
     </div>
   );
 }

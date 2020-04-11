@@ -1,5 +1,30 @@
 .rezept_bild__container {
-    height: 200px;
+    max-height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.rezept_text_bild__1_container {
+    text-align: center;
+    width: 50%;
+}
+
+.rezept_bild__1_container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rezept_text_bild__2_container {
+    text-align: center;
+    width: 50%;
+}
+
+.rezept_bild__2_container {
     width: 100%;
     display: flex;
     align-items: center;
