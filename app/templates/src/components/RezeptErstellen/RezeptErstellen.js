@@ -38,7 +38,6 @@ const RezeptErstellen = (props) => {
 
         } catch (error) {
             data = { 'recipeId': -1 };
-            console.log(data);
         }
 
         if (data.recipeId) {

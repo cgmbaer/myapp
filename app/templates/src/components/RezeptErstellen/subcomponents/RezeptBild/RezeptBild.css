@@ -8,23 +8,42 @@
 }
 
 .rezept_text_bild__1_container {
+    display: block;
     text-align: center;
-    width: 50%;
+    height: 100%;
+    width: 47%;
 }
 
+.rezept_text__1_container {
+    height: 20px;
+    width: 100%;
+}
 .rezept_bild__1_container {
+    height: 180px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.rezept_bild__trenner {
+    height: 100%;
+    width: 6%;
+}
+
 .rezept_text_bild__2_container {
     text-align: center;
-    width: 50%;
+    height: 100%;
+    width: 47%;
+}
+
+.rezept_text__2_container {
+    height: 20px;
+    width: 100%;
 }
 
 .rezept_bild__2_container {
+    height: 180px;
     width: 100%;
     display: flex;
     align-items: center;
