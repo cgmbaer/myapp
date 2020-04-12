@@ -52,13 +52,16 @@
 }
 
 .zutat__quantitiy {
-    width: 10%;
+    width: 15%;
+    text-align: center;
 }
 
 .zutat__unit {
-    width: 10%;
+    width: 15%;
+    text-align: center;
 }
 
 .zutat__ingredient {
     width: 70%;
+    padding-left: 5px;
 }
