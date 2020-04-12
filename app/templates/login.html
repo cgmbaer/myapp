@@ -11,6 +11,8 @@
                 sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            height: 100%;
+            width: 100%;
         }
 
         .login__container {
@@ -41,6 +43,7 @@
         }
 
         .login__form {
+            -webkit-appearance: none;
             height: 20%;
             width: 100%;
             margin: 0rem;
@@ -48,8 +51,9 @@
         }
 
         .login__input_text {
+            -webkit-appearance: none;
             width: 100%;
-            height: 50px;
+            height: 80px;
             margin: 0;
             padding: 0;
             border-style: solid;
@@ -58,11 +62,12 @@
             border-bottom-color: darkgray;
             display: flex;
             align-items: center;
-            font-size: x-large;
+            font-size: 20px;
             padding-left: 0.5rem;
         }
 
         .login__input_submit {
+            -webkit-appearance: none;
             display: flex;
             align-items: center;
             width: 100%;
@@ -76,6 +81,19 @@
             font-size: x-large;
             text-decoration: none;
             border-radius: 10px;
+        }
+
+        input[type="password"],
+        select:focus,
+        textarea {
+            font-size: 20px;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus,
+        button:focus {
+            outline: none;
         }
     </style>
 </head>
