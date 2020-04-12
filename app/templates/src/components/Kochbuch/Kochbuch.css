@@ -3,16 +3,43 @@
     width: calc(100% - 2rem);
 }
 
-.kochbuch__show_false {
-    position: absolute;
-    width: 3rem;
-    height: 3rem;
+.kochbuch__search {
+    width: 100%;
+    height: 55px;
+    display: flex;
+    border-bottom: solid rgb(78, 78, 78) 1px;
 }
 
-.kochbuch__show_false_text {
-    width: 100%;
+.kochbuch__search_icon {
     height: 100%;
+    width: 60px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
+}
+
+.kochbuch__search_text {
+    height: 100%;
+    width: calc(100% - 60px);
+}
+
+.kochbuch__search_input {
+    border: none;
+    background: transparent;
+    font-size: medium;
+    padding: 0px;
+    font-family: inherit;
+
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: x-large;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }

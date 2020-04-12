@@ -1,18 +1,22 @@
 .rezept__container {
+    border-bottom: solid grey 1px;
+    height: 100%
+}
+
+.rezept__vorschau_container {
     display: flex;
     height: 90px;
     width: 100%;
-    border-bottom: solid grey 1px;
     align-items: center
 }
 
 .rezept__bild_container {
     display: flex;
     height: 100%;
-    width:35%;
+    width:115px;
     background-color: white;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
 }
 
 .rezept__name_container {

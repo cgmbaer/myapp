@@ -116,8 +116,6 @@ def add_image():
         r.has_image = 1
         db.session.commit()
 
-        filename = str(recipeId) + '.jpg'
-
         width, height = im.size
         des_ratio = 4 / 3
         
@@ -134,8 +132,13 @@ def add_image():
 
         im = im.crop((left, top, right, bottom))
 
-        basewidth = 400
-        im = im.resize((basewidth,int(basewidth / des_ratio)))
+        filename = str(recipeId) + '_thumb.jpg'
+
+        im1 = im.resize((100,int(100 / des_ratio)))
+        im1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        filename = str(recipeId) + '.jpg'
+        im = im.resize((400,int(400 / des_ratio)))
     else:
         r = Recipe.query.get(recipeId)
         r.has_photo = 1
