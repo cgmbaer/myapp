@@ -1,0 +1,64 @@
+.zutat__container {
+    width: 100%;
+}
+
+.zutat__flat {
+    display: flex;
+    height: 3rem;
+    width: 100%;
+}
+
+.zutat__drag_icon {
+    width: 5%;
+    display: flex;
+    align-items: center;
+}
+
+.zutat__text {
+    width: 90%;
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    font-size: large;
+}
+
+.zutat__button {
+    width: 5%;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.zutat__text input {
+    height: 60%;
+    border: none;
+    margin-right: 1rem;
+    padding: 0px;
+    border-bottom: solid 1px grey;
+}
+
+.zutat__text input,
+    select:focus,
+    textarea {
+        font-size: 16px;
+    }
+
+.zutat__text ::placeholder {
+    color: lightgrey(177, 19, 19);
+    font-style: italic;
+    font-size: 12px;
+}
+
+.zutat__quantitiy {
+    width: 10%;
+}
+
+.zutat__unit {
+    width: 10%;
+}
+
+.zutat__ingredient {
+    width: 70%;
+}

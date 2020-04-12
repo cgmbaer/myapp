@@ -4,18 +4,18 @@ import {
     sortableElement
 } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
-import './Zutaten.css';
-import ListenItem from './ListenItem';
+import './RezeptZutaten.css';
+import Zutat from '../Zutat/Zutat';
 
 const SortableItem = sortableElement(({ value }) => (
-    <ListenItem/>
+    <Zutat />
 ));
 
 const SortableContainer = sortableContainer(({ children }) => {
     return <div>{children}</div>;
 });
 
-const Zutaten = (props) => {
+const RezeptZutaten = (props) => {
     const [items, setItems] = useState(
         ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6']
     );
@@ -29,7 +29,7 @@ const Zutaten = (props) => {
     const toggle = () => setIsOpen(!isOpen);
 
     return (
-        <div className='list__container'>
+        <div className='RezeptZutaten__container'>
             <SortableContainer onSortEnd={onSortEnd} useDragHandle>
                 {items.map((value, index) => (
                     <SortableItem
@@ -45,4 +45,4 @@ const Zutaten = (props) => {
     );
 }
 
-export default Zutaten;
+export default RezeptZutaten;

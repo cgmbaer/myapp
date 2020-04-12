@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import './RezeptErstellen.css';
 import { Collapse } from 'react-collapse';
 import RezeptBild from './subcomponents/RezeptBild/RezeptBild';
+import RezeptZutaten from './subcomponents/RezeptZutaten/RezeptZutaten';
 import ErrorViewer from './subcomponents/ErrorViewer/ErrorViewer';
 
 const RezeptErstellen = (props) => {
@@ -84,6 +85,7 @@ const RezeptErstellen = (props) => {
                         <hr />
                         <RezeptBild recipeId={recipeId} has_image={props.location.state.has_image} has_photo={props.location.state.has_photo} />
                         <hr />
+                        <RezeptZutaten recipeId={recipeId} recipeIngredients={props.location.state.ingredients}></RezeptZutaten>
                     </div>
                     :
                     <hr />
