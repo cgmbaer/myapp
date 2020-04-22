@@ -1,25 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Toolbar from './Components/Toolbar/Toolbar';
+import Kochbuch from './Components/Kochbuch/Kochbuch';
+import Erstellen from './Components/Erstellen/Erstellen';
+import Einkauf from './Components/Einkauf/Einkauf';
+import Einstellungen from './Components/Einstellungen/Einstellungen'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Toolbar />
+        <Switch>
+        <Route exact path="/" component={Kochbuch}/>
+        <Route path="/Erstellen" component={Erstellen}/>
+        <Route path="/Einkauf" component={Einkauf}/>
+        <Route path="/Einstellungen" component={Einstellungen}/>
+        </Switch>
+      </div>
+    </BrowserRouter>
   );
 }
 

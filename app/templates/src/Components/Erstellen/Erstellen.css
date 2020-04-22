@@ -1,0 +1,43 @@
+.erstellen__container {
+    margin: 60px 10px 10px 10px;
+}
+
+.erstellen__name_container {
+    height: 60px;
+    display: flex;
+    border-bottom: 1px solid grey;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.erstellen__name_input {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    align-items: center;
+}
+
+.erstellen__name_input > input {
+    border: none;
+    background: transparent;
+    font-size: medium;
+    padding: 0px;
+    padding-left: 5px;
+    font-family: inherit;
+
+    height: 100%;
+    width: 100%;
+    display: flex;
+    font-size: x-large;
+}
+
+.erstellen__name_input > input > textarea {
+    padding: 10px;
+}
+
+.erstellen__name_speichern {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,37 @@
+.toolbar__container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: lightblue;
+}
+
+.toolbar__container > ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.toolbar__container > ul > li {
+    width: calc(100% / 3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbar__container > ul > li > * {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toolbar__active {
+    background: #51dbd0;
+    border-bottom: solid 2px #137a72;
+    transition: border-bottom 0.1s ease-in-out;
+}
+

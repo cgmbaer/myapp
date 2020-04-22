@@ -1,0 +1,26 @@
+.rezept__container {
+    display: flex;
+    height: 90px;
+}
+
+.rezept__thumbnail {
+    display: flex;
+    width: 120px;
+    align-items: center;
+}
+
+.rezept__name {
+    display: flex;
+    height: 100%;
+    width: calc(100% - 170px);
+    align-items: center;
+    font-size: large;
+}
+
+.rezept__edit {
+    display: flex;
+    height: 100%;
+    width: 50px;
+    align-items: center;
+    align-content: flex-end;
+}

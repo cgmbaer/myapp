@@ -1,0 +1,50 @@
+.kochbuch__container {
+    margin: 60px 10px 10px 10px;
+}
+
+.kochbuch__search {
+    height: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid grey;
+}
+
+.kochbuch__search_icon {
+    height: 100%;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.kochbuch__search_text {
+    width: calc(100% - 120px)
+}
+
+.kochbuch__search_text > input {
+    border: none;
+    background: transparent;
+    font-size: medium;
+    padding: 0px;
+    font-family: inherit;
+
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: x-large;
+}
+
+.kochbuch__erstellen_icon {
+    height: 100%;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.kochbuch__rezept_container {
+    margin: 10px 0px 10px 0px;
+}
