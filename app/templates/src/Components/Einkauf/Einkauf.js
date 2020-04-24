@@ -3,7 +3,11 @@ import './Einkauf.css'
 
 const Einkauf = (props) => {
     return (
-        <div>asdf</div>
+        <div className="einkauf__container">
+            <div>
+                Einkauf
+            </div>
+        </div>
     )
 }
 

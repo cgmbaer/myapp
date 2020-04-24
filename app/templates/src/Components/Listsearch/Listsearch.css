@@ -1,0 +1,46 @@
+.listsearch__container {
+    width: 100%
+}
+
+.listsearch__search {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid grey;
+}
+
+.listsearch__search_icon {
+    height: 100%;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.listsearch_search_text {
+    width: calc(100% - 120px)
+}
+
+.listsearch__search_text > input {
+    border: none;
+    background: transparent;
+    font-size: medium;
+    padding: 0px;
+    font-family: inherit;
+
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: x-large;
+}
+
+.listsearch__erstellen_icon {
+    height: 100%;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

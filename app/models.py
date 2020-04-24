@@ -20,6 +20,7 @@ class Unit(db.Model):
 class Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     recipe_ingredients = db.relationship(
         'Recipe_Ingredient', backref='ingredient', lazy='dynamic')
 
@@ -40,10 +41,16 @@ class Shopping(db.Model):
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
-    recipe_ingredients = db.relationship(
+    recipe_tags = db.relationship(
         'Recipe_Tag', backref='tag', lazy='dynamic')
 
 class Recipe_Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
+
+class category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), index=True, unique=True)
+    ingredients = db.relationship(
+        'Ingredient', backref='category', lazy='dynamic')
