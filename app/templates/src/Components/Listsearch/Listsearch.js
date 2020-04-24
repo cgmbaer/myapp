@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import './Listsearch.css'
 import Alert from '../Alert/Alert'
+import Listitem from '../Listitem/Listitem'
 import search_zeichen from '../../images/search.png';
 import erstellen_zeichen from '../../images/plus.png';
 
@@ -49,6 +50,7 @@ const Listsearch = (props) => {
 
         } catch (error) {
             refreshMessage(1)
+            setList([{id: '1', name: 'Test1'},{id: '2', name: 'Test2'}])
         }
     },[props.type])
 
@@ -61,7 +63,7 @@ const Listsearch = (props) => {
         return null
     }).map(x => {
         return (
-            <div key={props.type + '-' + x.id}>{x.name}</div>
+            <Listitem key={props.type + '-' + x.id} id={x.id} name={x.name} />
         )
     })
 

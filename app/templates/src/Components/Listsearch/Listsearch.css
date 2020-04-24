@@ -1,5 +1,6 @@
 .listsearch__container {
-    width: 100%
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .listsearch__search {
@@ -19,8 +20,8 @@
     align-items: center;
 }
 
-.listsearch_search_text {
-    width: calc(100% - 120px)
+.listsearch__search_text {
+    width: calc(100% - 120px);
 }
 
 .listsearch__search_text > input {
