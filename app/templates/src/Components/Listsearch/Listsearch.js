@@ -39,7 +39,6 @@ const Listsearch = (props) => {
         let name = ''
         isOpen ? name = refItem.current.value : name = ''
 
-        console.log('Running Query')
         try {
             const response = await fetch('/recipe/api/v1.0/add_item', {
                 method: 'POST',
@@ -49,10 +48,9 @@ const Listsearch = (props) => {
                     name: name,
                 }),
             })
-            console.log(response.status)
+
             if (response.status !== 200) { throw new Error("error") }
             data = await response.json()
-            console.log(data);
 
             if (data.error) {
                 refreshMessage(1, data.error)
@@ -95,7 +93,7 @@ const Listsearch = (props) => {
                             <img src={search_zeichen} alt='add' height='40px'></img>
                         </div>
                         <div className="listsearch__search_text">
-                            <input type='text' ref={refItem} onChange={(e) => searchSpace(e)} autoFocus={true}></input>
+                            <input type='text' ref={refItem} onChange={(e) => searchSpace(e)}></input>
                         </div>
                         <div className="listsearch__erstellen_icon">
                             <img src={erstellen_zeichen} alt='add' height='40px' onClick={() => addItem()}></img>

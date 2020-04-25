@@ -178,3 +178,7 @@ def add_item():
     df = pd.read_sql(sql, db.session.bind)
     df.sort_values(by=['name'], inplace=True)
     return df.to_json(orient='records')
+
+@app.route('/recipe/api/v1.0/update_tag', methods=['POST'])
+def update_tag():
+    return jsonify({'success': 'Hat funktioniert!'})

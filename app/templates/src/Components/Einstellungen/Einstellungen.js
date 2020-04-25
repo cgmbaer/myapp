@@ -12,7 +12,7 @@ const Einstellungen = (props) => {
                 <Listsearch type='Tag' name='Tags'></Listsearch>
             </div>
             <div className="einstellungen__unit_container">
-                <Listsearch type='Unit' name='Units'></Listsearch>
+                <Listsearch type='Unit' name='Einheiten'></Listsearch>
             </div>
             <div className="einstellungen__category_container">
                 <Listsearch type='Category' name='Kategorie'></Listsearch>
