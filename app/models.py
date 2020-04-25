@@ -49,7 +49,7 @@ class Recipe_Tag(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
 
-class category(db.Model):
+class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
     ingredients = db.relationship(

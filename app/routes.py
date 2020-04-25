@@ -4,7 +4,7 @@ import time
 import pandas as pd
 from app import app, db
 from sqlalchemy.exc import IntegrityError
-from app.models import Recipe, Tag, Ingredient
+from app.models import Recipe, Tag, Ingredient, Unit, Category
 from flask import render_template, request, redirect, send_from_directory, session, url_for, jsonify
 from functools import wraps
 from PIL import Image
@@ -156,17 +156,25 @@ def add_image():
 
 @app.route('/recipe/api/v1.0/add_item', methods=['POST'])
 def add_item():
-        if request.json['name'] != '':
-            print(type(request.json['name']))
-            t = eval(request.json['type'])(name=request.json['name'])
-            db.session.add(t)
-            try:
-                db.session.commit()
-            except IntegrityError as err:
-                db.session.rollback()
-                return jsonify({'error': 'Exisitert bereits!'})
-            
-        sql = db.session.query(eval(request.json['type'])).statement
-        df = pd.read_sql(sql, db.session.bind)
-        df.sort_values(by=['name'], inplace=True)
-        return df.to_json(orient='records')
+    if 'id' in request.json:
+        t = eval(request.json['type']).query.get(request.json['id'])
+        t.name = request.json['name']
+        try:
+            db.session.commit()
+            return jsonify({'success': 'Name geändert'})
+        except IntegrityError as err:
+            db.session.rollback()
+            return jsonify({'error': 'Exisitert bereits!'})
+    if request.json['name'] != '':
+        t = eval(request.json['type'])(name=request.json['name'])
+        db.session.add(t)
+        try:
+            db.session.commit()
+        except IntegrityError as err:
+            db.session.rollback()
+            return jsonify({'error': 'Exisitert bereits!'})
+        
+    sql = db.session.query(eval(request.json['type'])).statement
+    df = pd.read_sql(sql, db.session.bind)
+    df.sort_values(by=['name'], inplace=True)
+    return df.to_json(orient='records')

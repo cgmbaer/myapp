@@ -65,7 +65,7 @@ const Erstellen = (props) => {
                     <img src={save_bild} alt='save' height='50px'></img>
                 </div>
             </div>
-            {!recipeId || recipeId ? (
+            { recipeId ? (
                 <Bilder
                     recipeId={recipeId}
                     imageFilename={props.location.state.image_filename}
