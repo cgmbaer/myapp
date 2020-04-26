@@ -73,7 +73,7 @@ const Erstellen = (props) => {
                     imageFilename={props.location.state.image_filename}
                     photoFilename={props.location.state.photo_filename}>
                 </Bilder>
-                <Tags tags={props.location.state.image_filename} />
+                <Tags tags={props.location.state.tags} recipeId={props.location.state.id} />
 
                 </div>
             ) : null}

@@ -4,7 +4,7 @@ import time
 import pandas as pd
 from app import app, db
 from sqlalchemy.exc import IntegrityError
-from app.models import Recipe, Tag, Ingredient, Unit, Category
+from app.models import Recipe, Tag, Ingredient, Unit, Category, Recipe_Tag
 from flask import render_template, request, redirect, send_from_directory, session, url_for, jsonify
 from functools import wraps
 from PIL import Image
@@ -103,10 +103,20 @@ def set_recipeName():
 
 @app.route('/recipe/api/v1.0/get_recipes', methods=['GET'])
 def get_recipes():
-    #response = jsonify(list(map(lambda x: x.serialize(), Recipe.query.all())))
     sql = db.session.query(Recipe).statement
-    df = pd.read_sql(sql, db.session.bind)
-    return df.to_json(orient='records')
+    r = pd.read_sql(sql, db.session.bind)
+    r = r.set_index('id')
+
+    sql = db.session.query(Recipe_Tag, Tag).filter(Recipe_Tag.tag_id == Tag.id).with_entities(Recipe_Tag.recipe_id, Recipe_Tag.tag_id, Tag.name).statement
+    tags = pd.read_sql(sql, db.session.bind)
+    tags['tags'] = tags.apply(lambda x: {'tag_id': x['tag_id'], 'name': x['name']}, axis=1)
+    tags = tags.groupby('recipe_id')['tags'].apply(list)
+
+    r = pd.concat([r, tags], axis=1, sort=False)
+    r['id'] = r.index
+    r = r.to_json(orient='records')
+
+    return r
 
 
 @app.route('/recipe/api/v1.0/add_image', methods=['POST'])
@@ -115,7 +125,6 @@ def add_image():
     timestr = '_' + time.strftime("%H%M%S")
 
     im = Image.open(request.files.get('image', '')).convert('RGB')
-    #im.save(os.path.join(app.config['UPLOAD_FOLDER'], str(recipeId) + timestr + '.jpg'))
 
     r = Recipe.query.get(recipeId)
 
@@ -181,4 +190,10 @@ def add_item():
 
 @app.route('/recipe/api/v1.0/update_tag', methods=['POST'])
 def update_tag():
+    if request.json['active']:
+        t = Recipe_Tag.query.filter_by(recipe_id = request.json['recipeId'], tag_id = request.json['tagId']).delete()
+    else:
+        t = Recipe_Tag(recipe_id = request.json['recipeId'], tag_id = request.json['tagId'])
+        db.session.add(t)
+    db.session.commit()
     return jsonify({'success': 'Hat funktioniert!'})

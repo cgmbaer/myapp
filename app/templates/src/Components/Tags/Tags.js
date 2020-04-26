@@ -8,11 +8,6 @@ const Tags = (props) => {
     const [message, setMessage] = useState(null);
     const [allTags, setAllTags] = useState([]);
 
-    const tags = [
-        {tagId: 2, name: 'schnell zubereitet'},
-        {tagId: 5, name: 'Schmorgericht'},
-    ]
-
     const refreshMessage = (eType, eMessage = null) => {
         setMessage(null)
         setTimeout(() => setMessage({ eType: eType, eMessage: eMessage }), 1)
@@ -25,8 +20,8 @@ const Tags = (props) => {
                     key={'Create-Tags' + x.tagId}
                     tagId={x.id}
                     name={x.name}
-                    recipeId={3}
-                    active={tags.map(y => y['tagId']).includes(x.id)}>
+                    recipeId={props.recipeId}
+                    active={props.tags ? props.tags.map(y => y['tag_id']).includes(x.id) : false}>
                 </Tag>
             )
         }

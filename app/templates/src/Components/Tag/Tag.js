@@ -22,7 +22,7 @@ const Tag = (props) => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    acitve: active,
+                    active: active,
                     tagId: props.tagId,
                     recipeId: props.recipeId,
                 }),
