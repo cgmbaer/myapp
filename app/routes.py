@@ -109,7 +109,12 @@ def get_recipes():
 
     sql = db.session.query(Recipe_Tag, Tag).filter(Recipe_Tag.tag_id == Tag.id).with_entities(Recipe_Tag.recipe_id, Recipe_Tag.tag_id, Tag.name).statement
     tags = pd.read_sql(sql, db.session.bind)
-    tags['tags'] = tags.apply(lambda x: {'tag_id': x['tag_id'], 'name': x['name']}, axis=1)
+
+    if len(tags) > 0:
+        tags['tags'] = tags.apply(lambda x: {'tag_id': x['tag_id'], 'name': x['name']}, axis=1)
+    else:
+        tags['tags'] = None
+
     tags = tags.groupby('recipe_id')['tags'].apply(list)
 
     r = pd.concat([r, tags], axis=1, sort=False)
