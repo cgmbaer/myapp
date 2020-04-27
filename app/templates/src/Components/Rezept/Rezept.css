@@ -3,7 +3,6 @@
     height: 90px;
     background-color: rgb(243, 248, 250);
     margin-bottom: 4px;
-    overflow: hidden;
 }
 
 .rezept__thumbnail {
@@ -19,7 +18,7 @@
 
 .rezept__name {
     display: flex;
-    height: calc(100% - 46px);
+    height: calc(100% - 52px);
     width: 100%;
     align-items: center;
     font-size: large;
@@ -30,6 +29,7 @@
     flex-wrap: wrap;
     height: 46px;
     width: 100%;
+    overflow: hidden;
 }
 
 .rezept__tag_items {
