@@ -65,14 +65,14 @@ const Erstellen = (props) => {
                     <img src={save_bild} alt='save' height='50px'></img>
                 </div>
             </div>
-            { recipeId || !recipeId ? (
+            { recipeId ? (
                 <div>
                 <Bilder
                     recipeId={recipeId}
                     imageFilename={props.location.state.image_filename}
                     photoFilename={props.location.state.photo_filename}>
                 </Bilder>
-                <Tags tags={props.location.state.tags} recipeId={props.location.state.id} />
+                <Tags tags={props.location.state.tags} recipeId={recipeId} />
 
                 </div>
             ) : null}
