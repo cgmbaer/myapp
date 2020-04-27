@@ -55,7 +55,6 @@ const Erstellen = (props) => {
             <div className='erstellen__name_container' style={{backgroundColor: color}}>
                 <div className='erstellen__name_input'>
                     <input
-                        autoFocus={true}
                         ref={refRecipeName}
                         defaultValue={recipeName}
                         placeholder='Rezepttitel eingeben...'

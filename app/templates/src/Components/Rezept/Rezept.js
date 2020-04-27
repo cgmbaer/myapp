@@ -8,6 +8,14 @@ const Rezept = (props) => {
 
     const [imagePath, setImagePath] = useState(image_placeholder)
 
+    const items = props.recipe.tags ? props.recipe.tags.map(
+        x => {
+            return (
+                <div className="rezept__tag_items">{x.name}</div>
+            )
+        }
+    ) : null
+
     useEffect(() => {
         if (props.recipe.image_filename) {
             setImagePath(props.recipe.image_filename)
@@ -19,8 +27,13 @@ const Rezept = (props) => {
             <div className="rezept__thumbnail">
                 <img src={imagePath} alt='add' height='80px'></img>
             </div>
-            <div className="rezept__name">
-                {props.recipe.name}
+            <div className="rezept__name_tags">
+                <div className="rezept__name">
+                    <div>{props.recipe.name}</div>
+                </div>
+                <div className="rezept__tags">
+                    {items}
+                </div>
             </div>
             <Link to={{ pathname: '/Erstellen', state: props.recipe }}>
                 <div className="rezept__edit">

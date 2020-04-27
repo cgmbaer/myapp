@@ -1,6 +1,9 @@
 .rezept__container {
     display: flex;
     height: 90px;
+    background-color: rgb(243, 248, 250);
+    margin-bottom: 4px;
+    overflow: hidden;
 }
 
 .rezept__thumbnail {
@@ -9,12 +12,34 @@
     align-items: center;
 }
 
+.rezept__name_tags {
+    width: calc(100% - 170px);
+    height: 100%;
+}
+
 .rezept__name {
     display: flex;
-    height: 100%;
-    width: calc(100% - 170px);
+    height: calc(100% - 46px);
+    width: 100%;
     align-items: center;
     font-size: large;
+}
+
+.rezept__tags {
+    display: flex;
+    flex-wrap: wrap;
+    height: 46px;
+    width: 100%;
+}
+
+.rezept__tag_items {
+    margin: 0px 3px 3px 0px;
+    padding: 1px 7px 1px 7px;
+    border-radius: 5px;
+    background-color: rgb(81, 57, 219);
+    color: white;
+    font-size: 12px;
+    height: 18px;
 }
 
 .rezept__edit {

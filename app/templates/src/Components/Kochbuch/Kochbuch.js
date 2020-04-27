@@ -52,6 +52,10 @@ function Kochbuch() {
                 }
             } catch (error) {
                 if (mounted) {
+                    setRecipes([
+                        {"name":"Rindertatar","quantity":null,"image_filename":null,"photo_filename":null,"tags":[{"tag_id":2,"name":"Nudelgericht"},{"tag_id":3,"name":"Nudelgericht"},{"tag_id":4,"name":"Nudelgericht"},{"tag_id":5,"name":"Nudelgericht"},{"tag_id":6,"name":"Nudelgericht"}],"id":1},
+                        {"name":"French Toast","quantity":null,"image_filename":null,"photo_filename":null,"tags":null,"id":2}
+                    ])
                     refreshMessage(1)
                 }
             }
@@ -68,7 +72,7 @@ function Kochbuch() {
                     <img src={search_zeichen} alt='add' height='50px'></img>
                 </div>
                 <div className="kochbuch__search_text">
-                    <input type='text' onChange={(e) => searchSpace(e)} autoFocus={true}></input>
+                    <input type='text' onChange={(e) => searchSpace(e)}></input>
                 </div>
                 <Link to={{ pathname: '/Erstellen', state: {} }}>
                     <div className="kochbuch__erstellen_icon">
