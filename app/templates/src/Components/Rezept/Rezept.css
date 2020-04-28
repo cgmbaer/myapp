@@ -12,7 +12,7 @@
 }
 
 .rezept__name_tags {
-    width: calc(100% - 170px);
+    width: calc(100% - 120px);
     height: 100%;
 }
 
@@ -22,6 +22,18 @@
     width: 100%;
     align-items: center;
     font-size: large;
+}
+
+.rezept__name > a {
+    display: flex;
+    height: 100%;
+    width: 40px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.rezept__text {
+    width: calc(100% - 40px);
 }
 
 .rezept__tags {
@@ -45,7 +57,7 @@
 .rezept__edit {
     display: flex;
     height: 100%;
-    width: 50px;
+    width: 40px;
     align-items: center;
-    align-content: flex-end;
+    justify-content: center;
 }

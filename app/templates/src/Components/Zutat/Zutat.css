@@ -1,0 +1,47 @@
+.zutat__container {
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+}
+
+.zutat__remove {
+    display: flex;
+    margin-right: 20px;
+    width: 50px;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.zutat__quantity  {
+    width: 15%;
+}
+
+.zutat__quantity > input {
+    border: none;
+    background: transparent;
+    font-size: medium;
+    padding: 0px;
+    font-family: inherit;
+
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.zutat__unit {
+    width: 15%;
+}
+
+.zutat__ingredient {
+    width: calc(70% - 120px);
+}
+
+.zutat__save {
+    display: flex;
+    width: 50px;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}

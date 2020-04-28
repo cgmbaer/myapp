@@ -11,7 +11,7 @@ const Rezept = (props) => {
     const items = props.recipe.tags ? props.recipe.tags.map(
         x => {
             return (
-                <div className="rezept__tag_items">{x.name}</div>
+                <div key={'rezept_tags-' + x.tag_id}className="rezept__tag_items">{x.name}</div>
             )
         }
     ) : null
@@ -29,17 +29,17 @@ const Rezept = (props) => {
             </div>
             <div className="rezept__name_tags">
                 <div className="rezept__name">
-                    <div>{props.recipe.name}</div>
+                    <div className='rezept__text'>{props.recipe.name}</div>
+                    <Link to={{ pathname: '/Erstellen', state: props.recipe }}>
+                        <div className="rezept__edit">
+                            <img src={edit_bild} alt='edit' height='30px'></img>
+                        </div>
+                    </Link>
                 </div>
                 <div className="rezept__tags">
                     {items}
                 </div>
             </div>
-            <Link to={{ pathname: '/Erstellen', state: props.recipe }}>
-                <div className="rezept__edit">
-                    <img src={edit_bild} alt='edit' height='40px'></img>
-                </div>
-            </Link>
         </div>
     )
 }

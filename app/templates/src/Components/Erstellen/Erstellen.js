@@ -4,6 +4,7 @@ import save_bild from '../../images/save.png'
 import Alert from '../Alert/Alert'
 import Bilder from '../Bilder/Bilder'
 import Tags from '../Tags/Tags'
+import Zutaten from '../Zutaten/Zutaten'
 
 const Erstellen = (props) => {
 
@@ -73,7 +74,7 @@ const Erstellen = (props) => {
                     photoFilename={props.location.state.photo_filename}>
                 </Bilder>
                 <Tags tags={props.location.state.tags} recipeId={recipeId} />
-
+                <Zutaten ingredients={props.location.state.ingredients} recipeId={recipeId} />
                 </div>
             ) : null}
         </div>

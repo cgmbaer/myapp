@@ -53,7 +53,23 @@ function Kochbuch() {
             } catch (error) {
                 if (mounted) {
                     setRecipes([
-                        {"name":"Rindertatar","quantity":null,"image_filename":null,"photo_filename":null,"tags":[{"tag_id":2,"name":"Nudelgericht"},{"tag_id":3,"name":"Nudelgericht"},{"tag_id":4,"name":"Nudelgericht"},{"tag_id":5,"name":"Nudelgericht"},{"tag_id":6,"name":"Nudelgericht"}],"id":1},
+                        {
+                            "name":"Rindertatar",
+                            "quantity":null,
+                            "image_filename":null,
+                            "photo_filename":null,
+                            "tags":[
+                                {"tag_id":2,"name":"Nudelgericht"},
+                                {"tag_id":3,"name":"schnell Zubereitet"},
+                                {"tag_id":4,"name":"Nudelgericht"},
+                                {"tag_id":5,"name":"Nudelgericht"},
+                                {"tag_id":6,"name":"Nudelgericht"}],
+                            "ingredients":[
+                                {"id": 1, "quantity": 150, "unit": "gr", "name": "Puderzucker"},
+                                {"id": 2, "quantity": 100, "unit": "ml", "name": "Milch"},
+                                {"id": 3, "quantity": 500, "unit": "gr", "name": "Mehl"},
+                            ],
+                            "id":1},
                         {"name":"French Toast","quantity":null,"image_filename":null,"photo_filename":null,"tags":null,"id":2}
                     ])
                     refreshMessage(1)
