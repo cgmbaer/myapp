@@ -65,9 +65,9 @@ function Kochbuch() {
                                 {"tag_id":5,"name":"Nudelgericht"},
                                 {"tag_id":6,"name":"Nudelgericht"}],
                             "ingredients":[
-                                {"id": 1, "quantity": 150, "unit": "gr", "name": "Puderzucker"},
-                                {"id": 2, "quantity": 100, "unit": "ml", "name": "Milch"},
-                                {"id": 3, "quantity": 500, "unit": "gr", "name": "Mehl"},
+                                {"id": 1, "ingredient_id": 1, "unit_id": 3, "quantity": 150, "unit": "gr", "ingredient": "Puderzucker"},
+                                {"id": 2, "ingredient_id": 2, "unit_id": 2, "quantity": 100, "unit": "ml", "ingredient": "Milch"},
+                                {"id": 3, "ingredient_id": 3, "unit_id": 1,  "quantity": 500, "unit": "gr", "ingredient": "Mehl"},
                             ],
                             "id":1},
                         {"name":"French Toast","quantity":null,"image_filename":null,"photo_filename":null,"tags":null,"id":2}

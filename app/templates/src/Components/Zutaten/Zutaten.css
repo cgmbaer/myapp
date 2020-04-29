@@ -38,12 +38,3 @@
     width: 50px;
     height: 100%;
 }
-
-.zutaten__dropdown_container {
-    display: inline-block;
-    border: 1px solid grey;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
-    height: 200px;
-    width: 200px
-}

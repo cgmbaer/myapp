@@ -4,7 +4,7 @@ import time
 import pandas as pd
 from app import app, db
 from sqlalchemy.exc import IntegrityError
-from app.models import Recipe, Tag, Ingredient, Unit, Category, Recipe_Tag
+from app.models import Recipe, Tag, Ingredient, Unit, Category, Recipe_Tag, Recipe_Ingredient
 from flask import render_template, request, redirect, send_from_directory, session, url_for, jsonify
 from functools import wraps
 from PIL import Image
@@ -107,21 +107,104 @@ def get_recipes():
     r = pd.read_sql(sql, db.session.bind)
     r = r.set_index('id')
 
-    sql = db.session.query(Recipe_Tag, Tag).filter(Recipe_Tag.tag_id == Tag.id).with_entities(Recipe_Tag.recipe_id, Recipe_Tag.tag_id, Tag.name).statement
+    sql = db.session.query(Recipe_Tag, Tag).filter(Recipe_Tag.tag_id == Tag.id).with_entities(
+        Recipe_Tag.recipe_id, Recipe_Tag.tag_id, Tag.name).statement
     tags = pd.read_sql(sql, db.session.bind)
 
     if len(tags) > 0:
-        tags['tags'] = tags.apply(lambda x: {'tag_id': x['tag_id'], 'name': x['name']}, axis=1)
+        tags['tags'] = tags.apply(
+            lambda x: {'tag_id': x['tag_id'], 'name': x['name']}, axis=1)
     else:
         tags['tags'] = None
 
     tags = tags.groupby('recipe_id')['tags'].apply(list)
 
     r = pd.concat([r, tags], axis=1, sort=False)
+
+    sql = db.session.query(Recipe_Ingredient, Ingredient, Unit).filter(
+        Recipe_Ingredient.ingredient_id == Ingredient.id, Recipe_Ingredient.unit_id == Unit.id
+    ).with_entities(
+        Recipe_Ingredient.id,
+        Recipe_Ingredient.recipe_id,
+        Recipe_Ingredient.quantity,
+        Recipe_Ingredient.unit_id,
+        Recipe_Ingredient.ingredient_id,
+        Ingredient.name.label("ingredient_name"),
+        Unit.name.label("unit_name")
+    ).statement
+    ri = pd.read_sql(sql, db.session.bind)
+
+    if len(ri) > 0:
+        ri['ingredients'] = ri.apply(
+            lambda x: {
+                'id': x['id'],
+                'unit_id': x['unit_id'],
+                'ingredient_id': x['ingredient_id'],
+                'quantity': x['quantity'],
+                'unit': x['unit_name'],
+                'ingredient': x['ingredient_name'],
+                }, axis=1)
+    else:
+        ri['ingredients'] = None
+
+    ri = ri.groupby('recipe_id')['ingredients'].apply(list)
+    r = pd.concat([r, ri], axis=1, sort=False)
+
     r['id'] = r.index
     r = r.to_json(orient='records')
 
     return r
+
+
+@app.route('/recipe/api/v1.0/get_preset', methods=['GET'])
+def get_preset():
+
+    sql = db.session.query(Ingredient).with_entities(
+        Ingredient.id, Ingredient.name).statement
+    i = pd.read_sql(sql, db.session.bind)
+    i.sort_values(by=['name'], inplace=True)
+    i = i.to_dict('records')
+
+    sql = db.session.query(Unit).with_entities(Unit.id, Unit.name).statement
+    u = pd.read_sql(sql, db.session.bind)
+    u.sort_values(by=['name'], inplace=True)
+    u = u.to_dict('records')
+
+    res = {
+        "units": u,
+        "ingredients": i
+    }
+
+    return jsonify(res)
+
+
+@app.route('/recipe/api/v1.0/edit_recipe_ingredient', methods=['POST'])
+def edit_recipe_ingredient():
+    if request.json['id'] == -1 and request.json['remove'] == False:
+        ri = Recipe_Ingredient(
+            quantity=request.json['quantity'],
+            unit_id=request.json['unit_id'],
+            ingredient_id=request.json['ingredient_id'],
+            recipe_id=request.json['recipe_id']
+        )
+        db.session.add(ri)
+        db.session.commit()
+
+    if request.json['id'] != -1 and request.json['remove'] == False:
+        ri = Recipe_Ingredient.query.get(request.json['id'])
+        ri.quantity = request.json['quantity']
+        ri.unit_id = request.json['unit_id']
+        ri.ingredient_id = request.json['ingredient_id']
+        ri.recipe_id = request.json['recipe_id']
+
+        db.session.commit()
+
+    if request.json['remove'] == True:
+        ri = Recipe_Ingredient.query.filter_by(id=request.json['id']).delete()
+        db.session.commit()
+        return jsonify({'id': -1})
+
+    return jsonify({'id': ri.id})
 
 
 @app.route('/recipe/api/v1.0/add_image', methods=['POST'])
@@ -168,6 +251,7 @@ def add_image():
 
     return jsonify({'filename': filename})
 
+
 @app.route('/recipe/api/v1.0/add_item', methods=['POST'])
 def add_item():
     if 'id' in request.json:
@@ -187,18 +271,21 @@ def add_item():
         except IntegrityError as err:
             db.session.rollback()
             return jsonify({'error': 'Exisitert bereits!'})
-        
+
     sql = db.session.query(eval(request.json['type'])).statement
     df = pd.read_sql(sql, db.session.bind)
     df.sort_values(by=['name'], inplace=True)
     return df.to_json(orient='records')
 
+
 @app.route('/recipe/api/v1.0/update_tag', methods=['POST'])
 def update_tag():
     if request.json['active']:
-        t = Recipe_Tag.query.filter_by(recipe_id = request.json['recipeId'], tag_id = request.json['tagId']).delete()
+        t = Recipe_Tag.query.filter_by(
+            recipe_id=request.json['recipeId'], tag_id=request.json['tagId']).delete()
     else:
-        t = Recipe_Tag(recipe_id = request.json['recipeId'], tag_id = request.json['tagId'])
+        t = Recipe_Tag(
+            recipe_id=request.json['recipeId'], tag_id=request.json['tagId'])
         db.session.add(t)
     db.session.commit()
     return jsonify({'success': 'Hat funktioniert!'})

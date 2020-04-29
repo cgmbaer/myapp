@@ -46,6 +46,7 @@ const Erstellen = (props) => {
             }
 
         } catch (error) {
+            setRecipeId(-1)
             refreshMessage(1)
         }
     }

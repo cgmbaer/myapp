@@ -7,17 +7,24 @@ import Alert from '../Alert/Alert'
 const Zutaten = (props) => {
 
     const [ingredients, setIngredients] = useState(props.ingredients || [])
-    const [preset, setPreset] = useState(null)
+    const [preset, setPreset] = useState({ 'units': [], 'ingredients': [] })
     const [message, setMessage] = useState(null)
 
     const removeIngredient = (id) => {
         setIngredients(ingredients.filter(x => x.id !== id))
     }
 
-    const updateIngredient = (id) => {
-        setIngredients(
-            ingredients.map(x => x.id === -1 ? { ...x, "id": id } : x)
-        )
+    const updateIngredient = (x) => {
+        if (ingredients.map(y => y.id).includes(x.id)) {
+            setIngredients(
+                ingredients.map(y => y.id === x.id ? x : y)
+            )
+        } else {
+            console.log('nope')
+            setIngredients(
+                ingredients.map(y => y.id === -1 ? x : y)
+            )
+        }
     }
 
     const items = ingredients.map(
@@ -27,7 +34,7 @@ const Zutaten = (props) => {
                     key={'Create-Ingredients-' + x.id}
                     removeIngredient={removeIngredient}
                     updateIngredient={updateIngredient}
-                    preset = {preset}
+                    preset={preset}
                     ingredient={x}
                     recipeId={props.recipeId}
                 ></Zutat>
@@ -36,40 +43,15 @@ const Zutaten = (props) => {
     )
 
     const addIngredient = () => {
-        console.log(ingredients)
-        if(!ingredients.filter(x => x.id === -1).length){
-            setIngredients([...ingredients, {"id": -1} ])
+        if (!ingredients.filter(x => x.id === -1).length) {
+            setIngredients([...ingredients, { "id": -1 }])
         }
     }
 
     const refreshMessage = (eType, eMessage = null) => {
         setMessage(null)
-        setTimeout(() => setMessage({eType: eType, eMessage: eMessage}), 1)
+        setTimeout(() => setMessage({ eType: eType, eMessage: eMessage }), 1)
     }
-
-    const dropDownItems = [
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-        "asdf",
-    ]
-
-    const dropDown = dropDownItems.map((x, index) => {
-        return(
-        <div key={'dropDown-' + index}><br/>{x}</div>
-        )
-    })
 
     useEffect(() => {
         let mounted = true;
@@ -90,19 +72,19 @@ const Zutaten = (props) => {
                 if (mounted) {
                     setPreset({
                         "units": [
-                            {"unit_id": 1, "name": "g"},
-                            {"unit_id": 2, "name": "kg"},
-                            {"unit_id": 3, "name": "ml"},
-                            {"unit_id": 4, "name": "l"},
-                            {"unit_id": 4, "name": "kl"},
-                            {"unit_id": 4, "name": "gr"},
-                            {"unit_id": 4, "name": "mg"},
+                            { "id": 1, "name": "g" },
+                            { "id": 2, "name": "kg" },
+                            { "id": 3, "name": "ml" },
+                            { "id": 4, "name": "l" },
+                            { "id": 5, "name": "kl" },
+                            { "id": 6, "name": "gr" },
+                            { "id": 7, "name": "mg" },
                         ],
                         "ingredients": [
-                            {"ingredient_id": 1, "name": "Kartoffeln"},
-                            {"ingredient_id": 2, "name": "Schinken"},
-                            {"ingredient_id": 3, "name": "Mehl"},
-                            {"ingredient_id": 4, "name": "getrocknete Tomaten"}
+                            { "id": 1, "name": "Kartoffeln" },
+                            { "id": 2, "name": "Schinken" },
+                            { "id": 3, "name": "Mehl" },
+                            { "id": 4, "name": "getrocknete Tomaten" }
                         ]
                     })
                     refreshMessage(1)
@@ -127,7 +109,6 @@ const Zutaten = (props) => {
                 </div>
             </div>
             {items}
-            <div className='zutaten__dropdown_container'>{dropDown}</div>
         </div>
     )
 }
