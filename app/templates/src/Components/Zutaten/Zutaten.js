@@ -47,6 +47,30 @@ const Zutaten = (props) => {
         setTimeout(() => setMessage({eType: eType, eMessage: eMessage}), 1)
     }
 
+    const dropDownItems = [
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+        "asdf",
+    ]
+
+    const dropDown = dropDownItems.map((x, index) => {
+        return(
+        <div key={'dropDown-' + index}><br/>{x}</div>
+        )
+    })
+
     useEffect(() => {
         let mounted = true;
         let data = {}
@@ -103,6 +127,7 @@ const Zutaten = (props) => {
                 </div>
             </div>
             {items}
+            <div className='zutaten__dropdown_container'>{dropDown}</div>
         </div>
     )
 }
