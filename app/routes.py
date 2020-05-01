@@ -161,11 +161,11 @@ def get_recipes():
     ri['group'].fillna('', inplace=True)
     ri = ri[['recipe_id', 'group', 'ingredients']]
 
-    ri = ri.groupby(by=['recipe_id', 'group']).agg({
-        'ingredients': lambda x: list(x)
-    }).reset_index()
-
     if len(ri) > 0:
+        ri = ri.groupby(by=['recipe_id', 'group']).agg({
+            'ingredients': lambda x: list(x)
+        }).reset_index()
+
         ri['ingredients'] = ri.apply(
             lambda x: {
                 'group': x['group'],
@@ -175,14 +175,12 @@ def get_recipes():
         ri['ingredients'] = None
 
     ri = ri.groupby('recipe_id')['ingredients'].apply(list)
-    #ri = ri.groupby('recipe_id')['group','items'].apply(list)
     r = pd.concat([r, ri], axis=1, sort=False)
 
     r['id'] = r.index
     r = r.to_json(orient='records')
 
     return r
-
 
 @app.route('/recipe/api/v1.0/get_preset', methods=['GET'])
 def get_preset():

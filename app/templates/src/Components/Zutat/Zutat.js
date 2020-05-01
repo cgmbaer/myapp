@@ -130,6 +130,7 @@ const Zutat = (props) => {
             </div>
             <div className='zutat__quantity'>
                 <input
+                    type='text'
                     value={quantity}
                     placeholder='15 ...'
                     onChange={(e) => { setColor('rgb(235, 162, 162)'); setQuantity(e.target.value) }}
@@ -162,7 +163,7 @@ const Zutat = (props) => {
                     </div>
                 ) : null}
             </div>
-            {!(color === 'rgb(235, 162, 162)') || (uOpen || iOpen || quantity === '' || unit === '' || ingredient === '') ? null : (
+            {!(color === 'rgb(235, 162, 162)') || (uOpen || iOpen || ingredient === '') ? null : (
                 <div className='zutat__save' onClick={() => saveIngredient(false)}>
                     <img src={save_bild} alt='save' height='30px'></img>
                 </div>
