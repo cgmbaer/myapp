@@ -78,13 +78,6 @@ def serve_images(filename):
 def serve_login_jpg(filename):
     return send_from_directory(app.template_folder, 'login.png')
 
-
-@app.route('/recipe/api/v1.0/get_recipe', methods=['GET'])
-def get_recipe():
-    id = request.json['recipeId']
-    return jsonify({'developer': Recipe.query.get(id).serialize()})
-
-
 @app.route('/recipe/api/v1.0/set_recipeName', methods=['POST'])
 def set_recipeName():
     if request.json['recipeId'] is None:
@@ -99,6 +92,24 @@ def set_recipeName():
     except IntegrityError as err:
         db.session.rollback()
         return jsonify({'error': 'Exisitert bereits!'})
+
+
+@app.route('/recipe/api/v1.0/edit_group', methods=['POST'])
+def edit_group():
+    if 'oldGroup' in request.json:
+        for row in Recipe_Ingredient.query.filter(
+            Recipe_Ingredient.group == request.json['oldGroup'],
+            Recipe_Ingredient.recipe_id == request.json['recipeId']
+        ):
+            row.group = request.json['group']
+        try:
+            db.session.commit()
+            return jsonify({'recipeId': request.json['recipeId']})
+        except IntegrityError as err:
+            db.session.rollback()
+            return jsonify({'error': 'Something went wrong!'})
+    
+    return jsonify({'recipeId': request.json['recipeId']})
 
 
 @app.route('/recipe/api/v1.0/get_recipes', methods=['GET'])
@@ -128,12 +139,12 @@ def get_recipes():
         Recipe_Ingredient.recipe_id,
         Recipe_Ingredient.quantity,
         Recipe_Ingredient.unit_id,
+        Recipe_Ingredient.group,
         Recipe_Ingredient.ingredient_id,
         Ingredient.name.label("ingredient_name"),
         Unit.name.label("unit_name")
     ).statement
     ri = pd.read_sql(sql, db.session.bind)
-
     if len(ri) > 0:
         ri['ingredients'] = ri.apply(
             lambda x: {
@@ -143,11 +154,28 @@ def get_recipes():
                 'quantity': x['quantity'],
                 'unit': x['unit_name'],
                 'ingredient': x['ingredient_name'],
-                }, axis=1)
+            }, axis=1)
+    else:
+        ri['ingredients'] = None
+
+    ri['group'].fillna('', inplace=True)
+    ri = ri[['recipe_id', 'group', 'ingredients']]
+
+    ri = ri.groupby(by=['recipe_id', 'group']).agg({
+        'ingredients': lambda x: list(x)
+    }).reset_index()
+
+    if len(ri) > 0:
+        ri['ingredients'] = ri.apply(
+            lambda x: {
+                'group': x['group'],
+                'items': x['ingredients'],
+            }, axis=1)
     else:
         ri['ingredients'] = None
 
     ri = ri.groupby('recipe_id')['ingredients'].apply(list)
+    #ri = ri.groupby('recipe_id')['group','items'].apply(list)
     r = pd.concat([r, ri], axis=1, sort=False)
 
     r['id'] = r.index
@@ -158,7 +186,6 @@ def get_recipes():
 
 @app.route('/recipe/api/v1.0/get_preset', methods=['GET'])
 def get_preset():
-
     sql = db.session.query(Ingredient).with_entities(
         Ingredient.id, Ingredient.name).statement
     i = pd.read_sql(sql, db.session.bind)
@@ -182,6 +209,7 @@ def get_preset():
 def edit_recipe_ingredient():
     if request.json['id'] == -1 and request.json['remove'] == False:
         ri = Recipe_Ingredient(
+            group=request.json['group'],
             quantity=request.json['quantity'],
             unit_id=request.json['unit_id'],
             ingredient_id=request.json['ingredient_id'],
@@ -196,6 +224,7 @@ def edit_recipe_ingredient():
         ri.unit_id = request.json['unit_id']
         ri.ingredient_id = request.json['ingredient_id']
         ri.recipe_id = request.json['recipe_id']
+        ri.group = request.json['group']
 
         db.session.commit()
 

@@ -1,0 +1,22 @@
+.text__container {
+    margin-bottom: 20px;
+}
+
+.text__zubereitung_header {
+    font-size: x-large;
+    margin-bottom: 10px;
+}
+
+.text__textarea_container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.text__textarea {
+    width: 100%;
+    min-height: 40px;
+    font-size: large;
+    height: auto;
+    resize: none;
+}

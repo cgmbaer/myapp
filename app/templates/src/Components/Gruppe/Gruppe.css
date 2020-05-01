@@ -6,7 +6,7 @@
 .gruppe__header_container {
     display: flex;
     width: 100%;
-    height: 60px;
+    height: 50px;
     align-items: center;
     background-color: rgb(194, 223, 233);
     border-radius: 10px;

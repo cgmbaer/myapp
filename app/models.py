@@ -6,6 +6,7 @@ class Recipe(db.Model):
     quantity = db.Column(db.Integer)
     image_filename = db.Column(db.String(128))
     photo_filename = db.Column(db.String(128))
+    description = db.Column(db.Text)
     recipe_ingredients = db.relationship(
         'Recipe_Ingredient', backref='recipe_ingredient_id', lazy='dynamic')
     recipe_tags = db.relationship(

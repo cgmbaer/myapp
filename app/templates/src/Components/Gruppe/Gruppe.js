@@ -25,18 +25,22 @@ const Gruppe = (props) => {
             setIngredients(ingredients.map(y => y.id === -1 ? x : y))
         }
     }
+    
+    const getGroup = () => group
 
     const items = ingredients.map(
         x => {
+            let tmp = group
             return (
                 <Zutat
                     key={'Create-Ingredients-' + x.id}
                     removeIngredient={removeIngredient}
                     updateIngredient={updateIngredient}
+                    getGroup={getGroup}
                     preset={props.preset}
                     ingredient={x}
                     recipeId={props.recipeId}
-                    group={group}
+                    group={tmp}
                 ></Zutat>
             )
         }
@@ -55,16 +59,24 @@ const Gruppe = (props) => {
                 body: JSON.stringify({
                     group: group,
                     oldGroup: props.group,
-                    recipe_id: props.recipeId
+                    recipeId: props.recipeId
                 }),
             })
 
             if (response.status !== 200) { throw new Error("error") }
             props.updateGroup(props.group, group)
             setColor('rgb(194, 223, 233)')
+            setOpen(false)
         } catch {
             refreshMessage(1)
+            setOpen(false)
         }
+    }
+
+    const handleSave = (e) => {
+        setGroup(e.target.value)
+        e.target.value ? setOpen(true) : setOpen(false)
+        setColor('rgb(235, 162, 162)')
     }
 
     useEffect(() => {
@@ -83,7 +95,7 @@ const Gruppe = (props) => {
                         type="text"
                         placeholder="Zutatengruppe ..."
                         value={group}
-                        onChange={(e) => { setGroup(e.target.value); setOpen(true); setColor('rgb(235, 162, 162)') }}
+                        onChange={(e) => handleSave(e) }
                     >
                     </input>
                 </div>
@@ -93,7 +105,7 @@ const Gruppe = (props) => {
                     </div>
                 ) : null}
             </div>
-            {items}
+            { group && !open ? items : null}
         </div>
     )
 }

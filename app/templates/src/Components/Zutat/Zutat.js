@@ -13,8 +13,8 @@ const Zutat = (props) => {
     const [unit, setUnit] = useState(props.ingredient.unit || '')
     const [ingredient, setIngredient] = useState(props.ingredient.ingredient || '')
     const [ingredientId, setIngredientId] = useState(props.ingredient.ingredient_id || null)
-    const [uOpen, setUOpen] = useState(false);
-    const [iOpen, setIOpen] = useState(false);
+    const [uOpen, setUOpen] = useState(false)
+    const [iOpen, setIOpen] = useState(false)
     const [message, setMessage] = useState(null)
 
     const refreshMessage = (eType, eMessage = null) => {
@@ -27,14 +27,13 @@ const Zutat = (props) => {
         async function fetchData() {
 
             let data = {}
-
             try {
                 const response = await fetch('/recipe/api/v1.0/edit_recipe_ingredient', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         id: recipeIngredientId,
-                        group: props.group,
+                        group: props.getGroup(),
                         quantity: quantity,
                         ingredient_id: ingredientId,
                         unit_id: unitId,
@@ -53,7 +52,7 @@ const Zutat = (props) => {
                         if (remove) {
                             props.removeIngredient(props.ingredient.id)
                         } else {
-                            handleUpdate()
+                            handleUpdate(data.id)
                         }
                     }
                 }
@@ -63,7 +62,7 @@ const Zutat = (props) => {
                         props.removeIngredient(props.ingredient.id)
                     } else {
                         setColor(null)
-                        handleUpdate()
+                        handleUpdate(8)
                     }
                 }
             }
@@ -72,10 +71,10 @@ const Zutat = (props) => {
         return () => { mounted = false };
     }
 
-    const handleUpdate = () => {
+    const handleUpdate = (id) => {
         let tmp = {
-            "id": 8,
-            "group": props.group,
+            "id": id,
+            "group": props.getGroup(),
             "unit_id": unitId,
             "ingredient_id": ingredientId,
             "quantity": quantity,
@@ -99,7 +98,7 @@ const Zutat = (props) => {
         setColor('rgb(235, 162, 162)')
     }
 
-    const dropDownIngredient = props.preset.ingredients.filter(x => x.name.toLowerCase().includes(ingredient)).map((x) => {
+    const dropDownIngredient = props.preset.ingredients.filter(x => x.name.toLowerCase().includes(ingredient.toLowerCase())).map((x) => {
         return (
             <div
                 className='zutat__dropdown_item'
@@ -111,7 +110,7 @@ const Zutat = (props) => {
         )
     })
 
-    const dropDownUnit = props.preset.units.filter(x => x.name.toLowerCase().includes(unit)).map((x) => {
+    const dropDownUnit = props.preset.units.filter(x => x.name.toLowerCase().includes(unit.toLowerCase())).map((x) => {
         return (
             <div
                 className='zutat__dropdown_item'

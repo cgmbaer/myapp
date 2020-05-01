@@ -12,7 +12,7 @@
 
 .zutat__remove {
     display: flex;
-    margin-right: 20px;
+    margin-right: 10px;
     width: 50px;
     height: 100%;
     align-items: center;
@@ -20,7 +20,7 @@
 }
 
 .zutat__quantity  {
-    width: 10%;
+    width: 15%;
 }
 
 .zutat__quantity > input {
@@ -39,7 +39,7 @@
 
 .zutat__unit {
     position: relative;
-    width: 10%;
+    width: 15%;
 }
 
 .zutat__unit > input {
@@ -71,7 +71,7 @@
 
 .zutat__ingredient {
     position: relative;
-    width: calc(80% - 120px);
+    width: calc(70% - 110px);
 }
 
 .zutat__ingredient > input {
