@@ -5,6 +5,11 @@
     align-items: center;
 }
 
+.zutat__container ::placeholder {
+    font-size: small;
+    font-style: italic;
+ }
+
 .zutat__remove {
     display: flex;
     margin-right: 20px;
@@ -15,13 +20,14 @@
 }
 
 .zutat__quantity  {
-    width: 15%;
+    width: 10%;
 }
 
 .zutat__quantity > input {
     border: none;
     background: transparent;
     font-size: medium;
+    text-align: center;
     padding: 0px;
     font-family: inherit;
     border-bottom: 1px solid grey;
@@ -33,13 +39,14 @@
 
 .zutat__unit {
     position: relative;
-    width: 15%;
+    width: 10%;
 }
 
 .zutat__unit > input {
     border: none;
     background: transparent;
     font-size: medium;
+    text-align: center;
     padding: 0px;
     font-family: inherit;
     border-bottom: 1px solid grey;
@@ -64,7 +71,7 @@
 
 .zutat__ingredient {
     position: relative;
-    width: calc(70% - 120px);
+    width: calc(80% - 120px);
 }
 
 .zutat__ingredient > input {
@@ -83,7 +90,7 @@
 
 .zutat__dropdown {
     position: absolute;
-    z-index: 9;
+    z-index: 7;
     display: inline-block;
     background-color: rgb(216, 231, 236);
     border: 1px solid lightgrey;

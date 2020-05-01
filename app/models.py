@@ -26,7 +26,9 @@ class Ingredient(db.Model):
 
 class Recipe_Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    order = db.Column(db.Integer)
     quantity = db.Column(db.Float)
+    group =  db.Column(db.String(128))
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
     unit_id = db.Column(db.Integer, db.ForeignKey('unit.id'))
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'))

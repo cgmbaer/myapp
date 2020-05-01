@@ -32,7 +32,7 @@ function Kochbuch() {
 
     const refreshMessage = (eType, eMessage = null) => {
         setMessage(null)
-        setTimeout(() => setMessage({eType: eType, eMessage: eMessage}), 1)
+        setTimeout(() => setMessage({ eType: eType, eMessage: eMessage }), 1)
     }
 
     useEffect(() => {
@@ -54,23 +54,35 @@ function Kochbuch() {
                 if (mounted) {
                     setRecipes([
                         {
-                            "name":"Rindertatar",
-                            "quantity":null,
-                            "image_filename":null,
-                            "photo_filename":null,
-                            "tags":[
-                                {"tag_id":2,"name":"Nudelgericht"},
-                                {"tag_id":3,"name":"schnell Zubereitet"},
-                                {"tag_id":4,"name":"Nudelgericht"},
-                                {"tag_id":5,"name":"Nudelgericht"},
-                                {"tag_id":6,"name":"Nudelgericht"}],
-                            "ingredients":[
-                                {"id": 1, "ingredient_id": 1, "unit_id": 3, "quantity": 150, "unit": "gr", "ingredient": "Puderzucker"},
-                                {"id": 2, "ingredient_id": 2, "unit_id": 2, "quantity": 100, "unit": "ml", "ingredient": "Milch"},
-                                {"id": 3, "ingredient_id": 3, "unit_id": 1,  "quantity": 500, "unit": "gr", "ingredient": "Mehl"},
-                            ],
-                            "id":1},
-                        {"name":"French Toast","quantity":null,"image_filename":null,"photo_filename":null,"tags":null,"id":2}
+                            "name": "Rindertatar",
+                            "quantity": null,
+                            "image_filename": null,
+                            "photo_filename": null,
+                            "tags": [
+                                { "tag_id": 2, "name": "Nudelgericht" },
+                                { "tag_id": 3, "name": "schnell Zubereitet" },
+                                { "tag_id": 4, "name": "Nudelgericht" },
+                                { "tag_id": 5, "name": "Nudelgericht" },
+                                { "tag_id": 6, "name": "Nudelgericht" }],
+                            "ingredients": [{
+                                "group": "Zutaten",
+                                "items": [
+                                    { "id": 1, "ingredient_id": 1, "unit_id": 3, "quantity": 150, "unit": "gr", "ingredient": "Puderzucker" },
+                                    { "id": 2, "ingredient_id": 2, "unit_id": 2, "quantity": 100, "unit": "ml", "ingredient": "Milch" },
+                                    { "id": 3, "ingredient_id": 3, "unit_id": 1, "quantity": 500, "unit": "gr", "ingredient": "Mehl" }
+                                ]
+                            },
+                            {
+                                "group": "Für die Sauce",
+                                "items": [
+                                    { "id": 4, "ingredient_id": 1, "unit_id": 3, "quantity": 150, "unit": "gr", "ingredient": "Puderzucker" },
+                                    { "id": 5, "ingredient_id": 2, "unit_id": 2, "quantity": 100, "unit": "ml", "ingredient": "Milch" },
+                                    { "id": 6, "ingredient_id": 3, "unit_id": 1, "quantity": 500, "unit": "gr", "ingredient": "Mehl" }
+                                ]
+                            }],
+                            "id": 1
+                        },
+                        { "name": "French Toast", "quantity": null, "image_filename": null, "photo_filename": null, "tags": null, "id": 2 }
                     ])
                     refreshMessage(1)
                 }

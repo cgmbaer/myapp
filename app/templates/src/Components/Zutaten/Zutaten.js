@@ -1,52 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import './Zutaten.css'
-import Zutat from '../Zutat/Zutat'
-import plus_bild from '../../images/plus.png'
+import Gruppe from '../Gruppe/Gruppe'
 import Alert from '../Alert/Alert'
 
 const Zutaten = (props) => {
 
-    const [ingredients, setIngredients] = useState(props.ingredients || [])
     const [preset, setPreset] = useState({ 'units': [], 'ingredients': [] })
     const [message, setMessage] = useState(null)
+    const [ingredients, setIngredients] = useState(props.ingredients || [])
 
-    const removeIngredient = (id) => {
-        setIngredients(ingredients.filter(x => x.id !== id))
+    const updateGroup = (oldGroup, group) => {
+        setIngredients(ingredients.map(x => x.group === oldGroup ? { ...x, group } : x))
     }
 
-    const updateIngredient = (x) => {
-        if (ingredients.map(y => y.id).includes(x.id)) {
-            setIngredients(
-                ingredients.map(y => y.id === x.id ? x : y)
-            )
-        } else {
-            console.log('nope')
-            setIngredients(
-                ingredients.map(y => y.id === -1 ? x : y)
-            )
-        }
-    }
-
-    const items = ingredients.map(
-        x => {
-            return (
-                <Zutat
-                    key={'Create-Ingredients-' + x.id}
-                    removeIngredient={removeIngredient}
-                    updateIngredient={updateIngredient}
+    const items = ingredients.map((x, i) => { 
+        return (
+            <div key={'Create-Groups-' + i} className='zutaten__group_container'>
+                <Gruppe
                     preset={preset}
-                    ingredient={x}
+                    group={x.group}
+                    ingredients={x.items}
                     recipeId={props.recipeId}
-                ></Zutat>
-            )
-        }
-    )
-
-    const addIngredient = () => {
-        if (!ingredients.filter(x => x.id === -1).length) {
-            setIngredients([...ingredients, { "id": -1 }])
-        }
-    }
+                    updateGroup={updateGroup}
+                >
+                </Gruppe>
+            </div>
+        )
+    })
 
     const refreshMessage = (eType, eMessage = null) => {
         setMessage(null)
@@ -95,19 +75,15 @@ const Zutaten = (props) => {
         return () => { mounted = false };
     }, []);
 
+    useEffect(() => {
+        if (!ingredients.filter(x => x.group === '').length) {
+            setIngredients([...ingredients, { "group": '' }])
+        }
+    }, [ingredients])
 
     return (
         <div className='zutaten__container'>
             {message ? <Alert message={message}></Alert> : null}
-            <div className='zutaten__header'>
-                <div className='zutaten__remove_placeholder'></div>
-                <div className='zutaten__header_me'>#</div>
-                <div className='zutaten__header_unit'>ME</div>
-                <div className='zutaten__header_ingr'>Zutat</div>
-                <div className='zutaten__plus'>
-                    <img src={plus_bild} alt='save' height='40px' onClick={() => addIngredient()}></img>
-                </div>
-            </div>
             {items}
         </div>
     )

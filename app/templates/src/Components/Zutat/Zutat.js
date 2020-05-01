@@ -22,44 +22,60 @@ const Zutat = (props) => {
         setTimeout(() => setMessage({ eType: eType, eMessage: eMessage }), 1)
     }
 
-    const saveIngredient = async (remove) => {
+    const saveIngredient = (remove) => {
+        let mounted = true;
+        async function fetchData() {
 
-        let data = {}
+            let data = {}
 
-        try {
-            const response = await fetch('/recipe/api/v1.0/edit_recipe_ingredient', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: recipeIngredientId,
-                    quantity: quantity,
-                    ingredient_id: ingredientId,
-                    unit_id: unitId,
-                    recipe_id: props.recipeId,
-                    remove: remove
-                }),
-            })
-            if (response.status !== 200) { throw new Error("error") }
-            data = await response.json()
+            try {
+                const response = await fetch('/recipe/api/v1.0/edit_recipe_ingredient', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: recipeIngredientId,
+                        group: props.group,
+                        quantity: quantity,
+                        ingredient_id: ingredientId,
+                        unit_id: unitId,
+                        recipe_id: props.recipeId,
+                        remove: remove
+                    }),
+                })
+                if (mounted) {
+                    if (response.status !== 200) { throw new Error("error") }
+                    data = await response.json()
 
-            if (data.error) {
-                refreshMessage(1, data.error)
-            } else {
-                setColor(null)
-                setRecipeIngredientId(data.id)
-                remove ? props.removeIngredient(props.ingredient.id) : handleUpdate()
-                refreshMessage(2)
+                    if (data.error) {
+                        refreshMessage(1, data.error)
+                    } else {
+                        setRecipeIngredientId(data.id)
+                        if (remove) {
+                            props.removeIngredient(props.ingredient.id)
+                        } else {
+                            handleUpdate()
+                        }
+                    }
+                }
+            } catch (error) {
+                if (mounted) {
+                    if (remove) {
+                        props.removeIngredient(props.ingredient.id)
+                    } else {
+                        setColor(null)
+                        handleUpdate()
+                    }
+                }
             }
-
-        } catch (error) {
-            console.log('ups')
-            refreshMessage(1)
         }
+        fetchData()
+        return () => { mounted = false };
     }
 
     const handleUpdate = () => {
         let tmp = {
-            "id": recipeIngredientId,
+            "id": 8,
+            "group": props.group,
             "unit_id": unitId,
             "ingredient_id": ingredientId,
             "quantity": quantity,
@@ -114,13 +130,19 @@ const Zutat = (props) => {
                 <img src={remove_bild} onClick={() => saveIngredient(true)} alt='edit' height='30px'></img>
             </div>
             <div className='zutat__quantity'>
-                <input value={quantity} onChange={(e) => { setColor('rgb(235, 162, 162)'); setQuantity(e.target.value) }}></input>
+                <input
+                    value={quantity}
+                    placeholder='15 ...'
+                    onChange={(e) => { setColor('rgb(235, 162, 162)'); setQuantity(e.target.value) }}
+                >
+                </input>
             </div>
             <div className='zutat__unit'>
                 <input
                     type='text'
                     onClick={() => { setUOpen(true); setUnit('') }}
                     onChange={(e) => setUnit(e.target.value)}
+                    placeholder='kg ...'
                     value={unit}></input>
                 {uOpen ? (
                     <div className='zutat__dropdown'>
@@ -131,6 +153,7 @@ const Zutat = (props) => {
             <div className='zutat__ingredient'>
                 <input
                     type='text'
+                    placeholder='Schweineschmalz ...'
                     onClick={() => { setIOpen(true); setIngredient('') }}
                     onChange={(e) => setIngredient(e.target.value)}
                     value={ingredient}></input>
@@ -140,9 +163,9 @@ const Zutat = (props) => {
                     </div>
                 ) : null}
             </div>
-            {uOpen || iOpen || quantity === '' || unit === '' || ingredient === '' ? null : (
+            {!(color === 'rgb(235, 162, 162)') || (uOpen || iOpen || quantity === '' || unit === '' || ingredient === '') ? null : (
                 <div className='zutat__save' onClick={() => saveIngredient(false)}>
-                    <img src={save_bild} onClick={handleUpdate} alt='save' height='30px'></img>
+                    <img src={save_bild} alt='save' height='30px'></img>
                 </div>
             )}
         </div>
