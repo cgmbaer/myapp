@@ -78,6 +78,7 @@ def serve_images(filename):
 def serve_login_jpg(filename):
     return send_from_directory(app.template_folder, 'login.png')
 
+
 @app.route('/recipe/api/v1.0/set_recipeName', methods=['POST'])
 def set_recipeName():
     if request.json['recipeId'] is None:
@@ -108,7 +109,7 @@ def edit_group():
         except IntegrityError as err:
             db.session.rollback()
             return jsonify({'error': 'Something went wrong!'})
-    
+
     return jsonify({'recipeId': request.json['recipeId']})
 
 
@@ -132,8 +133,10 @@ def get_recipes():
 
     r = pd.concat([r, tags], axis=1, sort=False)
 
-    sql = db.session.query(Recipe_Ingredient, Ingredient, Unit).filter(
-        Recipe_Ingredient.ingredient_id == Ingredient.id, Recipe_Ingredient.unit_id == Unit.id
+    sql = db.session.query(Recipe_Ingredient, Ingredient).filter(
+        Recipe_Ingredient.ingredient_id == Ingredient.id
+    ).join(
+        Unit, Recipe_Ingredient.unit_id == Unit.id, isouter=True
     ).with_entities(
         Recipe_Ingredient.id,
         Recipe_Ingredient.recipe_id,
@@ -145,6 +148,7 @@ def get_recipes():
         Unit.name.label("unit_name")
     ).statement
     ri = pd.read_sql(sql, db.session.bind)
+
     if len(ri) > 0:
         ri['ingredients'] = ri.apply(
             lambda x: {
@@ -182,6 +186,7 @@ def get_recipes():
 
     return r
 
+
 @app.route('/recipe/api/v1.0/get_preset', methods=['GET'])
 def get_preset():
     sql = db.session.query(Ingredient).with_entities(
@@ -205,10 +210,15 @@ def get_preset():
 
 @app.route('/recipe/api/v1.0/edit_recipe_ingredient', methods=['POST'])
 def edit_recipe_ingredient():
+    if request.json['quantity'] == '' or 'quantity' not in request.json:
+        quantity = None
+    else:
+        quantity = request.json['quantity']
+
     if request.json['id'] == -1 and request.json['remove'] == False:
         ri = Recipe_Ingredient(
             group=request.json['group'],
-            quantity=request.json['quantity'],
+            quantity=quantity,
             unit_id=request.json['unit_id'],
             ingredient_id=request.json['ingredient_id'],
             recipe_id=request.json['recipe_id']
@@ -218,7 +228,7 @@ def edit_recipe_ingredient():
 
     if request.json['id'] != -1 and request.json['remove'] == False:
         ri = Recipe_Ingredient.query.get(request.json['id'])
-        ri.quantity = request.json['quantity']
+        ri.quantity = quantity
         ri.unit_id = request.json['unit_id']
         ri.ingredient_id = request.json['ingredient_id']
         ri.recipe_id = request.json['recipe_id']

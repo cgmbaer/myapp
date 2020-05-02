@@ -53,6 +53,7 @@ const Zutat = (props) => {
                             props.removeIngredient(props.ingredient.id)
                         } else {
                             handleUpdate(data.id)
+                            setColor(null)
                         }
                     }
                 }
