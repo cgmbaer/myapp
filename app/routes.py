@@ -112,78 +112,55 @@ def edit_group():
 
     return jsonify({'recipeId': request.json['recipeId']})
 
+@app.route('/recipe/api/v1.0/edit_text', methods=['POST'])
+def edit_text():
+    if 'text' in request.json:
+        r = Recipe.query.get(request.json['recipeId'])
+        r.description = request.json['text']
+        try:
+            db.session.commit()
+            return jsonify({'recipeId': r.id})
+        except IntegrityError as err:
+            db.session.rollback()
+
+    return jsonify({'error': 'Something went wrong!'})
 
 @app.route('/recipe/api/v1.0/get_recipes', methods=['GET'])
 def get_recipes():
+
     sql = db.session.query(Recipe).statement
     r = pd.read_sql(sql, db.session.bind)
-    r = r.set_index('id')
+    r = r.set_index(['id'])
 
-    sql = db.session.query(Recipe_Tag, Tag).filter(Recipe_Tag.tag_id == Tag.id).with_entities(
-        Recipe_Tag.recipe_id, Recipe_Tag.tag_id, Tag.name).statement
-    tags = pd.read_sql(sql, db.session.bind)
+    sql = db.session.query(Recipe_Tag,Tag).join(Tag).statement
 
-    if len(tags) > 0:
-        tags['tags'] = tags.apply(
-            lambda x: {'tag_id': x['tag_id'], 'name': x['name']}, axis=1)
-    else:
-        tags['tags'] = None
+    t = pd.read_sql(sql, db.session.bind)
+    t = t.groupby('recipe_id')\
+        .apply(lambda x: x[['tag_id', 'name']].to_dict('r'))\
+        .rename('tags')
 
-    tags = tags.groupby('recipe_id')['tags'].apply(list)
-
-    r = pd.concat([r, tags], axis=1, sort=False)
-
-    sql = db.session.query(Recipe_Ingredient, Ingredient).filter(
-        Recipe_Ingredient.ingredient_id == Ingredient.id
-    ).join(
-        Unit, Recipe_Ingredient.unit_id == Unit.id, isouter=True
-    ).with_entities(
-        Recipe_Ingredient.id,
-        Recipe_Ingredient.recipe_id,
-        Recipe_Ingredient.quantity,
-        Recipe_Ingredient.unit_id,
-        Recipe_Ingredient.group,
-        Recipe_Ingredient.ingredient_id,
-        Ingredient.name.label("ingredient_name"),
-        Unit.name.label("unit_name")
+    sql = db.session.query(Recipe_Ingredient).\
+        join(Ingredient).\
+        outerjoin(Unit).\
+        with_entities(
+        Recipe_Ingredient,
+        Ingredient.name.label("ingredient"),
+        Unit.name.label("unit")
     ).statement
+
     ri = pd.read_sql(sql, db.session.bind)
+    ri = ri.groupby(['recipe_id', 'group'], as_index=False)\
+        .apply(lambda x: x[['id', 'quantity', 'unit_id', 'ingredient_id', 'unit', 'ingredient']].to_dict('r'))\
+        .reset_index(level='group')\
+        .rename(columns={0: 'items'})\
+        .groupby(['recipe_id'])\
+        .apply(lambda x: x[['group', 'items']].to_dict('r'))\
+        .rename('ingredients')
 
-    if len(ri) > 0:
-        ri['ingredients'] = ri.apply(
-            lambda x: {
-                'id': x['id'],
-                'unit_id': x['unit_id'],
-                'ingredient_id': x['ingredient_id'],
-                'quantity': x['quantity'],
-                'unit': x['unit_name'],
-                'ingredient': x['ingredient_name'],
-            }, axis=1)
-    else:
-        ri['ingredients'] = None
+    r = pd.concat([r, t, ri], axis=1, sort=False)
 
-    ri['group'].fillna('', inplace=True)
-    ri = ri[['recipe_id', 'group', 'ingredients']]
-
-    if len(ri) > 0:
-        ri = ri.groupby(by=['recipe_id', 'group']).agg({
-            'ingredients': lambda x: list(x)
-        }).reset_index()
-
-        ri['ingredients'] = ri.apply(
-            lambda x: {
-                'group': x['group'],
-                'items': x['ingredients'],
-            }, axis=1)
-    else:
-        ri['ingredients'] = None
-
-    ri = ri.groupby('recipe_id')['ingredients'].apply(list)
-    r = pd.concat([r, ri], axis=1, sort=False)
-
-    r['id'] = r.index
+    r.insert (0, 'id', r.index)
     r = r.to_json(orient='records')
-
     return r
 
 

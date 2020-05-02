@@ -22,8 +22,7 @@ const Zutaten = (props) => {
                     ingredients={x.items}
                     recipeId={props.recipeId}
                     updateGroup={updateGroup}
-                >
-                </Gruppe>
+                />
             </div>
         )
     })

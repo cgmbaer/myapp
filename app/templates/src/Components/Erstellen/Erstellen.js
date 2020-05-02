@@ -77,7 +77,7 @@ const Erstellen = (props) => {
                 </Bilder>
                 <Tags tags={props.location.state.tags} recipeId={recipeId} />
                 <Zutaten ingredients={props.location.state.ingredients} recipeId={recipeId} />
-                <Text ingredients={props.location.state.text} recipeId={recipeId} />
+                <Text text={props.location.state.description} recipeId={recipeId} />
                 </div>
             ) : null}
         </div>

@@ -58,6 +58,7 @@ function Kochbuch() {
                             "quantity": null,
                             "image_filename": null,
                             "photo_filename": null,
+                            "description": "test",
                             "tags": [
                                 { "tag_id": 2, "name": "Nudelgericht" },
                                 { "tag_id": 3, "name": "schnell Zubereitet" },

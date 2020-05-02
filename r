@@ -1,0 +1,1 @@
+{"id":{"0":1},"name":{"0":"Wiener Schnitzel"},"quantity":{"0":null},"image_filename":{"0":"\/recipe_images\/1_204133_thumb.jpg"},"photo_filename":{"0":null},"description":{"0":null}}
