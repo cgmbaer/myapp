@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import './Rezept.css'
-import image_placeholder from '../../images/imagePlaceholder.png'
+import image_placeholder from '../../images/imagePlaceholder.jpg'
 import edit_bild from '../../images/edit.png'
 
 const Rezept = (props) => {
@@ -37,7 +37,7 @@ const Rezept = (props) => {
         <div className="rezept__container">
             <div className="rezept__preview_container">
                 <div className="rezept__thumbnail" onClick={() => collapse()}>
-                    <img src={imagePath} alt='add' height='80px'></img>
+                    <img src={imagePath} alt='add' height='90px'></img>
                 </div>
                 <div className="rezept__name_tags">
                     <div className="rezept__name">
