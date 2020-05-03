@@ -60,7 +60,7 @@ const Rezept = (props) => {
                             return (
                                 <div className="rezept__group_container" key={'show-group-' + x.group}>
                                     <div className="rezept__group_text">{x.group}:</div>
-                                    <table style={{ width: '100%', tableLayout: 'fixed'}}>
+                                    <table style={{ tableLayout: 'fixed'}}>
                                         <colgroup>
                                             <col style={{ width: '35px' }} />
                                             <col style={{ width: '10px' }} />
