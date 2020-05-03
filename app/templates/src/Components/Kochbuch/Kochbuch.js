@@ -68,7 +68,7 @@ function Kochbuch() {
                             "ingredients": [{
                                 "group": "Zutaten",
                                 "items": [
-                                    { "id": 1, "ingredient_id": 1, "unit_id": 3, "quantity": 150, "unit": "gr", "ingredient": "Puderzucker" },
+                                    { "id": 1, "ingredient_id": 1, "unit_id": 3, "quantity": 15, "unit": "gr", "ingredient": "Puderzucker" },
                                     { "id": 2, "ingredient_id": 2, "unit_id": 2, "quantity": 100, "unit": "ml", "ingredient": "Milch" },
                                     { "id": 3, "ingredient_id": 3, "unit_id": 1, "quantity": 500, "unit": "gr", "ingredient": "Mehl" }
                                 ]
@@ -83,7 +83,7 @@ function Kochbuch() {
                             }],
                             "id": 1
                         },
-                        { "name": "French Toast", "quantity": null, "image_filename": null, "photo_filename": null, "tags": null, "id": 2 }
+                        { "name": "French Toast", "quantity": null, "image_filename": null, "photo_filename": null, "tags": null, "id": 2, 'ingredients': [] }
                     ])
                     refreshMessage(1)
                 }
