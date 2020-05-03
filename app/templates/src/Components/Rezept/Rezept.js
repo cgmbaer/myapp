@@ -59,36 +59,24 @@ const Rezept = (props) => {
                         props.recipe.ingredients ? props.recipe.ingredients.map(x => {
                             return (
                                 <div className="rezept__group_container" key={'show-group-' + x.group}>
-                                    <div className="rezept__group_text">{x.group}:</div>
-                                    <table style={{ tableLayout: 'fixed'}}>
-                                        <colgroup>
-                                            <col style={{ width: '35px' }} />
-                                            <col style={{ width: '10px' }} />
-                                            <col style={{ width: '50px' }} />
-                                            <col style={{ width: 'calc(100% - 85px)' }} />
-                                        </colgroup>
-                                        <tbody>
-                                            {
-                                                x.items.map(y => {
-                                                    return (
-                                                        <tr key={'show-item-' + x.group + y.id}>
-                                                            <td style={{ textAlign: 'right' }}>{y.quantity}</td>
-                                                            <td></td>
-                                                            <td>{y.unit}</td>
-                                                            <td>{y.ingredient}</td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            }
-                                        </tbody>
-                                    </table>
+                                    <div className="rezept__group_text">{x.group}</div>
+                                    {
+                                        x.items.map(y => {
+                                            return (
+                                                <div className="rezept__table_container" key={'show-item-' + x.group + y.id}>
+                                                    <div className="rezept__table_quantity">{y.quantity}</div>
+                                                    <div className="rezept__table_unit">{y.unit}</div>
+                                                    <div className="rezept__table_ingredient">{y.ingredient}</div>
+                                                </div>
+                                            )
+                                        })
+                                    }
                                 </div>
                             )
                         }) : null
                     }
                 </div>
                 <div className="rezept__show_text_container">
-                    <div className="rezept__show_text_header">Zubereitung:</div>
                     <div className="rezept__show_text">
                         {props.recipe.description}
                     </div>
