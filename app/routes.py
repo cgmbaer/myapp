@@ -112,6 +112,7 @@ def edit_group():
 
     return jsonify({'recipeId': request.json['recipeId']})
 
+
 @app.route('/recipe/api/v1.0/edit_text', methods=['POST'])
 def edit_text():
     if 'text' in request.json:
@@ -125,6 +126,7 @@ def edit_text():
 
     return jsonify({'error': 'Something went wrong!'})
 
+
 @app.route('/recipe/api/v1.0/get_recipes', methods=['GET'])
 def get_recipes():
 
@@ -132,12 +134,14 @@ def get_recipes():
     r = pd.read_sql(sql, db.session.bind)
     r = r.set_index(['id'])
 
-    sql = db.session.query(Recipe_Tag,Tag).join(Tag).statement
+    sql = db.session.query(Recipe_Tag, Tag).join(Tag).statement
 
     t = pd.read_sql(sql, db.session.bind)
-    t = t.groupby('recipe_id')\
-        .apply(lambda x: x[['tag_id', 'name']].to_dict('r'))\
-        .rename('tags')
+    if len(t) > 0:
+        t = t.groupby('recipe_id')\
+            .apply(lambda x: x[['tag_id', 'name']].to_dict('r'))\
+            .rename('tags')
+    else: t = pd.DataFrame(columns=['tags'])
 
     sql = db.session.query(Recipe_Ingredient).\
         join(Ingredient).\
@@ -149,18 +153,20 @@ def get_recipes():
     ).statement
 
     ri = pd.read_sql(sql, db.session.bind)
-    ri = ri.groupby(['recipe_id', 'group'], as_index=False)\
-        .apply(lambda x: x[['id', 'quantity', 'unit_id', 'ingredient_id', 'unit', 'ingredient']].to_dict('r'))\
-        .reset_index(level='group')\
-        .rename(columns={0: 'items'})\
-        .groupby(['recipe_id'])\
-        .apply(lambda x: x[['group', 'items']].to_dict('r'))\
-        .rename('ingredients')
+    if len(ri) > 0:
+        ri = ri.groupby(['recipe_id', 'group'], as_index=False)\
+            .apply(lambda x: x[['id', 'quantity', 'unit_id', 'ingredient_id', 'unit', 'ingredient']].to_dict('r'))\
+            .reset_index(level='group')\
+            .rename(columns={0: 'items'})\
+            .groupby(['recipe_id'])\
+            .apply(lambda x: x[['group', 'items']].to_dict('r'))\
+            .rename('ingredients')
+    else: ri = pd.DataFrame(columns=['ingredients'])
 
     r = pd.concat([r, t, ri], axis=1, sort=False)
-
-    r.insert (0, 'id', r.index)
+    r.insert(0, 'id', r.index)
     r = r.to_json(orient='records')
+
     return r
 
 
