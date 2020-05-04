@@ -58,7 +58,7 @@ function Kochbuch() {
                             "quantity": null,
                             "image_filename": null,
                             "photo_filename": null,
-                            "description": "test",
+                            "description": "**1.** Milch, Mehl und Prise Salz verr\u00fchren, so dass keine Klumpen mehr da sind. Die Eier vorsichtig unterr\u00fchren, nicht verquirlen. \n\n**2.** Pfanne erhitzen und Butter darin schmelzen. Die Masse zugeben und etwas schwenken, so dass ein Teil der Butter nach oben kommt. Zudecken und in 3-4 Minuten leicht braun werden lassen.\n\n**3.** Zucker und Puderzucker vermischen. Den Pfannkuchen vierteln und umdrehen, danach mit der H\u00e4lfte des Zuckers bestreuen und nochmal 3-4 Minuten zugedeckt braten.\n\n**4.** Den Schmarrn mit 2 Gabeln zerrupfen und mit dem restlichen Zucker bestreuen und leicht karamellisieren lassen, bis der Schmarrn die gew\u00fcnschte Farbe hat. Zusammen mit Apfelmus auf einen Teller geben und mit Puderzucker bestreuen. ",
                             "tags": [
                                 { "tag_id": 2, "name": "Nudelgericht" },
                                 { "tag_id": 3, "name": "schnell Zubereitet" },

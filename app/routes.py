@@ -9,6 +9,9 @@ from flask import render_template, request, redirect, send_from_directory, sessi
 from functools import wraps
 from PIL import Image
 
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -80,6 +83,7 @@ def serve_login_jpg(filename):
 
 
 @app.route('/recipe/api/v1.0/set_recipeName', methods=['POST'])
+@login_required
 def set_recipeName():
     if request.json['recipeId'] is None:
         r = Recipe(name=request.json['recipeName'])
@@ -96,6 +100,7 @@ def set_recipeName():
 
 
 @app.route('/recipe/api/v1.0/edit_group', methods=['POST'])
+@login_required
 def edit_group():
     if 'oldGroup' in request.json:
         for row in Recipe_Ingredient.query.filter(
@@ -114,6 +119,7 @@ def edit_group():
 
 
 @app.route('/recipe/api/v1.0/edit_text', methods=['POST'])
+@login_required
 def edit_text():
     if 'text' in request.json:
         r = Recipe.query.get(request.json['recipeId'])
@@ -171,6 +177,7 @@ def get_recipes():
 
 
 @app.route('/recipe/api/v1.0/get_preset', methods=['GET'])
+@login_required
 def get_preset():
     sql = db.session.query(Ingredient).with_entities(
         Ingredient.id, Ingredient.name).statement
@@ -192,6 +199,7 @@ def get_preset():
 
 
 @app.route('/recipe/api/v1.0/edit_recipe_ingredient', methods=['POST'])
+@login_required
 def edit_recipe_ingredient():
     if request.json['quantity'] == '' or 'quantity' not in request.json:
         quantity = None
@@ -228,6 +236,7 @@ def edit_recipe_ingredient():
 
 
 @app.route('/recipe/api/v1.0/add_image', methods=['POST'])
+@login_required
 def add_image():
     recipeId = request.form['recipeId']
     timestr = '_' + time.strftime("%H%M%S")
@@ -273,6 +282,7 @@ def add_image():
 
 
 @app.route('/recipe/api/v1.0/add_item', methods=['POST'])
+@login_required
 def add_item():
     if 'id' in request.json:
         t = eval(request.json['type']).query.get(request.json['id'])
@@ -299,6 +309,7 @@ def add_item():
 
 
 @app.route('/recipe/api/v1.0/update_tag', methods=['POST'])
+@login_required
 def update_tag():
     if request.json['active']:
         t = Recipe_Tag.query.filter_by(

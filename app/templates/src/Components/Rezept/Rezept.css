@@ -114,5 +114,6 @@
 }
 
 .rezept__show_text_container {
-    margin: 15px;
+    margin: 30px 15px 30px 15px;
+    white-space: pre-wrap;
 }

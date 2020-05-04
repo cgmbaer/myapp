@@ -27,6 +27,14 @@ const Rezept = (props) => {
         }
     }
 
+    const mHelper = (text) => {
+        if (text) {
+            var bold = /\*\*(.*?)\*\*/gm
+            var html = text.replace(bold, '<strong>$1</strong>')
+            return html
+        }
+    }
+
     useEffect(() => {
         if (props.recipe.image_filename) {
             setImagePath(props.recipe.image_filename)
@@ -77,9 +85,7 @@ const Rezept = (props) => {
                     }
                 </div>
                 <div className="rezept__show_text_container">
-                    <div className="rezept__show_text">
-                        {props.recipe.description}
-                    </div>
+                    <div className="rezept__show_text" dangerouslySetInnerHTML={{ __html: mHelper(props.recipe.description) }} />
                 </div>
             </div>
         </div>
