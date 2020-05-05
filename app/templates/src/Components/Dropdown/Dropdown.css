@@ -33,7 +33,7 @@
 .dropdown__search_container > input {
     border: none;
     background: transparent;
-    font-size: small;
+    font-size: medium;
     padding: 0 0 0 5px;
     font-family: inherit;
 
