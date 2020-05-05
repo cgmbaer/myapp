@@ -10,7 +10,7 @@ const Listsearch = (props) => {
     const [searchText, setSearchText] = useState(null);
     const [message, setMessage] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
-    const [list, setList] = useState([]);
+    const [items, setItems] = useState(props.items);
 
     const refItem = useRef()
 
@@ -24,28 +24,15 @@ const Listsearch = (props) => {
         setTimeout(() => setMessage({ eType: eType, eMessage: eMessage }), 1)
     }
 
-    const getItems = () => {
-        if(isOpen) {
-            setIsOpen(!isOpen)
-        } else {
-            addItem()
-            setIsOpen(!isOpen)
-        }
-    }
-
-    const addItem = async () => {
-
+    const handleAddClick = async () => {
         let data = {}
-        let name = ''
-        isOpen ? name = refItem.current.value : name = ''
-
         try {
             const response = await fetch('/recipe/api/v1.0/add_item', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     type: props.type,
-                    name: name,
+                    name: refItem.current.value,
                 }),
             })
 
@@ -55,21 +42,21 @@ const Listsearch = (props) => {
             if (data.error) {
                 refreshMessage(1, data.error)
             } else {
-                setList(data)
-                if(isOpen) {
-                    refItem.current.value = null
-                    setSearchText(null)
-                }
+                setItems([...items, data])
+                refItem.current.value = ''
+                setSearchText(null)
                 refreshMessage(2)
             }
 
         } catch (error) {
+            setItems([...items, {'id': 10, 'name': 'Chili', 'category_id': null}])
+            refItem.current.value = ''
+            setSearchText(null)
             refreshMessage(1)
-            setList([{ id: '1', name: 'Test1' }, { id: '2', name: 'Test2' }])
         }
     }
 
-    const items = list.filter((x) => {
+    const listItems = items ? items.filter((x) => {
         if (searchText == null)
             return x
         else if (x.name.toLowerCase().includes(searchText)) {
@@ -80,12 +67,12 @@ const Listsearch = (props) => {
         return (
             <Listitem key={props.type + '-' + x.id} id={x.id} name={x.name} type={props.type}/>
         )
-    })
+    }) : null
 
     return (
         <div className="listsearch__container">
             {message ? <Alert message={message}></Alert> : null}
-            <div className="listsearch__name" onClick={() => getItems()}>{props.name}</div>
+            <div className="listsearch__name" onClick={() => {setIsOpen(!isOpen)}}>{props.name}</div>
             {isOpen ? (
                 <div>
                     <div className="listsearch__search">
@@ -96,10 +83,10 @@ const Listsearch = (props) => {
                             <input type='text' ref={refItem} onChange={(e) => searchSpace(e)}></input>
                         </div>
                         <div className="listsearch__erstellen_icon">
-                            <img src={erstellen_zeichen} alt='add' height='40px' onClick={() => addItem()}></img>
+                            <img src={erstellen_zeichen} alt='add' height='40px' onClick={() => handleAddClick()}></img>
                         </div>
                     </div>
-                    {items}
+                    {listItems}
                 </div>
             ) : (
                     null

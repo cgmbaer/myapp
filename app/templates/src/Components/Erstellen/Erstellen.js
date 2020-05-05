@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import './Erstellen.css'
 import save_bild from '../../images/save.png'
 import Alert from '../Alert/Alert'
@@ -11,6 +11,7 @@ const Erstellen = (props) => {
 
     const [recipeId, setRecipeId] = useState(props.location.state.id || null);
     const [recipeName, setRecipeName] = useState(props.location.state.name || null);
+    const [items, setItems] = useState(null);
     const [color, setColor] = useState(null);
     const [message, setMessage] = useState(null);
 
@@ -52,6 +53,37 @@ const Erstellen = (props) => {
         }
     }
 
+    useEffect(() => {
+        let mounted = true;
+        let data = {}
+        async function fetchData() {
+            try {
+                const response = await fetch('/recipe/api/v1.0/get_items', {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' },
+                })
+                if (mounted) {
+                    if (response.status !== 200) { throw new Error("error") }
+                    data = await response.json()
+                    setItems(data)
+                    refreshMessage(2)
+                }
+            } catch (error) {
+                if (mounted) {
+                    setItems({
+                        "category": [{ "id": 1, "name": "Obst & Gem\u00fcse" }, { "id": 2, "name": "Brot" }, { "id": 3, "name": "Milchprodukte" }],
+                        "ingredient": [{ "category_id": null, "id": 1, "name": "Butter" }],
+                        "tag": [{ "id": 1, "name": "vegetarisch" }],
+                        "unit": [{ "id": 1, "name": "gr" }]
+                    })
+                    refreshMessage(1)
+                }
+            }
+        }
+        fetchData()
+        return () => { mounted = false };
+    }, []);
+
     return (
         <div className='erstellen__container'>
             {message ? <Alert message={message}></Alert> : null}
@@ -68,15 +100,15 @@ const Erstellen = (props) => {
                     <img src={save_bild} alt='save' height='50px'></img>
                 </div>
             </div>
-            { recipeId ? (
+            { recipeId && items ? (
                 <div>
                 <Bilder
                     recipeId={recipeId}
                     imageFilename={props.location.state.image_filename}
                     photoFilename={props.location.state.photo_filename}>
                 </Bilder>
-                <Tags tags={props.location.state.tags} recipeId={recipeId} />
-                <Zutaten ingredients={props.location.state.ingredients} recipeId={recipeId} />
+                <Tags tags={props.location.state.tags} items={items.tag} recipeId={recipeId} />
+                <Zutaten ingredients={props.location.state.ingredients} items={items} recipeId={recipeId} />
                 <Text text={props.location.state.description} recipeId={recipeId} />
                 </div>
             ) : null}

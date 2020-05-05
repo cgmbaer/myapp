@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import './Tags.css'
-import Alert from '../Alert/Alert'
 import Tag from '../Tag/Tag'
 
 const Tags = (props) => {
 
-    const [message, setMessage] = useState(null);
-    const [allTags, setAllTags] = useState([]);
-
-    const refreshMessage = (eType, eMessage = null) => {
-        setMessage(null)
-        setTimeout(() => setMessage({ eType: eType, eMessage: eMessage }), 1)
-    }
-
-    const items = allTags.map(
+    const items = props.items ? props.items.map(
         x => {
             return(
                 <Tag
@@ -25,40 +16,10 @@ const Tags = (props) => {
                 </Tag>
             )
         }
-    )
-
-    useEffect(() => {
-        let mounted = true;
-        let data = {}
-        async function fetchData() {
-            try {
-                const response = await fetch('/recipe/api/v1.0/add_item', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        type: 'Tag',
-                        name: '',
-                    }),
-                })
-                if (mounted) {
-                    if (response.status !== 200) { throw new Error("error") }
-                    data = await response.json()
-                    setAllTags(data)
-                    refreshMessage(2)
-                }
-            } catch (error) {
-                if (mounted) {
-                    refreshMessage(1)
-                }
-            }
-        }
-        fetchData()
-        return () => { mounted = false };
-    }, []);
+    ) : null
 
     return (
         <div className='tags__container'>
-            {message ? <Alert message={message}></Alert> : null}
             {items}
         </div>
     )

@@ -4,14 +4,16 @@ import time
 import pandas as pd
 from app import app, db
 from sqlalchemy.exc import IntegrityError
-from app.models import Recipe, Tag, Ingredient, Unit, Category, Recipe_Tag, Recipe_Ingredient
+from app.models import Recipe, Tag, Ingredient, Unit, Category, Recipe_Tag, Recipe_Ingredient, Shopping
 from flask import render_template, request, redirect, send_from_directory, session, url_for, jsonify
 from functools import wraps
 from PIL import Image
 
+
 @app.before_request
 def make_session_permanent():
     session.permanent = True
+
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -147,7 +149,8 @@ def get_recipes():
         t = t.groupby('recipe_id')\
             .apply(lambda x: x[['tag_id', 'name']].to_dict('r'))\
             .rename('tags')
-    else: t = pd.DataFrame(columns=['tags'])
+    else:
+        t = pd.DataFrame(columns=['tags'])
 
     sql = db.session.query(Recipe_Ingredient).\
         join(Ingredient).\
@@ -167,7 +170,8 @@ def get_recipes():
             .groupby(['recipe_id'])\
             .apply(lambda x: x[['group', 'items']].to_dict('r'))\
             .rename('ingredients')
-    else: ri = pd.DataFrame(columns=['ingredients'])
+    else:
+        ri = pd.DataFrame(columns=['ingredients'])
 
     r = pd.concat([r, t, ri], axis=1, sort=False)
     r.insert(0, 'id', r.index)
@@ -275,6 +279,8 @@ def add_image():
         db.session.commit()
 
         filename = r.photo_filename
+        width, height = im.size
+        im = im.resize((600, int(600 / width * height)))
         im.save(os.path.join(app.config['UPLOAD_FOLDER'], str(
             recipeId) + '_' + str(recipeId) + timestr + '.jpg'))
 
@@ -284,28 +290,38 @@ def add_image():
 @app.route('/recipe/api/v1.0/add_item', methods=['POST'])
 @login_required
 def add_item():
+    table = eval(request.json['type'])
     if 'id' in request.json:
-        t = eval(request.json['type']).query.get(request.json['id'])
+        t = table.query.get(request.json['id'])
         t.name = request.json['name']
-        try:
-            db.session.commit()
-            return jsonify({'success': 'Name geändert'})
-        except IntegrityError as err:
-            db.session.rollback()
-            return jsonify({'error': 'Exisitert bereits!'})
-    if request.json['name'] != '':
-        t = eval(request.json['type'])(name=request.json['name'])
+    else:
+        t = table(name=request.json['name'])
         db.session.add(t)
-        try:
-            db.session.commit()
-        except IntegrityError as err:
-            db.session.rollback()
-            return jsonify({'error': 'Exisitert bereits!'})
+    try:
+        db.session.commit()
+        sql = db.session.query(
+            table).filter(
+            table.id == t.id
+        ).statement
+        t = pd.read_sql(sql, db.session.bind)
+        print(t.to_dict('r'))
+        return jsonify(t.to_dict('r')[0])
 
-    sql = db.session.query(eval(request.json['type'])).statement
-    df = pd.read_sql(sql, db.session.bind)
-    df.sort_values(by=['name'], inplace=True)
-    return df.to_json(orient='records')
+    except IntegrityError as err:
+        db.session.rollback()
+        return jsonify({'error': 'Exisitert bereits!'})
+
+
+@app.route('/recipe/api/v1.0/get_items', methods=['GET'])
+@login_required
+def get_items():
+    res = {}
+    for table in [Ingredient, Unit, Tag, Category]:
+        t = pd.read_sql(table.query.statement, db.session.bind)
+        t = t.to_dict('r')
+        res[table.__tablename__] = t
+
+    return jsonify(res)
 
 
 @app.route('/recipe/api/v1.0/update_tag', methods=['POST'])
@@ -320,3 +336,51 @@ def update_tag():
         db.session.add(t)
     db.session.commit()
     return jsonify({'success': 'Hat funktioniert!'})
+
+
+@app.route('/recipe/api/v1.0/edit_shopping', methods=['POST'])
+def edit_shopping():
+    if 'clear' in request.json:
+        Shopping.query.delete()
+        db.session.commit()
+        return jsonify({'success': 'Hat funktioniert!'})
+
+    if 'recipeId' in request.json:
+        s = pd.read_sql(db.session.query(Shopping).statement, db.session.bind)
+        if len(s) == 0:
+            sql = db.session.query(Recipe_Ingredient).\
+                join(Ingredient).\
+                outerjoin(Unit).\
+                with_entities(
+                Recipe_Ingredient.recipe_id,
+                Recipe_Ingredient.quantity,
+                Ingredient.name.label("item"),
+                Unit.name.label("unit")
+            ).filter(
+                Recipe_Ingredient.recipe_id == request.json['recipeId']
+            ).statement
+
+            ri = pd.read_sql(sql, db.session.bind)
+            ri.to_sql("shopping", con=db.engine,
+                      if_exists="append", index=False)
+            return jsonify({'success': 'Hat funktioniert!'})
+        else:
+            return jsonify({'error': 'Hat nicht funktioniert!'})
+    else:
+        return jsonify({'error': 'Hat nicht funktioniert!'})
+
+
+@app.route('/recipe/api/v1.0/get_shopping', methods=['GET'])
+def get_shopping():
+    sql = db.session.query(Shopping, Ingredient).\
+        filter(Shopping.item == Ingredient.name).\
+        outerjoin(Category).\
+        with_entities(
+        Shopping,
+        Category.name.label("category")
+    ).statement
+
+    s = pd.read_sql(sql, db.session.bind)
+    print(s)
+
+    return s.to_json(orient='records')

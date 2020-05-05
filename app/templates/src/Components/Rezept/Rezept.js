@@ -1,13 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import './Rezept.css'
+import Alert from '../Alert/Alert'
 import image_placeholder from '../../images/imagePlaceholder.jpg'
 import edit_bild from '../../images/edit.png'
+import shopping_bild from '../../images/shopping.png'
 
 const Rezept = (props) => {
 
     const [imagePath, setImagePath] = useState(image_placeholder)
+    const [photoPath, setPhotoPath] = useState(image_placeholder)
     const [maxHeight, setMaxHeight] = useState(null)
+    const [message, setMessage] = useState(null)
+
+    const refreshMessage = (eType, eMessage = null) => {
+        setMessage(null)
+        setTimeout(() => setMessage({ eType: eType, eMessage: eMessage }), 1)
+    }
 
     const items = props.recipe.tags ? props.recipe.tags.map(
         x => {
@@ -27,6 +36,23 @@ const Rezept = (props) => {
         }
     }
 
+    const handleShoppingClick = async () => {
+        try {
+            const response = await fetch('/recipe/api/v1.0/edit_shopping', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    recipeId: props.recipe.id
+                }),
+            })
+
+            if (response.status !== 200) { throw new Error("error") }
+            refreshMessage(2)
+        } catch {
+            refreshMessage(1)
+        }
+    }
+
     const mHelper = (text) => {
         if (text) {
             var bold = /\*\*(.*?)\*\*/gm
@@ -38,11 +64,13 @@ const Rezept = (props) => {
     useEffect(() => {
         if (props.recipe.image_filename) {
             setImagePath(props.recipe.image_filename)
+            setPhotoPath(props.recipe.photo_filename)
         };
     }, [props.recipe]);
 
     return (
         <div className="rezept__container">
+            {message ? <Alert message={message}></Alert> : null}
             <div className="rezept__preview_container">
                 <div className="rezept__thumbnail" onClick={() => collapse()}>
                     <img src={imagePath} alt='add' height='90px'></img>
@@ -50,11 +78,9 @@ const Rezept = (props) => {
                 <div className="rezept__name_tags">
                     <div className="rezept__name">
                         <div className='rezept__text'>{props.recipe.name}</div>
-                        <Link to={{ pathname: '/Erstellen', state: props.recipe }}>
-                            <div className="rezept__edit">
-                                <img src={edit_bild} alt='edit' height='30px'></img>
-                            </div>
-                        </Link>
+                        <div className="rezept__shopping" onClick={() => handleShoppingClick()}>
+                            <img src={shopping_bild} alt='add' height='30px'></img>
+                        </div>
                     </div>
                     <div className="rezept__tags">
                         {items}
@@ -81,12 +107,21 @@ const Rezept = (props) => {
                                     }
                                 </div>
                             )
-                        }) : null
+                        }) : (
+                                <div className="rezept__photo" onClick={() => handleShoppingClick()}>
+                                    <img src={photoPath} alt='add' width='100%'></img>
+                                </div>
+                            )
                     }
                 </div>
                 <div className="rezept__show_text_container">
                     <div className="rezept__show_text" dangerouslySetInnerHTML={{ __html: mHelper(props.recipe.description) }} />
                 </div>
+                <Link to={{ pathname: '/Erstellen', state: props.recipe }}>
+                    <div className="rezept__edit">
+                        <img src={edit_bild} alt='edit' height='30px'></img>
+                    </div>
+                </Link>
             </div>
         </div>
     )

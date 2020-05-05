@@ -83,7 +83,7 @@ function Kochbuch() {
                             }],
                             "id": 1
                         },
-                        { "name": "French Toast", "quantity": null, "image_filename": null, "photo_filename": null, "tags": null, "id": 2, 'ingredients': [] }
+                        { "name": "French Toast", "quantity": null, "image_filename": null, "photo_filename": null, "tags": null, "id": 2}
                     ])
                     refreshMessage(1)
                 }

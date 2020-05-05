@@ -58,7 +58,7 @@
     height: 18px;
 }
 
-.rezept__edit {
+.rezept__shopping {
     display: flex;
     height: 100%;
     width: 40px;
@@ -114,6 +114,15 @@
 }
 
 .rezept__show_text_container {
-    margin: 30px 15px 30px 15px;
+    margin: 30px 15px 15px 15px;
     white-space: pre-wrap;
+}
+
+.rezept__edit {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: center;
 }

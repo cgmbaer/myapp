@@ -12,15 +12,16 @@
 
 .zutat__remove {
     display: flex;
-    margin-right: 10px;
     width: 50px;
+    margin-right: 5px;
     height: 100%;
     align-items: center;
     justify-content: center;
 }
 
 .zutat__quantity  {
-    width: 15%;
+    width: 10%;
+    margin-right: 20px;
 }
 
 .zutat__quantity > input {
@@ -32,79 +33,34 @@
     font-family: inherit;
     border-bottom: 1px solid grey;
 
-    height: 100%;
-    width: 60%;
+    height: 30px;
+    width: 100%;
     display: flex;
 }
 
 .zutat__unit {
     position: relative;
-    width: 15%;
-}
+    width: 10%;
+    margin-right: 20px;
+    padding: 2px 5px 2px 5px;
+    border-radius: 5px;
+    background-color: rgb(238, 246, 248);
 
-.zutat__unit > input {
-    border: none;
-    background: transparent;
+    height: 30px;
     font-size: medium;
-    text-align: center;
-    padding: 0px;
-    font-family: inherit;
-    border-bottom: 1px solid grey;
-
-    height: 100%;
-    width: 60%;
-    display: flex;
-    font-size: medium;
-}
-
-.zutat__dropdown {
-    position: absolute;
-    z-index: 9;
-    display: inline-block;
-    background-color: rgb(216, 231, 236);
-    border: 1px solid lightgrey;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
-    height: 150px;
-    width: 100%;
+    line-height: 30px;
 }
 
 .zutat__ingredient {
     position: relative;
-    width: calc(70% - 110px);
-}
+    width: calc(100% - 20% - 165px);
+    padding: 2px 5px 2px 5px;
+    border-radius: 5px;
+    background-color: rgb(238, 246, 248);
 
-.zutat__ingredient > input {
-    border: none;
-    background: transparent;
+    height: 30px;
     font-size: medium;
-    padding: 0px;
-    font-family: inherit;
-    border-bottom: 1px solid grey;
-
-    height: 100%;
-    width: 100%;
-    display: flex;
-    font-size: medium;
-}
-
-.zutat__dropdown {
-    position: absolute;
-    z-index: 7;
-    display: inline-block;
-    background-color: rgb(216, 231, 236);
-    border: 1px solid lightgrey;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
-    height: 150px;
-    width: 100%;
-}
-
-.zutat__dropdown_item {
     line-height: 30px;
-    height:30px;
-    font-size: small;
-    white-space: nowrap;
 }
 
 .zutat__save {

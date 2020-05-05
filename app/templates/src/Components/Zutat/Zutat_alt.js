@@ -3,7 +3,6 @@ import './Zutat.css'
 import save_bild from '../../images/save.png'
 import remove_bild from '../../images/close.png'
 import Alert from '../Alert/Alert'
-import Dropdown from '../Dropdown/Dropdown'
 
 const Zutat = (props) => {
 
@@ -86,19 +85,43 @@ const Zutat = (props) => {
         props.updateIngredient(tmp)
     }
 
-    const handleIngredientClick = (id, name) => {
+    const handleIngredientClick = (e, id) => {
         setIngredientId(id);
-        setIngredient(name)
+        setIngredient(e.currentTarget.innerHTML)
         setIOpen(false)
         setColor('rgb(235, 162, 162)')
     }
 
-    const handleUnitClick = (id, name) => {
+    const handleUnitClick = (e, id) => {
         setUnitId(id);
-        setUnit(name)
+        setUnit(e.currentTarget.innerHTML)
         setUOpen(false)
         setColor('rgb(235, 162, 162)')
     }
+
+    const dropDownIngredient = props.preset.ingredients.filter(x => x.name.toLowerCase().includes(ingredient.toLowerCase())).map((x) => {
+        return (
+            <div
+                className='zutat__dropdown_item'
+                key={'ingredient_dropDown-' + x.id}
+                onClick={(e) => handleIngredientClick(e, x.id)}
+            >
+                {x.name}
+            </div>
+        )
+    })
+
+    const dropDownUnit = props.preset.units.filter(x => x.name.toLowerCase().includes(unit.toLowerCase())).map((x) => {
+        return (
+            <div
+                className='zutat__dropdown_item'
+                key={'unit_dropDown-' + x.id}
+                onClick={(e) => handleUnitClick(e, x.id)}
+            >
+                {x.name}
+            </div>
+        )
+    })
 
     return (
         <div className='zutat__container' style={{ backgroundColor: color }}>
@@ -116,12 +139,30 @@ const Zutat = (props) => {
                 </input>
             </div>
             <div className='zutat__unit'>
-                <div onClick={() => {setUOpen(!uOpen); setIOpen(false)}}>{unit}</div>
-                {uOpen ? <Dropdown items={props.preset.unit} callback={handleUnitClick} /> : null}
+                <input
+                    type='text'
+                    onClick={() => { setUOpen(!uOpen) }}
+                    onChange={(e) => setUnit(e.target.value)}
+                    placeholder='kg ...'
+                    value={unit}></input>
+                {uOpen ? (
+                    <div className='zutat__dropdown'>
+                        {dropDownUnit}
+                    </div>
+                ) : null}
             </div>
             <div className='zutat__ingredient'>
-                <div onClick={() => {setIOpen(!iOpen); setUOpen(false)}}>{ingredient}</div>
-                {iOpen ? <Dropdown items={props.preset.ingredient} callback={handleIngredientClick} /> : null}
+                <input
+                    type='text'
+                    placeholder='Schweineschmalz ...'
+                    onClick={() => { setIOpen(!iOpen) }}
+                    onChange={(e) => setIngredient(e.target.value)}
+                    value={ingredient}></input>
+                {iOpen ? (
+                    <div className='zutat__dropdown'>
+                        {dropDownIngredient}
+                    </div>
+                ) : null}
             </div>
             {!(color === 'rgb(235, 162, 162)') || (uOpen || iOpen || ingredient === '') ? null : (
                 <div className='zutat__save' onClick={() => saveIngredient(false)}>
