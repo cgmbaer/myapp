@@ -5,11 +5,17 @@
     display: inline-block;
     background-color: lightblue;
     border: 1px solid lightgrey;
-    overflow-y: scroll;
-    scroll-behavior: smooth;
+    overflow: hidden;
     height: 150px;
     width: 100%;
     min-width: 100px;
+}
+
+.dropdown__item_container {
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    width: 100%;
+    height: 100%;
 }
 
 .dropdown__item {
@@ -21,6 +27,7 @@
 }
 
 .dropdown__search_container {
+    position: absolute;
     display: flex;
     width: 100%;
     background-color: #e9f1f3;

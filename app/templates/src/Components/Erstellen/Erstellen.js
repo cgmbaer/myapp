@@ -72,7 +72,7 @@ const Erstellen = (props) => {
                 if (mounted) {
                     setItems({
                         "category": [{ "id": 1, "name": "Obst & Gem\u00fcse" }, { "id": 2, "name": "Brot" }, { "id": 3, "name": "Milchprodukte" }],
-                        "ingredient": [{ "category_id": null, "id": 1, "name": "Butter" }],
+                        "ingredient": [{ "category_id": null, "id": 1, "name": "Butter" },{ "category_id": null, "id": 1, "name": "Butter" },{ "category_id": null, "id": 1, "name": "Butter" },{ "category_id": null, "id": 1, "name": "Butter" },{ "category_id": null, "id": 1, "name": "Butter" },{ "category_id": null, "id": 1, "name": "Butter" },{ "category_id": null, "id": 1, "name": "Butter" },{ "category_id": null, "id": 1, "name": "Butter" },{ "category_id": null, "id": 1, "name": "Butter" }],
                         "tag": [{ "id": 1, "name": "vegetarisch" }],
                         "unit": [{ "id": 1, "name": "gr" }]
                     })
