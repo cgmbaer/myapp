@@ -325,7 +325,7 @@ def get_items():
         t.replace({np.nan: None}, inplace=True)
         t = t.to_dict('r')
         res[table.__tablename__] = t
-    
+
     return jsonify(res)
 
 
@@ -351,9 +351,7 @@ def edit_shopping():
         return jsonify({'success': 'Hat funktioniert!'})
 
     if 'recipeId' in request.json:
-        print('1')
-        s = pd.read_sql(db.session.query(Shopping).statement, db.session.bind)
-        print(len(s))
+        s = pd.read_sql(db.session.query(Shopping).filter(Shopping.recipe_id == request.json['recipeId']).statement, db.session.bind)
         if len(s) == 0:
             sql = db.session.query(Recipe_Ingredient).\
                 join(Ingredient).\
@@ -369,6 +367,7 @@ def edit_shopping():
             ).statement
 
             ri = pd.read_sql(sql, db.session.bind)
+
             ri.to_sql("shopping", con=db.engine,
                       if_exists="append", index=False)
             return jsonify({'success': 'Hat funktioniert!'})
@@ -380,7 +379,8 @@ def edit_shopping():
 
 @app.route('/recipe/api/v1.0/get_shopping', methods=['GET'])
 def get_shopping():
-    sql = db.session.query(Shopping, Recipe).\
+    sql = db.session.query(Shopping).\
+        outerjoin(Recipe, Shopping.recipe_id == Recipe.id).\
         outerjoin(Ingredient, Shopping.item == Ingredient.name).\
         outerjoin(Category, Ingredient.category_id == Category.id).\
         with_entities(
@@ -390,4 +390,22 @@ def get_shopping():
     ).statement
 
     s = pd.read_sql(sql, db.session.bind)
-    return s.to_json(orient='records')
+    s.replace({np.nan: None}, inplace=True)
+    s["category"].fillna('Andere', inplace=True)
+
+    if len(s) > 0:
+        s1 = s[['recipe_id', 'recipe_name']].drop_duplicates().to_dict('r')
+        s = s.groupby(['category'], as_index=True)\
+            .apply(lambda x: x[[
+                'recipe_id',
+                'quantity',
+                'ingredient_id',
+                'unit',
+                'item'
+            ]].to_dict('r'))\
+            .rename('items')\
+            .reset_index()
+        
+        return jsonify({'recipes': s1, 'ingredients': s.to_dict('r')})
+    
+    return jsonify({})
