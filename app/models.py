@@ -40,6 +40,7 @@ class Shopping(db.Model):
     quantity = db.Column(db.Float)
     unit = db.Column(db.String(16))
     item = db.Column(db.String(128))
+    ingredient_id = db.Column(db.Integer)
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)

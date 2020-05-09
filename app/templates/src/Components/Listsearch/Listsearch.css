@@ -30,6 +30,7 @@
 }
 
 .listsearch__search_text {
+    position: relative;
     width: calc(100% - 120px);
 }
 

@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import pandas as pd
+import numpy as np
 from app import app, db
 from sqlalchemy.exc import IntegrityError
 from app.models import Recipe, Tag, Ingredient, Unit, Category, Recipe_Tag, Recipe_Ingredient, Shopping
@@ -294,8 +295,12 @@ def add_item():
     if 'id' in request.json:
         t = table.query.get(request.json['id'])
         t.name = request.json['name']
+        if 'categoryId' in request.json:
+            t.category_id = request.json['categoryId']
     else:
         t = table(name=request.json['name'])
+        if 'categoryId' in request.json:
+            t.category_id = request.json['categoryId']
         db.session.add(t)
     try:
         db.session.commit()
@@ -304,7 +309,6 @@ def add_item():
             table.id == t.id
         ).statement
         t = pd.read_sql(sql, db.session.bind)
-        print(t.to_dict('r'))
         return jsonify(t.to_dict('r')[0])
 
     except IntegrityError as err:
@@ -318,9 +322,10 @@ def get_items():
     res = {}
     for table in [Ingredient, Unit, Tag, Category]:
         t = pd.read_sql(table.query.statement, db.session.bind)
+        t.replace({np.nan: None}, inplace=True)
         t = t.to_dict('r')
         res[table.__tablename__] = t
-
+    
     return jsonify(res)
 
 
@@ -346,7 +351,9 @@ def edit_shopping():
         return jsonify({'success': 'Hat funktioniert!'})
 
     if 'recipeId' in request.json:
+        print('1')
         s = pd.read_sql(db.session.query(Shopping).statement, db.session.bind)
+        print(len(s))
         if len(s) == 0:
             sql = db.session.query(Recipe_Ingredient).\
                 join(Ingredient).\
@@ -354,6 +361,7 @@ def edit_shopping():
                 with_entities(
                 Recipe_Ingredient.recipe_id,
                 Recipe_Ingredient.quantity,
+                Recipe_Ingredient.ingredient_id,
                 Ingredient.name.label("item"),
                 Unit.name.label("unit")
             ).filter(
@@ -372,15 +380,14 @@ def edit_shopping():
 
 @app.route('/recipe/api/v1.0/get_shopping', methods=['GET'])
 def get_shopping():
-    sql = db.session.query(Shopping, Ingredient).\
-        filter(Shopping.item == Ingredient.name).\
-        outerjoin(Category).\
+    sql = db.session.query(Shopping, Recipe).\
+        outerjoin(Ingredient, Shopping.item == Ingredient.name).\
+        outerjoin(Category, Ingredient.category_id == Category.id).\
         with_entities(
+        Recipe.name.label("recipe_name"),
         Shopping,
         Category.name.label("category")
     ).statement
 
     s = pd.read_sql(sql, db.session.bind)
-    print(s)
-
     return s.to_json(orient='records')

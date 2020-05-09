@@ -6,9 +6,10 @@
 }
 
 .listitem__text {
-    display: flex;
+    position: relative;
     width: 50%;
     height: 40px;
+    line-height: 40px;
     align-items: center;
 }
 
