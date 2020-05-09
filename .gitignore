@@ -15,6 +15,7 @@
 # images
 /app/templates/recipe_images/*
 /app/templates/src/images/3.jpg
+/app/templates/src/dummyData.json
 !/app/templates/recipe_images/.keep
 
 # misc

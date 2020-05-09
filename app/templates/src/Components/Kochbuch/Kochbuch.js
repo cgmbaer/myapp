@@ -1,28 +1,66 @@
-import React from 'react';
-import './Kochbuch.css';
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import './Kochbuch.css'
 
-import useFetch from '../Hooks/useFetch'
+import Rezept from '../Rezept/Rezept'
 
+import useFetch from '../hooks/useFetch'
+
+import search_zeichen from '../../images/search.png'
+import erstellen_zeichen from '../../images/plus.png'
 
 function Kochbuch() {
 
-    const res = useFetch('get_recipes', {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-        mode: 'no-cors'
-    });
+    const [searchText, setSearchText] = useState('')
 
-    if (!res.response) {
-        return <div>Loading...</div>
+    const res = useFetch('get_recipes',
+        {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' },
+        },
+        "Kochbuch"
+    );
+
+    const data = res.response
+
+    const items = data ? data.filter((x) => {
+        if (!searchText)
+            return x
+        else if (x.name.toLowerCase().includes(searchText)) {
+            return x
+        }
+        return null
+    }).map(x => {
+        return (
+            <Rezept key={x.id} recipe={x}></Rezept>
+        )
+    }) : null
+
+    const searchSpace = (e) => {
+        let keyword = e.target.value;
+        setSearchText(keyword.toLowerCase())
     }
-
-    const recipes = res.response
 
     return (
         <div className="kochbuch__container">
-            worked
+            <div className="kochbuch__search">
+                <div className="kochbuch__search_icon">
+                    <img src={search_zeichen} alt='add' height='50px'></img>
+                </div>
+                <div className="kochbuch__search_text">
+                    <input type='text' onChange={(e) => searchSpace(e)}></input>
+                </div>
+                <Link to={{ pathname: '/Erstellen', state: {} }}>
+                    <div className="kochbuch__erstellen_icon">
+                        <img src={erstellen_zeichen} alt='add' height='50px'></img>
+                    </div>
+                </Link>
+            </div>
+            <div className='kochbuch__rezept_container'>
+                {items}
+            </div>
         </div>
-    );
+    )
 }
 
-export default Kochbuch;
+export default Kochbuch

@@ -8,7 +8,6 @@ const Einkauf = () => {
     const [items, setItems] = useState([])
     const [recipes, setRecipes] = useState(null)
     const [categories, setCategories] = useState(null)
-    const [active, setActive] = useState(false)
 
     const res = useFetch('get_shopping',
         {
@@ -20,17 +19,20 @@ const Einkauf = () => {
 
     const data = res.response || []
 
-    useFetch('edit_shopping',
-        {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                clear: true
-            }),
-        },
-        "Update",
-        active
-    )
+    const handleClearClick = async () => {
+        try {
+            const response = await fetch('/recipe/api/v1.0/edit_shopping', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    clear: true
+                }),
+            })
+
+            if (response.status !== 200) { throw new Error("error") }
+        } catch {
+        }
+    }
 
     const recipe_items = recipes ? recipes.map((x, index) => {
         return (
@@ -40,11 +42,11 @@ const Einkauf = () => {
 
     useEffect(() => {
         // setCategories([...new Set(data.map(x => x.category))])
-        setRecipes([...new Set(data.map(x => { return { 'id': x.recipe_id, 'name': x.recipe_name } }))])
+        // setRecipes([...new Set(data.map(x => { return { 'id': x.recipe_id, 'name': x.recipe_name } }))])
     }, [data]);
 
     return (
-        <div className="einkauf__container" onClick={() => setActive(true)}>
+        <div className="einkauf__container" onClick={() => handleClearClick()}>
             <div>
                 {recipe_items}
             </div>
