@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './Zutaten.css'
-import Gruppe from '../Gruppe/Gruppe'
+import Gruppe from './Gruppe'
 
 const Zutaten = (props) => {
 

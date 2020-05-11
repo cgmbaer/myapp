@@ -13,15 +13,13 @@ function Kochbuch() {
 
     const [searchText, setSearchText] = useState('')
 
-    const res = useFetch('get_recipes',
+    const data = useFetch('get_recipes',
         {
             method: 'GET',
             headers: { 'Accept': 'application/json' },
         },
         "Kochbuch"
     );
-
-    const data = res.response
 
     const items = data ? data.filter((x) => {
         if (!searchText)

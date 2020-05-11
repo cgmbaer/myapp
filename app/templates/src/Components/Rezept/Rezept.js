@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom';
 import './Rezept.css'
 
-import useFetch from '../hooks/useFetch'
+import { funFetch } from '../hooks/funFetch'
 
 import image_placeholder from '../../images/imagePlaceholder.jpg'
 import edit_bild from '../../images/edit.png'
@@ -13,19 +13,6 @@ const Rezept = (props) => {
     const [imagePath, setImagePath] = useState(image_placeholder)
     const [photoPath, setPhotoPath] = useState(image_placeholder)
     const [maxHeight, setMaxHeight] = useState(null)
-    const [active, setActive] = useState(false)
-
-    useFetch('edit_shopping',
-        {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                recipeId: props.recipe.id
-            }),
-        },
-        "Update",
-        active
-    )
 
     const items = props.recipe.tags ? props.recipe.tags.map(
         x => {
@@ -53,6 +40,18 @@ const Rezept = (props) => {
         }
     }
 
+    const handleShoppingClick = () => {
+        funFetch('edit_shopping',
+            JSON.stringify({
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    recipeId: props.recipe.id
+                }),
+            })
+        )
+    }
+
     useEffect(() => {
         if (props.recipe.image_filename) {
             setImagePath(props.recipe.image_filename)
@@ -71,7 +70,7 @@ const Rezept = (props) => {
                 <div className="rezept__name_tags">
                     <div className="rezept__name">
                         <div className='rezept__text'>{props.recipe.name}</div>
-                        <div className="rezept__shopping" onClick={() => setActive(true)}>
+                        <div className="rezept__shopping" onClick={() => handleShoppingClick()}>
                             <img src={shopping_bild} alt='add' height='30px'></img>
                         </div>
                     </div>

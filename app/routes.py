@@ -206,12 +206,19 @@ def get_preset():
 @app.route('/recipe/api/v1.0/edit_recipe_ingredient', methods=['POST'])
 @login_required
 def edit_recipe_ingredient():
+
+    if 'remove' in request.json:
+        if request.json['remove'] == True:
+            ri = Recipe_Ingredient.query.filter_by(id=request.json['id']).delete()
+            db.session.commit()
+            return jsonify({'id': -1})
+
     if request.json['quantity'] == '' or 'quantity' not in request.json:
         quantity = None
     else:
         quantity = request.json['quantity']
 
-    if request.json['id'] == -1 and request.json['remove'] == False:
+    if request.json['id'] == -1:
         ri = Recipe_Ingredient(
             group=request.json['group'],
             quantity=quantity,
@@ -222,7 +229,7 @@ def edit_recipe_ingredient():
         db.session.add(ri)
         db.session.commit()
 
-    if request.json['id'] != -1 and request.json['remove'] == False:
+    if request.json['id'] != -1:
         ri = Recipe_Ingredient.query.get(request.json['id'])
         ri.quantity = quantity
         ri.unit_id = request.json['unit_id']
@@ -231,11 +238,6 @@ def edit_recipe_ingredient():
         ri.group = request.json['group']
 
         db.session.commit()
-
-    if request.json['remove'] == True:
-        ri = Recipe_Ingredient.query.filter_by(id=request.json['id']).delete()
-        db.session.commit()
-        return jsonify({'id': -1})
 
     return jsonify({'id': ri.id})
 

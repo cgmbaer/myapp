@@ -10,11 +10,11 @@ const Dropdown = (props) => {
         x => x.name.toLowerCase().includes(
             search.toLowerCase()
         )
-    ).map((x) => {
+    ).map((x, index) => {
         return (
             <div
                 className='dropdown__item'
-                key={x.name + x.id}
+                key={x.name + x.id + index}
                 onClick={(e) => props.callback(x.id, x.name)}
             >
                 {x.name}

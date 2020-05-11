@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef } from "react"
 import './Erstellen.css'
 
 import Bilder from '../Bilder/Bilder'
@@ -7,6 +7,7 @@ import Zutaten from '../Zutaten/Zutaten'
 import Text from '../Text/Text'
 
 import useFetch from '../hooks/useFetch'
+import { funFetch } from '../hooks/funFetch'
 
 import save_bild from '../../images/save.png'
 
@@ -15,14 +16,11 @@ const Erstellen = (props) => {
     const recipe = props.location.state
 
     const [recipeId, setRecipeId] = useState(recipe.id || null)
-    const [recipeName, setRecipeName] = useState(recipe.name || null)
-    const [active, setActive] = useState(false)
     const [color, setColor] = useState(null)
 
-    const refRecipeId = useRef(recipeId)
-    const refRecipeName = useRef(recipeName)
+    const refRecipeName = useRef(recipe.name)
 
-    const res = useFetch('get_items',
+    const data = useFetch('get_items',
         {
             method: 'GET',
             headers: { 'Accept': 'application/json' },
@@ -30,33 +28,21 @@ const Erstellen = (props) => {
         "Items"
     );
 
-    const data = res.response
-
-    const update = useFetch('set_recipeName',
-        {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                recipeId: refRecipeId.current,
-                recipeName: recipeName
+    const handleClick = async () => {
+        let res = await funFetch('set_recipeName',
+            JSON.stringify({
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    recipeId: recipeId,
+                    recipeName: refRecipeName.current.value
+                })
             })
-        },
-        "Update",
-        active
-    )
-
-    const handleClick = () => {
-        refRecipeId.current = recipeId
-        setActive(true)
-        setRecipeName(refRecipeName.current.value)
+        )
+        console.log(res)
+        res ? setRecipeId(res.recipeId) : setRecipeId(-1)
         setColor(null)
     }
-
-    useEffect(() => {
-        if (update.response) {
-            setRecipeId(update.response.recipeId)
-        }
-    }, [update.response])
 
     return (
         <div className='erstellen__container' >
