@@ -23,7 +23,7 @@ const Text = (props) => {
             if (response.status !== 200) { throw new Error("error") }
             setColor(null)
             setOpen(false)
-        } catch {
+        } catch (error) {
             setColor(null)
             setOpen(false)
         }
