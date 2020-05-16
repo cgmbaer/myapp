@@ -11,6 +11,8 @@ import erstellen_zeichen from '../../images/plus.png'
 
 function Kochbuch() {
 
+    // console.log('Kochbuch render')
+
     const [searchText, setSearchText] = useState('')
 
     const data = useFetch('get_recipes',

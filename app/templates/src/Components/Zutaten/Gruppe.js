@@ -9,11 +9,14 @@ import save_bild from '../../images/save.png'
 
 const Gruppe = (props) => {
 
+    // console.log("Gruppe render: " + props.group)
+
+    const [group, setGroup] = useState(props.group)
     const [ingredients, setIngredients] = useState(props.ingredients || [])
     const [color, setColor] = useState(null);
     const [open, setOpen] = useState(false)
 
-    const refGroup = useRef(props.group)
+    const refGroup = useRef(group)
 
     const addIngredient = () => {
         setIngredients([...ingredients, { "id": -1 }])
@@ -23,12 +26,12 @@ const Gruppe = (props) => {
         (x, index) => {
             return (
                 <Zutat
-                    key={props.group + x.ingredient_id + index}
+                    key={'Zutat-' + props.groupIndex + '-' + index}
                     addIngredient={addIngredient}
                     preset={props.preset}
                     ingredient={x}
                     recipeId={props.recipeId}
-                    group={props.group}
+                    group={group}
                 ></Zutat>
             )
         }
@@ -41,12 +44,13 @@ const Gruppe = (props) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     group: refGroup.current.value,
-                    oldGroup: props.group,
+                    oldGroup: group,
                     recipeId: props.recipeId
                 }),
             })
         )
-        props.updateGroup(props.group, refGroup.current.value)
+        props.updateGroup(props.groupIndex)
+        setGroup(refGroup.current.value)
         setColor('rgb(194, 223, 233)')
         setOpen(false)
     }
@@ -77,7 +81,7 @@ const Gruppe = (props) => {
                     </div>
                 ) : null}
             </div>
-            {props.group && !open ? items : null}
+            {group ? items : null}
         </div>
     )
 }

@@ -10,6 +10,8 @@ import remove_bild from '../../images/close.png'
 
 const Zutat = (props) => {
 
+    // console.log("Zutat render: " + props.ingredient.ingredient)
+
     const [id, setId] = useState(props.ingredient.id || '')
     const [quantity, setQuantity] = useState(props.ingredient.quantity || '')
     const [unitId, setUnitId] = useState(props.ingredient.unit_id || null)
@@ -22,9 +24,8 @@ const Zutat = (props) => {
     const [color, setColor] = useState(null)
 
     const handleSaveClick = async () => {
-
         let recipeIngredient = {
-            id: props.ingredient.id,
+            id: id,
             group: props.group,
             quantity: quantity,
             ingredient_id: ingredientId,
@@ -40,7 +41,7 @@ const Zutat = (props) => {
             })
         )
 
-        if (recipeIngredient['id'] === -1) {
+        if (id === -1) {
             res ? setId(res.id) : setId(0)
             props.addIngredient()
         }

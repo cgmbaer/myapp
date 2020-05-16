@@ -13,6 +13,8 @@ import save_bild from '../../images/save.png'
 
 const Erstellen = (props) => {
 
+    // console.log('Erstellen render')
+
     const recipe = props.location.state
 
     const [recipeId, setRecipeId] = useState(recipe.id || null)
