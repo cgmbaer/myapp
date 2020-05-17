@@ -1,12 +1,24 @@
-export const funFetch = async (endpoint, optionsString) => {
+export const funFetch = async (
+    endpoint,
+    body = null,
+    method = 'POST',
+    headers = { 'Content-Type': 'application/json' }
+) => {
+
+    let optionsString = {
+        method: method,
+        headers: headers,
+    }
+
+    if(body) optionsString['body'] = body
 
     let response = null
 
     try {
-        console.log(endpoint + ' - ' + optionsString)
+        console.log(optionsString)
         const res = await fetch(
             '/recipe/api/v1.0/' + endpoint,
-            JSON.parse(optionsString)
+            optionsString
         )
         const json = await res.json()
         if (res.status !== 200) { throw new Error("error") }

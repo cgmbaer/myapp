@@ -41,15 +41,7 @@ const Rezept = (props) => {
     }
 
     const handleShoppingClick = () => {
-        funFetch('edit_shopping',
-            JSON.stringify({
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    recipeId: props.recipe.id
-                }),
-            })
-        )
+        funFetch('edit_shopping', { recipeId: props.recipe.id })
     }
 
     useEffect(() => {

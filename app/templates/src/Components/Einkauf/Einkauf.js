@@ -10,18 +10,12 @@ const Einkauf = () => {
     const [recipes, setRecipes] = useState(null)
     // const [categories, setCategories] = useState(null)
 
-    const data = useFetch('get_shopping',
-        {
-            method: 'GET',
-            headers: { 'Accept': 'application/json' },
-        },
-        "Shopping"
-    );
+    const data = useFetch('get_shopping', 'shopping')
 
     const recipe_items = recipes ? recipes.map((x, index) => {
         return (
-            <div key={x.recipe_name + index} className = "shopping__recipe_container">
-                <div className = "shopping__recipe_text">{x.recipe_name}</div>
+            <div key={x.recipe_name + index} className="shopping__recipe_container">
+                <div className="shopping__recipe_text">{x.recipe_name}</div>
             </div>
         )
     }) : null
@@ -43,15 +37,7 @@ const Einkauf = () => {
     const handleClearClick = () => {
         setRecipes([])
         setItems([])
-        funFetch('edit_shopping',
-            JSON.stringify({
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    clear: true
-                }),
-            })
-        )
+        funFetch('edit_shopping', { clear: true })
     }
 
     useEffect(() => {

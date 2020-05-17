@@ -1,13 +1,15 @@
 import React, { useState, useRef } from 'react'
 import './Listitem.css'
+
+import Dropdown from '../Dropdown/Dropdown'
+
+import { funFetch } from '../hooks/funFetch'
+
 import edit_bild from '../../images/edit.png'
 import save_bild from '../../images/save.png'
-import Alert from '../Alert/Alert'
-import Dropdown from '../Dropdown/Dropdown'
 
 const Listitem = (props) => {
     const [editable, setEditable] = useState(false)
-    const [message, setMessage] = useState(null)
     const [name, setName] = useState(props.name)
     const [color, setColor] = useState(null)
     const [openCategory, setOpenCategory] = useState(false);
@@ -15,14 +17,7 @@ const Listitem = (props) => {
 
     const refItem = useRef();
 
-    const refreshMessage = (eType, eMessage = null) => {
-        setMessage(null)
-        setTimeout(() => setMessage({ eType: eType, eMessage: eMessage }), 1)
-    }
-
-    const updateItem = async () => {
-
-        let data = {}
+    const updateItem = () => {
 
         let body = {
             type: props.type,
@@ -32,28 +27,10 @@ const Listitem = (props) => {
 
         if (categoryId) body['categoryId'] = categoryId
 
-        try {
-            const response = await fetch('/recipe/api/v1.0/add_item', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-            })
-            if (response.status !== 200) { throw new Error("error") }
-            data = await response.json()
+        funFetch('add_item', body)
 
-            if (data.error) {
-                refreshMessage(1, data.error)
-            } else {
-                setEditable(false)
-                setColor(null)
-                refreshMessage(2)
-            }
-
-        } catch (error) {
-            setEditable(false)
-            setColor(null)
-            refreshMessage(1)
-        }
+        setEditable(false)
+        setColor(null)
     }
 
     const handleStatus = () => {
@@ -71,7 +48,6 @@ const Listitem = (props) => {
 
     return (
         <div>
-            {message ? <Alert message={message}></Alert> : null}
             {
                 !editable ? (
                     <div className="listitem__container">

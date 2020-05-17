@@ -1,16 +1,18 @@
 import React, { useState, useRef } from 'react'
 import './Listsearch.css'
-import Alert from '../Alert/Alert'
-import Listitem from '../Listitem/Listitem'
+
+import Listitem from './Listitem'
+import Dropdown from '../Dropdown/Dropdown'
+
+import { funFetch } from '../hooks/funFetch'
+
 import search_zeichen from '../../images/search.png'
 import erstellen_zeichen from '../../images/plus.png'
-import Dropdown from '../Dropdown/Dropdown'
 
 const Listsearch = (props) => {
 
     const [searchText, setSearchText] = useState(null);
     const [openCategory, setOpenCategory] = useState(false);
-    const [message, setMessage] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [items, setItems] = useState(props.items);
 
@@ -21,15 +23,7 @@ const Listsearch = (props) => {
         setSearchText(keyword.toLowerCase())
     }
 
-    const refreshMessage = (eType, eMessage = null) => {
-        setMessage(null)
-        setTimeout(() => setMessage({ eType: eType, eMessage: eMessage }), 1)
-    }
-
     const addItem = async (id) => {
-
-        let data = {}
-
         let body = {
             type: props.type,
             name: refItem.current.value,
@@ -37,32 +31,11 @@ const Listsearch = (props) => {
 
         if(id) body['categoryId'] = id
 
-        try {
-            const response = await fetch('/recipe/api/v1.0/add_item', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body),
-            })
+        let data = await funFetch('add_item', body)
 
-            if (response.status !== 200) { throw new Error("error") }
-            data = await response.json()
-
-            if (data.error) {
-                refreshMessage(1, data.error)
-            } else {
-                setItems([...items, data])
-                refItem.current.value = ''
-                setSearchText(null)
-                refreshMessage(2)
-            }
-
-        } catch (error) {
-            setItems([...items, { 'id': 10, 'name': 'Chili', 'category_id': null }])
-            refItem.current.value = ''
-            setSearchText(null)
-            refreshMessage(1)
-        }
-
+        setItems([...items, data])
+        refItem.current.value = ''
+        setSearchText(null)
     }
 
     const listItems = items ? items.filter((x) => {
@@ -93,7 +66,6 @@ const Listsearch = (props) => {
 
     return (
         <div className="listsearch__container">
-            {message ? <Alert message={message}></Alert> : null}
             <div className="listsearch__name" onClick={() => { setIsOpen(!isOpen) }}>{props.name}</div>
             {isOpen ? (
                 <div>
