@@ -24,7 +24,7 @@ const Zutat = (props) => {
     const [color, setColor] = useState(null)
 
     const handleSaveClick = async () => {
-        let recipeIngredient = {
+        let body = {
             id: id,
             group: props.group,
             quantity: quantity,
@@ -33,13 +33,7 @@ const Zutat = (props) => {
             recipe_id: props.recipeId
         }
 
-        let res = await funFetch('edit_recipe_ingredient',
-            JSON.stringify({
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(recipeIngredient),
-            })
-        )
+        let res = await funFetch('edit_recipe_ingredient', body)
 
         if (id === -1) {
             res ? setId(res.id) : setId(0)
@@ -51,18 +45,10 @@ const Zutat = (props) => {
 
     const handleRemoveClick = async () => {
 
-        let recipeIngredient = {
+        funFetch('edit_recipe_ingredient', {
             id: id,
             remove: true
-        }
-
-        funFetch('edit_recipe_ingredient',
-            JSON.stringify({
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(recipeIngredient),
-            })
-        )
+        })
 
         setOpen(false)
     }

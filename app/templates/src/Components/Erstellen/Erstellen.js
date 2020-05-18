@@ -1,10 +1,10 @@
 import React, { useState, useRef } from "react"
 import './Erstellen.css'
 
-import Bilder from '../Bilder/Bilder'
-import Tags from '../Tags/Tags'
-import Zutaten from '../Zutaten/Zutaten'
-import Text from '../Text/Text'
+import Bilder from './Bilder'
+import Tags from './Tags'
+import Zutaten from './Zutaten'
+import Text from './Text'
 
 import useFetch from '../hooks/useFetch'
 import { funFetch } from '../hooks/funFetch'
@@ -22,27 +22,14 @@ const Erstellen = (props) => {
 
     const refRecipeName = useRef(recipe.name)
 
-    const data = useFetch('get_items',
-        {
-            method: 'GET',
-            headers: { 'Accept': 'application/json' },
-        },
-        "Items"
-    );
+    const data = useFetch('get_items', 'Items')
 
     const handleClick = async () => {
-        let res = await funFetch('set_recipeName',
-            JSON.stringify({
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
+        let data = await funFetch('set_recipeName', {
                     recipeId: recipeId,
                     recipeName: refRecipeName.current.value
                 })
-            })
-        )
-        console.log(res)
-        res ? setRecipeId(res.recipeId) : setRecipeId(-1)
+        setRecipeId(data.recipeId)
         setColor(null)
     }
 

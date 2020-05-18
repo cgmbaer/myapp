@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Kochbuch.css'
 
-import Rezept from '../Rezept/Rezept'
+import Rezept from './Rezept'
 
 import useFetch from '../hooks/useFetch'
 

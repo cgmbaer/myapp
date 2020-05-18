@@ -10,12 +10,12 @@ export const funFetch = async (
         headers: headers,
     }
 
-    if(body) optionsString['body'] = body
+    if(body) optionsString['body'] = JSON.stringify(body)
 
     let response = null
 
     try {
-        console.log(optionsString)
+        console.log(endpoint)
         const res = await fetch(
             '/recipe/api/v1.0/' + endpoint,
             optionsString

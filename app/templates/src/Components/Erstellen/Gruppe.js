@@ -38,17 +38,12 @@ const Gruppe = (props) => {
     )
 
     const handleClick = () => {
-        funFetch('edit_group',
-            JSON.stringify({
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    group: refGroup.current.value,
-                    oldGroup: group,
-                    recipeId: props.recipeId
-                }),
-            })
-        )
+        funFetch('edit_group', {
+            group: refGroup.current.value,
+            oldGroup: group,
+            recipeId: props.recipeId
+        })
+        
         props.updateGroup(props.groupIndex)
         setGroup(refGroup.current.value)
         setColor('rgb(194, 223, 233)')

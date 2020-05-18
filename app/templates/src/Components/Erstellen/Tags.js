@@ -1,6 +1,6 @@
 import React from 'react'
 import './Tags.css'
-import Tag from '../Tag/Tag'
+import Tag from './Tag'
 
 const Tags = (props) => {
 
