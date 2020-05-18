@@ -1,0 +1,8 @@
+.einkauf_item__container {
+    background-color: lightblue;
+    display: flex;
+    line-height: 35px;
+    margin-top: 10px;
+    padding-left: 10px;
+    border-radius: 5px;
+}

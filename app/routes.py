@@ -347,6 +347,16 @@ def update_tag():
 
 @app.route('/recipe/api/v1.0/edit_shopping', methods=['POST'])
 def edit_shopping():
+    if 'clear' in request.json and 'recipeId' in request.json:
+        Shopping.query.filter_by(recipe_id=request.json['recipeId']).delete()
+        db.session.commit()
+        return jsonify({'success': 'Hat funktioniert!'})
+
+    if 'clear' in request.json and 'id' in request.json:
+        Shopping.query.filter_by(id=request.json['id']).delete()
+        db.session.commit()
+        return jsonify({'success': 'Hat funktioniert!'})
+
     if 'clear' in request.json:
         Shopping.query.delete()
         db.session.commit()
@@ -399,6 +409,7 @@ def get_shopping():
         s1 = s[['recipe_id', 'recipe_name']].drop_duplicates().to_dict('r')
         s = s.groupby(['category'], as_index=True)\
             .apply(lambda x: x[[
+                'id',
                 'recipe_id',
                 'quantity',
                 'ingredient_id',

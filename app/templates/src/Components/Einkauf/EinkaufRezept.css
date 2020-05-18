@@ -1,0 +1,16 @@
+.einkauf_rezept__container {
+    display: flex;
+}
+
+.einkauf_rezept__text {
+    width: calc(100% - 50px);
+    line-height: 50px;
+    font-size: larger;
+}
+
+.einkauf_rezept__delete {
+    display: flex;
+    width: 50px;
+    align-items: center;
+    justify-content: center;
+}

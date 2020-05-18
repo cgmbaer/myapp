@@ -1,3 +1,56 @@
 .einkauf__container {
-    margin: 60px 10px 10px 10px;
+    margin: 60px 10px 100px 10px;
+}
+
+.einkauf__leer {
+    font-style: italic;
+}
+
+.einkauf__recipe_header {
+    font-weight: bold;
+}
+
+.einkauf__recipe_container {
+    
+}
+
+.einkauf__toolbar_container {
+    position: fixed;
+    background-color: white;
+    bottom: 0;
+    height: 80px;
+    width: calc(100% - 20px);
+    border-top: gray 1px solid;
+    display: flex;
+    align-items: center;
+}
+
+.einkauf__clear_all {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: calc(50% - 5px);
+    margin-right: 5px;
+    background-color: lightcoral;
+    border-radius: 10px;
+}
+
+.einkauf__clear_all:active {
+    background-color: rgb(230, 52, 52);
+}
+
+.einkauf__clipboard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: calc(50% - 5px);
+    margin-left: 5px;
+    background-color: lightgreen;
+    border-radius: 10px;
+}
+
+.einkauf__clipboard:active {
+    background-color: rgb(46, 165, 46);
 }

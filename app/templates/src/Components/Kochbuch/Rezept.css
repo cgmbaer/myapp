@@ -66,6 +66,12 @@
     justify-content: center;
 }
 
+
+.rezept__shopping:active {
+    background-color: rgb(115, 170, 194);
+    border-radius: 5px;
+}
+
 .rezept__show_container {
     display: block;
     margin: auto;
