@@ -104,10 +104,10 @@ const Einkauf = () => {
     const handleCopyClick = () => {
         let text = items ? items.map(
             x => x.category + ":\n" + x.items.map(
-                y => (y.quantity || ' ') + ' ' + (y.unit || ' ') + ' ' + y.item
+                y => ((y.quantity || '') + ' ' + (y.unit || '') + ' ' + y.item).trim()
             ).join("\n")
         ).join("\n\n") : null
-        text = text.replace(/ +(?= )/g, '').trim()
+        text = text.replace(/ +(?= )/g, '')
         copyToClipboard(text)
     }
 
