@@ -160,7 +160,7 @@ def get_recipes():
         Recipe_Ingredient,
         Ingredient.name.label("ingredient"),
         Unit.name.label("unit")
-    ).statement
+    ).order_by(Recipe_Ingredient.order.asc()).statement
 
     ri = pd.read_sql(sql, db.session.bind)
     if len(ri) > 0:
@@ -209,9 +209,21 @@ def edit_recipe_ingredient():
 
     if 'remove' in request.json:
         if request.json['remove'] == True:
-            ri = Recipe_Ingredient.query.filter_by(id=request.json['id']).delete()
+            ri = Recipe_Ingredient.query.filter_by(
+                id=request.json['id']).delete()
             db.session.commit()
             return jsonify({'id': -1})
+
+    if 'moveUp' in request.json:
+        ri1 = Recipe_Ingredient.query.filter_by(id=request.json['id']).first()
+        ri2 = Recipe_Ingredient.query.filter(
+            Recipe_Ingredient.order < ri1.order, Recipe_Ingredient.group == request.json['group']
+        ).order_by(Recipe_Ingredient.order.desc()).first()
+        tmp = ri1.order
+        ri1.order = ri2.order
+        ri2.order = tmp
+        db.session.commit()
+        return jsonify({'id': -1})
 
     if request.json['quantity'] == '' or 'quantity' not in request.json:
         quantity = None
@@ -222,11 +234,12 @@ def edit_recipe_ingredient():
         max_order = db.session.query(db.func.max(Recipe_Ingredient.order))\
             .filter_by(recipe_id=request.json['recipe_id']).scalar()
 
-        if max_order == None: max_order = 0
-        
+        if max_order == None:
+            max_order = 0
+
         ri = Recipe_Ingredient(
             group=request.json['group'],
-            order= int(max_order) + 1,
+            order=int(max_order) + 1,
             quantity=quantity,
             unit_id=request.json['unit_id'],
             ingredient_id=request.json['ingredient_id'],
@@ -369,7 +382,8 @@ def edit_shopping():
         return jsonify({'success': 'Hat funktioniert!'})
 
     if 'recipeId' in request.json:
-        s = pd.read_sql(db.session.query(Shopping).filter(Shopping.recipe_id == request.json['recipeId']).statement, db.session.bind)
+        s = pd.read_sql(db.session.query(Shopping).filter(
+            Shopping.recipe_id == request.json['recipeId']).statement, db.session.bind)
         if len(s) == 0:
             sql = db.session.query(Recipe_Ingredient).\
                 join(Ingredient).\
@@ -424,7 +438,7 @@ def get_shopping():
             ]].to_dict('r'))\
             .rename('items')\
             .reset_index()
-        
+
         return jsonify({'recipes': s1, 'ingredients': s.to_dict('r')})
-    
+
     return jsonify({})

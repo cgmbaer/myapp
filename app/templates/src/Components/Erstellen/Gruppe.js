@@ -25,7 +25,12 @@ const Gruppe = (props) => {
         setIngredients(newArray)
     }
 
-    const moveUp = (index) => {
+    const moveUp = (id, index) => {
+        funFetch('edit_recipe_ingredient', {
+            id: id,
+            moveUp: true,
+            group: group
+        })
         let newArray = [...ingredients]
         newArray.splice(index - 1, 0, newArray.splice(index, 1)[0])
         setIngredients(newArray)

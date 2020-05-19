@@ -60,7 +60,7 @@ const Zutat = (props) => {
     }
 
     const handleMoveUpClick = () => {
-        props.moveUp(props.index)
+        props.moveUp(id, props.index)
     }
 
     const handleIngredientClick = (id, name) => {
