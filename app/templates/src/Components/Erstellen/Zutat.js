@@ -6,11 +6,10 @@ import { funFetch } from '../hooks/funFetch'
 
 import save_bild from '../../images/save.png'
 import remove_bild from '../../images/close.png'
+import moveup_bild from '../../images/moveup.png'
 
 
 const Zutat = (props) => {
-
-    // console.log("Zutat render: " + props.ingredient.ingredient)
 
     const [id, setId] = useState(props.ingredient.id || '')
     const [quantity, setQuantity] = useState(props.ingredient.quantity || '')
@@ -36,10 +35,17 @@ const Zutat = (props) => {
         let res = await funFetch('edit_recipe_ingredient', body)
 
         if (id === -1) {
-            res ? setId(res.id) : setId(0)
-            props.addIngredient()
+            if (res) {
+                setId(res.id)
+                body.id = res.id
+            } else {
+                setId(0)
+            }
         }
 
+        body.unit = unit
+        body.ingredient = ingredient
+        props.addIngredient(body, props.index)
         setColor(null)
     }
 
@@ -51,6 +57,10 @@ const Zutat = (props) => {
         })
 
         setOpen(false)
+    }
+
+    const handleMoveUpClick = () => {
+        props.moveUp(props.index)
     }
 
     const handleIngredientClick = (id, name) => {
@@ -90,11 +100,19 @@ const Zutat = (props) => {
                     <div onClick={() => { setIOpen(!iOpen); setUOpen(false) }}>{ingredient}</div>
                     {iOpen ? <Dropdown items={props.preset.ingredient} callback={handleIngredientClick} /> : null}
                 </div>
-                {!(color === 'rgb(235, 162, 162)') || (uOpen || iOpen || ingredient === '') ? null : (
-                    <div className='zutat__save' onClick={() => handleSaveClick()}>
-                        <img src={save_bild} alt='save' height='30px'></img>
-                    </div>
-                )}
+                {
+                    (color === 'rgb(235, 162, 162)') && !(uOpen || iOpen || ingredient === '') ?
+                        (
+                            <div className='zutat__save' onClick={() => handleSaveClick()}>
+                                <img src={save_bild} alt='save' height='30px'></img>
+                            </div>
+                        ) :
+                        (props.index > 0) && !(uOpen || iOpen || ingredient === '') && !(id === -1) ? (
+                            <div className='zutat__save' onClick={() => handleMoveUpClick()}>
+                                <img src={moveup_bild} alt='moveup' height='30px'></img>
+                            </div>
+                        ) : null
+                }
             </div>
         ) : null
     )

@@ -18,16 +18,27 @@ const Gruppe = (props) => {
 
     const refGroup = useRef(group)
 
-    const addIngredient = () => {
-        setIngredients([...ingredients, { "id": -1 }])
+    const addIngredient = (body, index) => {
+        console.log(body)
+        let newArray = [...ingredients]
+        newArray[index] = body
+        setIngredients(newArray)
+    }
+
+    const moveUp = (index) => {
+        let newArray = [...ingredients]
+        newArray.splice(index - 1, 0, newArray.splice(index, 1)[0])
+        setIngredients(newArray)
     }
 
     const items = [...ingredients, { "id": -1 }].map(
         (x, index) => {
             return (
                 <Zutat
-                    key={'Zutat-' + props.groupIndex + '-' + index}
+                    key={'Zutat-' + props.index + '-' + index + '-' + x.id}
                     addIngredient={addIngredient}
+                    moveUp={moveUp}
+                    index={index}
                     preset={props.preset}
                     ingredient={x}
                     recipeId={props.recipeId}
@@ -43,7 +54,7 @@ const Gruppe = (props) => {
             oldGroup: group,
             recipeId: props.recipeId
         })
-        
+
         props.updateGroup(props.groupIndex)
         setGroup(refGroup.current.value)
         setColor('rgb(194, 223, 233)')

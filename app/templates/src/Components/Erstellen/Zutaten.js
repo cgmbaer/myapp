@@ -16,7 +16,7 @@ const Zutaten = (props) => {
                 <Gruppe
                     preset={props.items}
                     group={x.group}
-                    groupIndex={index}
+                    index={index}
                     ingredients={x.items}
                     recipeId={props.recipeId}
                     updateGroup={updateGroup}
