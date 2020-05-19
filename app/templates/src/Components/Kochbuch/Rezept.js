@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import './Rezept.css'
 
 import { funFetch } from '../hooks/funFetch'
+import useCollapse from '../hooks/useCollapse'
 
 import image_placeholder from '../../images/imagePlaceholder.jpg'
 import edit_bild from '../../images/edit.png'
@@ -12,7 +13,7 @@ const Rezept = (props) => {
 
     const [imagePath, setImagePath] = useState(image_placeholder)
     const [photoPath, setPhotoPath] = useState(image_placeholder)
-    const [maxHeight, setMaxHeight] = useState(null)
+    const [maxHeight, refCollapse, collapse] = useCollapse()
 
     const items = props.recipe.tags ? props.recipe.tags.map(
         x => {
@@ -21,16 +22,6 @@ const Rezept = (props) => {
             )
         }
     ) : null
-
-    const collapseCotainer = useRef()
-
-    const collapse = () => {
-        if (maxHeight) {
-            setMaxHeight(null);
-        } else {
-            setMaxHeight(collapseCotainer.current.scrollHeight + "px");
-        }
-    }
 
     const mHelper = (text) => {
         if (text) {
@@ -62,7 +53,7 @@ const Rezept = (props) => {
                 <div className="rezept__name_tags">
                     <div className="rezept__name">
                         <div className='rezept__text'>{props.recipe.name}</div>
-                        <div className="rezept__shopping" onClick={() => handleShoppingClick()}>
+                        <div className="rezept__shopping" onTouchStart onClick={() => handleShoppingClick()}>
                             <img src={shopping_bild} alt='add' height='30px'></img>
                         </div>
                     </div>
@@ -71,7 +62,7 @@ const Rezept = (props) => {
                     </div>
                 </div>
             </div>
-            <div className="rezept__show_container" ref={collapseCotainer} style={{ maxHeight: maxHeight }}>
+            <div className="rezept__show_container" ref={refCollapse} style={{ maxHeight: maxHeight }}>
                 <div className="rezept__show_ingredients">
                     {
                         props.recipe.ingredients ? props.recipe.ingredients.map(x => {
