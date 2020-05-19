@@ -219,8 +219,14 @@ def edit_recipe_ingredient():
         quantity = request.json['quantity']
 
     if request.json['id'] == -1:
+        max_order = db.session.query(db.func.max(Recipe_Ingredient.order))\
+            .filter_by(recipe_id=request.json['recipe_id']).scalar()
+
+        if max_order == None: max_order = 0
+        
         ri = Recipe_Ingredient(
             group=request.json['group'],
+            order= int(max_order) + 1,
             quantity=quantity,
             unit_id=request.json['unit_id'],
             ingredient_id=request.json['ingredient_id'],
