@@ -18,8 +18,8 @@ const UnitItem = (props) => {
         let body = {
             id: id,
             name: name,
-            group: group,
-            factor: factor,
+            group: group || null,
+            factor: factor || null,
         }
 
         let res = await funFetch('add_unit', body) 

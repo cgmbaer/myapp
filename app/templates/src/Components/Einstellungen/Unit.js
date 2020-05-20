@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import './Unit.css'
 
+import useCollapse from '../hooks/useCollapse'
+
 import UnitItem from './UnitItem'
 // import Dropdown from '../Dropdown/Dropdown'
 
@@ -12,6 +14,8 @@ const Unit = (props) => {
 
     const [units, setUnits] = useState(props.items || [])
     const [open, setOpen] = useState(false)
+
+    const [maxHeight, refCollapse, collapse] = useCollapse()
 
     const editUnit = (body, index) => {
         let newArray = [...units]
@@ -29,10 +33,10 @@ const Unit = (props) => {
 
     return (
         <div className='unit__container'>
-            <div className='unit__name' onClick={() => setOpen(!open)}>
+            <div className='unit__name' onClick={() => setOpen(collapse)}>
                 Einheit
             </div>
-            {open ? <div style={{marginTop: '15px'}}>{items}</div> : null }
+            <div className='unit__show_container' ref={refCollapse} style={{ maxHeight: maxHeight }}>{items}</div>
         </div>
     )
 }
