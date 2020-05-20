@@ -15,6 +15,8 @@ class Recipe(db.Model):
 class Unit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(16), index=True, unique=True)
+    factor = db.Column(db.Float)
+    group =  db.Column(db.String(128))
     recipe_ingredients = db.relationship(
         'Recipe_Ingredient', backref='unit', lazy='dynamic')
 

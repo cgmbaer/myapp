@@ -1,0 +1,40 @@
+import React, { useState } from 'react'
+import './Unit.css'
+
+import UnitItem from './UnitItem'
+// import Dropdown from '../Dropdown/Dropdown'
+
+// import { funFetch } from '../hooks/funFetch'
+
+// import erstellen_zeichen from '../../images/plus.png'
+
+const Unit = (props) => {
+
+    const [units, setUnits] = useState(props.items || [])
+    const [open, setOpen] = useState(false)
+
+    const editUnit = (body, index) => {
+        let newArray = [...units]
+        newArray[index] = body
+        setUnits(newArray)
+    }
+
+    const items = [...units, {id: -1}].map(
+        (x, index) => {
+            return (
+                <UnitItem key={'UnitItem-' + index} item={x} index={index} editUnit={editUnit}></UnitItem>
+            )
+        }
+    )
+
+    return (
+        <div className='unit__container'>
+            <div className='unit__name' onClick={() => setOpen(!open)}>
+                Einheit
+            </div>
+            {open ? <div style={{marginTop: '15px'}}>{items}</div> : null }
+        </div>
+    )
+}
+
+export default Unit

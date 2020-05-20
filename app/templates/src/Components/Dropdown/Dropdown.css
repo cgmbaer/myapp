@@ -1,7 +1,7 @@
 .dropdown__container {
     position: absolute;
     left: 0;
-    z-index: 7;
+    z-index: 9;
     display: inline-block;
     background-color: lightblue;
     border: 1px solid lightgrey;
@@ -12,11 +12,11 @@
 }
 
 .dropdown__item_container {
-    margin-top: 30px;
+    margin-top: 25px;
     overflow-y: scroll;
     scroll-behavior: smooth;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 25px);
 }
 
 .dropdown__item {

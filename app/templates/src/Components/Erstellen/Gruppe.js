@@ -19,7 +19,6 @@ const Gruppe = (props) => {
     const refGroup = useRef(group)
 
     const addIngredient = (body, index) => {
-        console.log(body)
         let newArray = [...ingredients]
         newArray[index] = body
         setIngredients(newArray)

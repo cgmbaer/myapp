@@ -62,7 +62,4 @@
     margin: auto;
     justify-content: center;
     width: 95%;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease-out;
 }

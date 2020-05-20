@@ -5,7 +5,6 @@ import Listitem from './Listitem'
 import Dropdown from '../Dropdown/Dropdown'
 
 import { funFetch } from '../hooks/funFetch'
-import useCollapse from '../hooks/useCollapse'
 
 import search_zeichen from '../../images/search.png'
 import erstellen_zeichen from '../../images/plus.png'
@@ -14,8 +13,8 @@ const Listsearch = (props) => {
 
     const [searchText, setSearchText] = useState(null);
     const [openCategory, setOpenCategory] = useState(false);
+    const [open, setOpen] = useState(false);
     const [items, setItems] = useState(props.items);
-    const [maxHeight, refCollapse, collapse] = useCollapse()
 
     const refItem = useRef()
 
@@ -34,7 +33,7 @@ const Listsearch = (props) => {
 
         let data = await funFetch('add_item', body)
 
-        setItems([...items, data])
+        if(data) setItems([...items, data])
         refItem.current.value = ''
         setSearchText(null)
     }
@@ -48,7 +47,7 @@ const Listsearch = (props) => {
         return null
     }).map((x, index) => {
         return (
-            <Listitem key={'ListItem-' + index} id={x.id} name={x.name} type={props.type} categories={props.categories} />
+            <Listitem key={'ListItem-' + index + '-' + x.id} id={x.id} name={x.name} type={props.type} categories={props.categories} />
         )
     }) : null
 
@@ -67,8 +66,9 @@ const Listsearch = (props) => {
 
     return (
         <div className="listsearch__container">
-            <div className="listsearch__name" onClick={() => collapse()}>{props.name}</div>
-            <div className="listsearch__show_container" ref={refCollapse} style={{ maxHeight: maxHeight }}>
+            <div className="listsearch__name" onClick={() => setOpen(!open)}>{props.name}</div>
+            {open ? (
+            <div className="listsearch__show_container">
                 <div className="listsearch__search">
                     <div className="listsearch__search_icon">
                         <img src={search_zeichen} alt='add' height='40px'></img>
@@ -84,7 +84,9 @@ const Listsearch = (props) => {
                     </div>
                 </div>
                 {listItems}
+                { openCategory ? <div style={{height: '140px'}}></div> : null }
             </div>
+            ) : null }
         </div>
     )
 }

@@ -53,7 +53,7 @@ const Rezept = (props) => {
                 <div className="rezept__name_tags">
                     <div className="rezept__name">
                         <div className='rezept__text'>{props.recipe.name}</div>
-                        <div className="rezept__shopping" onTouchStart onClick={() => handleShoppingClick()}>
+                        <div className="rezept__shopping" onTouchStart={()=>true} onClick={() => handleShoppingClick()}>
                             <img src={shopping_bild} alt='add' height='30px'></img>
                         </div>
                     </div>

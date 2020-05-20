@@ -217,7 +217,8 @@ def edit_recipe_ingredient():
     if 'moveUp' in request.json:
         ri1 = Recipe_Ingredient.query.filter_by(id=request.json['id']).first()
         ri2 = Recipe_Ingredient.query.filter(
-            Recipe_Ingredient.order < ri1.order, Recipe_Ingredient.group == request.json['group']
+            Recipe_Ingredient.order < ri1.order, Recipe_Ingredient.group == request.json[
+                'group']
         ).order_by(Recipe_Ingredient.order.desc()).first()
         tmp = ri1.order
         ri1.order = ri2.order
@@ -337,6 +338,29 @@ def add_item():
         return jsonify({'error': 'Exisitert bereits!'})
 
 
+@app.route('/recipe/api/v1.0/add_unit', methods=['POST'])
+@login_required
+def add_unit():
+    if request.json['id'] > 0:
+        u = Unit.query.get(request.json['id'])
+        u.name = request.json['name']
+        u.group = request.json['group']
+        u.factor = request.json['factor']
+    else:
+        u = Unit(name=request.json['name'],
+                 group=request.json['group'],
+                 factor=request.json['factor']
+                 )
+        db.session.add(u)
+    try:
+        db.session.commit()
+        return jsonify({'id': u.id})
+
+    except IntegrityError as err:
+        db.session.rollback()
+        return jsonify({'error': 'Exisitert bereits!'})
+
+
 @app.route('/recipe/api/v1.0/get_items', methods=['GET'])
 @login_required
 def get_items():
@@ -344,6 +368,8 @@ def get_items():
     for table in [Ingredient, Unit, Tag, Category]:
         t = pd.read_sql(table.query.statement, db.session.bind)
         t.replace({np.nan: None}, inplace=True)
+        if table == Unit:
+            t.sort_values(by=['group', 'factor'], inplace=True)
         t = t.to_dict('r')
         res[table.__tablename__] = t
 

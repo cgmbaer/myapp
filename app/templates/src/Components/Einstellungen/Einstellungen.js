@@ -2,6 +2,7 @@ import React from 'react'
 import './Einstellungen.css'
 
 import Listsearch from './Listsearch'
+import Unit from './Unit'
 
 import useFetch from '../hooks/useFetch'
 
@@ -19,7 +20,7 @@ const Einstellungen = (props) => {
                     <Listsearch type='Tag' items={data.tag} name='Tags'></Listsearch>
                 </div>
                 <div className="einstellungen__unit_container">
-                    <Listsearch type='Unit' items={data.unit} name='Einheiten'></Listsearch>
+                    <Unit type='Unit' items={data.unit} name='Einheiten'/>
                 </div>
                 <div className="einstellungen__category_container">
                     <Listsearch type='Category' items={data.category} name='Kategorie'></Listsearch>

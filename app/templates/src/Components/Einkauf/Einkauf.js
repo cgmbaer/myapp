@@ -132,10 +132,10 @@ const Einkauf = () => {
                 {list_items}
             </div>
             <div className="einkauf__toolbar_container">
-                <div className="einkauf__clear_all" onTouchStart onClick={() => handleClearClick()}>
+                <div className="einkauf__clear_all" onTouchStart={()=>true} onClick={() => handleClearClick()}>
                     <img src={remove_bild} alt='clear' height='40px'></img>
                 </div>
-                <div className="einkauf__clipboard" onTouchStart onClick={() => handleCopyClick()}>
+                <div className="einkauf__clipboard" onTouchStart={()=>true} onClick={() => handleCopyClick()}>
                     <img src={copy_bild} alt='copy' height='40px'></img>
                 </div>
             </div>
