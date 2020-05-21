@@ -215,14 +215,18 @@ def edit_recipe_ingredient():
             return jsonify({'id': -1})
 
     if 'moveUp' in request.json:
-        ri1 = Recipe_Ingredient.query.filter_by(id=request.json['id']).first()
+        ri1 = Recipe_Ingredient.query.get(request.json['id'])
         ri2 = Recipe_Ingredient.query.filter(
-            Recipe_Ingredient.order < ri1.order, Recipe_Ingredient.group == request.json[
-                'group']
+            Recipe_Ingredient.recipe_id == request.jso['recipe_id']
+            Recipe_Ingredient.order < ri1.order,
+            Recipe_Ingredient.group == request.json['group']
         ).order_by(Recipe_Ingredient.order.desc()).first()
         tmp = ri1.order
         ri1.order = ri2.order
         ri2.order = tmp
+        print(str(ri1.id) + ' -> ' + str(ri2.id))
+        print(str(ri1.order) + ' -> ' + str(ri2.order))
+
         db.session.commit()
         return jsonify({'id': -1})
 

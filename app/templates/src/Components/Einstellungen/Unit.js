@@ -36,7 +36,10 @@ const Unit = (props) => {
             <div className='unit__name' onClick={() => setOpen(collapse)}>
                 Einheit
             </div>
-            <div className='unit__show_container' ref={refCollapse} style={{ maxHeight: maxHeight }}>{items}</div>
+            <div className='unit__show_container' ref={refCollapse} style={{ maxHeight: maxHeight }}>
+                <div style={{marginTop: '10px'}}></div>
+                {items}
+            </div>
         </div>
     )
 }
