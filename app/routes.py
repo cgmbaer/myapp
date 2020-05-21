@@ -463,6 +463,7 @@ def get_shopping():
 
     s = pd.read_sql(sql, db.session.bind)
     s.replace({np.nan: None}, inplace=True)
+    s.sort_values(by=['category','item'], inplace=True)
     s["category"].fillna('Andere', inplace=True)
 
     if len(s) > 0:
