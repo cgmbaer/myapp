@@ -13,8 +13,6 @@ import UnitItem from './UnitItem'
 const Unit = (props) => {
 
     const [units, setUnits] = useState(props.items || [])
-    const [open, setOpen] = useState(false)
-
     const [maxHeight, refCollapse, collapse] = useCollapse()
 
     const editUnit = (body, index) => {
@@ -33,7 +31,7 @@ const Unit = (props) => {
 
     return (
         <div className='unit__container'>
-            <div className='unit__name' onClick={() => setOpen(collapse)}>
+            <div className='unit__name' onClick={() => collapse()}>
                 Einheit
             </div>
             <div className='unit__show_container' ref={refCollapse} style={{ maxHeight: maxHeight }}>

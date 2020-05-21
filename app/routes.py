@@ -439,7 +439,7 @@ def edit_shopping():
             ).statement
 
             ri = pd.read_sql(sql, db.session.bind)
-
+            ri['quantity'] = ri['quantity'].mul(request.json['factor']).round(2)
             ri.to_sql("shopping", con=db.engine,
                       if_exists="append", index=False)
             return jsonify({'success': 'Hat funktioniert!'})

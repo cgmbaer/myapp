@@ -83,12 +83,46 @@
     background-color: rgb(239, 250, 255);
 }
 
-.rezept__show_ingredients {
+.rezept__show_ingredients_calc {
+    display: flex;
     margin:15px
 }
 
+.rezept__show_ingredients {
+    width: calc(100% - 100px)
+}
+
+.rezept__calc_container {
+    margin-left: 20px;
+    width: 100px;
+}
+
+.rezept__calc_text {
+    text-align: right;
+    font-weight: bold;
+}
+
+.rezept__calc_field {
+    display: flex;
+    justify-content: flex-end;
+    line-height: 30px;
+}
+
+.rezept__calc_field > input {
+    border: none;
+    background: transparent;
+    font-size: medium;
+    text-align: center;
+    padding: 0px;
+    font-family: inherit;
+
+    height: 30px;
+    width: 30px;
+    display: flex;
+}
+
 .rezept__group_container {
-    margin-top: 20px
+    margin-bottom: 20px
 }
 
 .rezept__group_text {

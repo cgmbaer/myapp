@@ -13,15 +13,42 @@ const Rezept = (props) => {
 
     const [imagePath, setImagePath] = useState(image_placeholder)
     const [photoPath, setPhotoPath] = useState(image_placeholder)
+    const [mult, setMult] = useState(1)
+    const [div, setDiv] = useState(1)
     const [maxHeight, refCollapse, collapse] = useCollapse()
 
-    const items = props.recipe.tags ? props.recipe.tags.map(
+    const tagItems = props.recipe.tags ? props.recipe.tags.map(
         x => {
             return (
                 <div key={'rezept_tags-' + x.tag_id} className="rezept__tag_items">{x.name}</div>
             )
         }
     ) : null
+
+    const ingredientItems = props.recipe.ingredients ? props.recipe.ingredients.map(x => {
+        return (
+            <div className="rezept__group_container" key={'show-group-' + x.group}>
+                <div className="rezept__group_text">{x.group}</div>
+                {
+                    x.items.map(y => {
+                        return (
+                            <div className="rezept__table_container" key={'show-item-' + x.group + y.id}>
+                                <div className="rezept__table_quantity">{
+                                    Math.round(y.quantity * mult / div)
+                                }</div>
+                                <div className="rezept__table_unit">{y.unit}</div>
+                                <div className="rezept__table_ingredient">{y.ingredient}</div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        )
+    }) : (
+            <div className="rezept__photo">
+                <img src={photoPath} alt='add' width='100%'></img>
+            </div>
+        )
 
     const mHelper = (text) => {
         if (text) {
@@ -32,7 +59,7 @@ const Rezept = (props) => {
     }
 
     const handleShoppingClick = () => {
-        funFetch('edit_shopping', { recipeId: props.recipe.id })
+        funFetch('edit_shopping', { recipeId: props.recipe.id, factor: mult/div })
     }
 
     useEffect(() => {
@@ -53,41 +80,28 @@ const Rezept = (props) => {
                 <div className="rezept__name_tags">
                     <div className="rezept__name">
                         <div className='rezept__text'>{props.recipe.name}</div>
-                        <div className="rezept__shopping" onTouchStart={()=>true} onClick={() => handleShoppingClick()}>
+                        <div className="rezept__shopping" onTouchStart={() => true} onClick={() => handleShoppingClick()}>
                             <img src={shopping_bild} alt='add' height='30px'></img>
                         </div>
                     </div>
                     <div className="rezept__tags">
-                        {items}
+                        {tagItems}
                     </div>
                 </div>
             </div>
             <div className="rezept__show_container" ref={refCollapse} style={{ maxHeight: maxHeight }}>
-                <div className="rezept__show_ingredients">
-                    {
-                        props.recipe.ingredients ? props.recipe.ingredients.map(x => {
-                            return (
-                                <div className="rezept__group_container" key={'show-group-' + x.group}>
-                                    <div className="rezept__group_text">{x.group}</div>
-                                    {
-                                        x.items.map(y => {
-                                            return (
-                                                <div className="rezept__table_container" key={'show-item-' + x.group + y.id}>
-                                                    <div className="rezept__table_quantity">{y.quantity}</div>
-                                                    <div className="rezept__table_unit">{y.unit}</div>
-                                                    <div className="rezept__table_ingredient">{y.ingredient}</div>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            )
-                        }) : (
-                                <div className="rezept__photo">
-                                    <img src={photoPath} alt='add' width='100%'></img>
-                                </div>
-                            )
-                    }
+                <div className="rezept__show_ingredients_calc">
+                    <div className="rezept__show_ingredients">
+                        {ingredientItems}
+                    </div>
+                    <div className="rezept__calc_container">
+                        <div className="rezept__calc_text">Rechner</div>
+                        <div className="rezept__calc_field">
+                            <input type='text' value={mult} onChange={(e) => setMult(e.target.value)}></input>
+                            <div>/</div>
+                            <input type='text' value={div} onChange={(e) => setDiv(e.target.value)}></input>
+                        </div>
+                    </div>
                 </div>
                 <div className="rezept__show_text_container">
                     <div className="rezept__show_text" dangerouslySetInnerHTML={{ __html: mHelper(props.recipe.description) }} />
