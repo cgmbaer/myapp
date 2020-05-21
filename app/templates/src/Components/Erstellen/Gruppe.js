@@ -24,9 +24,10 @@ const Gruppe = (props) => {
         setIngredients(newArray)
     }
 
-    const moveUp = (id, index) => {
+    const moveUp = (id, recipe_id, index) => {
         funFetch('edit_recipe_ingredient', {
             id: id,
+            recipe_id: recipe_id,
             moveUp: true,
             group: group
         })
