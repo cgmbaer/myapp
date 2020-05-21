@@ -215,18 +215,30 @@ def edit_recipe_ingredient():
             return jsonify({'id': -1})
 
     if 'moveUp' in request.json:
-        print(request.json['recipe_id'])
         ri1 = Recipe_Ingredient.query.get(request.json['id'])
-        ri2 = Recipe_Ingredient.query.filter(
-            Recipe_Ingredient.recipe_id == request.json['recipe_id'],
-            Recipe_Ingredient.order < ri1.order,
-            Recipe_Ingredient.group == request.json['group']
-        ).order_by(Recipe_Ingredient.order.desc()).first()
-        tmp = ri1.order
-        ri1.order = ri2.order
-        ri2.order = tmp
+        if ri1.order == None:
+            ri1.order = 1
+        else:
+            ri = Recipe_Ingredient.query.filter(
+                Recipe_Ingredient.recipe_id == request.json['recipe_id'],
+                Recipe_Ingredient.order <= ri1.order,
+                Recipe_Ingredient.group == request.json['group']
+            ).order_by(Recipe_Ingredient.order.desc()).all()
+            if len(ri) == 1:
+                print('Nothing to do')
+            elif ri1.order == ri[1].order:
+                ri1.order = Recipe_Ingredient.query.filter(
+                    Recipe_Ingredient.recipe_id == request.json['recipe_id'],
+                    Recipe_Ingredient.order != None,
+                    Recipe_Ingredient.group == request.json['group']
+                ).order_by(Recipe_Ingredient.order.asc()).first().order - 1
+            else:
+                tmp = ri1.order
+                ri1.order = ri[1].order
+                ri[1].order = tmp
+
         db.session.commit()
-        return jsonify({'id': -1})
+        return jsonify({'id': ri1.id})
 
     if request.json['quantity'] == '' or 'quantity' not in request.json:
         quantity = None
