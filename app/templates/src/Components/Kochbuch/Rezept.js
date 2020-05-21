@@ -34,7 +34,7 @@ const Rezept = (props) => {
                         return (
                             <div className="rezept__table_container" key={'show-item-' + x.group + y.id}>
                                 <div className="rezept__table_quantity">{
-                                    Math.round(y.quantity * mult / div)
+                                    y.quantity ? Math.round(y.quantity * mult / div * 100) / 100 : ''
                                 }</div>
                                 <div className="rezept__table_unit">{y.unit}</div>
                                 <div className="rezept__table_ingredient">{y.ingredient}</div>
