@@ -157,6 +157,8 @@
 
 .rezept__table_ingredient {
     display: flex;
+    width: calc(100% - 90px);
+    white-space: nowrap;
 }
 
 .rezept__show_text_container {
