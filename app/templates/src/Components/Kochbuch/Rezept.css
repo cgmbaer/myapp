@@ -21,6 +21,7 @@
 }
 
 .rezept__name {
+    margin-bottom: 4px;
     display: flex;
     height: calc(100% - 52px);
     width: 100%;
@@ -37,7 +38,11 @@
 }
 
 .rezept__text {
+    display: flex;
+    height: 100%;
     width: calc(100% - 40px);
+    align-items: center;
+    line-height: 1.0;
 }
 
 .rezept__tags {
@@ -46,6 +51,7 @@
     height: 46px;
     width: 100%;
     overflow: hidden;
+    align-items: center;
 }
 
 .rezept__tag_items {
