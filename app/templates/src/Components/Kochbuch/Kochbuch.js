@@ -53,6 +53,8 @@ function Kochbuch() {
             <div className='kochbuch__rezept_container'>
                 {items}
             </div>
+            <div className='kochbuch__rezept_spacer'>
+            </div>
         </div>
     )
 }

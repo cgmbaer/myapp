@@ -15,7 +15,7 @@ const Rezept = (props) => {
     const [photoPath, setPhotoPath] = useState(image_placeholder)
     const [mult, setMult] = useState(1)
     const [div, setDiv] = useState(1)
-    const [maxHeight, refCollapse, refScrollElement , collapse] = useCollapse()
+    const [maxHeight, refCollapse , collapse] = useCollapse()
 
     const tagItems = props.recipe.tags ? props.recipe.tags.map(
         x => {
@@ -74,7 +74,7 @@ const Rezept = (props) => {
     return (
         <div className="rezept__container">
             <div className="rezept__preview_container">
-                <div className="rezept__thumbnail" ref={refScrollElement} onClick={() => collapse()}>
+                <div className="rezept__thumbnail" onClick={() => collapse()}>
                     <img src={imagePath} alt='add' height='90px'></img>
                 </div>
                 <div className="rezept__name_tags">

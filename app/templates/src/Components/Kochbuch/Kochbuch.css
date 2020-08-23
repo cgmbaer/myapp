@@ -48,3 +48,7 @@
 .kochbuch__rezept_container {
     margin: 10px 0px 10px 0px;
 }
+
+.kochbuch__rezept_spacer {
+    height: 100px;
+}
